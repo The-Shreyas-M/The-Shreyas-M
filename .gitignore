@@ -1,0 +1,7 @@
+# opencode briefs and logs
+.oc/
+dist/
+preview/
+blender/render/
+*.blend1
+node_modules/
