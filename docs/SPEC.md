@@ -3,36 +3,35 @@
 Living document. Always the current truth; history is in `DECISIONS.md` and git.
 
 ## 1. Summary
-A GitHub profile README for the personal account `The-Shreyas-M` that looks insane: a cyberpunk / hacker-terminal page full of motion. It lives in the special public repo `The-Shreyas-M/The-Shreyas-M`, whose `README.md` GitHub shows on the profile page. GitHub runs no JavaScript in a README, so every moving part is an animated SVG (CSS/SMIL), an animated WebP, or an SVG that a scheduled GitHub Action regenerates from live GitHub data. It is for anyone who opens Shreyas's profile (recruiters, hackathon judges, YouTube viewers) and replaces today's empty default profile.
+A GitHub profile README for the personal account `The-Shreyas-M` that looks insane: a **pixel-art cyberpunk city at night** (owner references: Huntdown, Cloudpunk — style only, all art original) full of motion. It lives in the special public repo `The-Shreyas-M/The-Shreyas-M`. GitHub runs no JavaScript in a README, so every moving part is an SVG made of embedded pixel-art PNG layers animated with CSS, some regenerated daily by a GitHub Action from live GitHub data. For anyone who opens Shreyas's profile (recruiters, hackathon judges, YouTube viewers).
 
 ## 2. The 2-minute demo
 1. Open github.com/The-Shreyas-M.
-2. A full-width cyberpunk hero boots up: scanlines, glitching "SHREYAS", a terminal that types the tagline.
-3. An original transformer-style mech assembles itself from flying parts, then loops.
-4. Live stats + skills panel animates in (commits, stars, top languages, streak, tech stack) with today's numbers.
-5. Project showcase: animated cards for 7 public projects, each linking to its repo.
-6. A 3D hardware hero shot loops (exploded electronics board under neon light).
-7. The contribution grid is a game: the mech/ship hunts the real commit cells of the last year, redrawn daily.
-8. Footer: a big animated "ENTER PORTFOLIO" link to iamshreyas.pages.dev and a YouTube badge.
+2. Hero: a rainy pixel city scrolls in parallax; a neon "SHREYAS" sign flickers over the skyline with the tagline; flying cars pass; Shreyas's pixel character stands on a rooftop.
+3. A rooftop workshop: a dev board powers up and transforms into the bench-mech, idles, folds back.
+4. A holographic billboard shows live stats and languages.
+5. Project shop-fronts / billboards, each clickable to its repo.
+6. The contribution grid is a city block of lit windows; the mech patrols and zaps them, redrawn daily.
+7. Footer: a pixel "ENTER PORTFOLIO" station sign → iamshreyas.pages.dev, and a YouTube billboard.
 
 ## 3. Requirements
 
 | Id | Requirement (testable) | Priority | Done when |
 |---|---|---|---|
-| R1 | Design system: one palette, type, motion rules for every asset (cyberpunk/terminal) | Must | `docs/DESIGN.md` exists; every SVG uses only its colours |
-| R2 | Hero banner SVG: glitch name, typed tagline/bio, scanlines, boot sequence, loops | Must | `assets/hero.svg` animates in Chrome and in the GitHub-render preview |
-| R3 | Original transformer-style mech SVG: parts fly in and assemble, idle pose, loops | Must | `assets/mech.svg` animates; design is original (no franchise likeness) |
-| R4 | Contribution game SVG generated from the real contribution calendar (GraphQL) | Must | `node gen/contrib.mjs` writes `dist/contrib-game.svg` from live data; offline fixture also works |
-| R5 | Live stats + skills panel SVG generated from GitHub API data | Must | `node gen/stats.mjs` writes `dist/stats.svg` with real numbers |
+| R1 | Pixel-art design system + toolkit (`docs/DESIGN.md`, `gen/pixel/px.mjs`) used by every asset | Must | all assets built with px.mjs and the DESIGN palette |
+| R2 | Hero: pixel cyberpunk city, parallax, rain, flying cars, neon name sign + tagline | Must | `node gen/pixel/hero.mjs` → `assets/hero.svg` (DONE, approved 2026-11-23) |
+| R3 | Bench-mech: original pixel mech that transforms from a dev board in a rooftop workshop scene, frame-by-frame | Must | `node gen/pixel/mech.mjs` → `assets/mech.svg`; owner approves look |
+| R4 | Contribution game: real contribution calendar as a lit-window city block, mech patrols and zaps windows | Must | `node gen/contrib.mjs` writes `dist/contrib-game.svg` from live data; `--fixture` works offline |
+| R5 | Live stats + languages as an in-world holographic billboard | Must | `node gen/stats.mjs` writes `dist/stats.svg` with real numbers |
 | R6 | Daily GitHub Action regenerates R4 + R5 and pushes them to the `output` branch | Must | workflow run succeeds; README images update next day |
-| R7 | Project showcase: animated SVG card per project, linked to its repo: Oculius, ESP32-Synth, 65W fast charger, ChocoBao, NEURA, ai-video-editor, Axiom | Must | 7 cards in `assets/projects/`, each wrapped in a link in README |
-| R8 | 3D hardware hero loop: original Blender scene, rendered to animated WebP ≤ 5 MB | Must | `assets/hardware-loop.webp` plays in README preview |
-| R9 | Portfolio link (iamshreyas.pages.dev) as an animated button + YouTube badge (https://www.youtube.com/@The-Shreyas-M/). No other socials | Must | both visible and clickable in preview |
-| R10 | GitHub-safe assets: no `<script>`, no external URLs/fonts inside SVGs, each SVG ≤ 1 MB, `prefers-reduced-motion` respected | Must | `node gen/check.mjs` prints `ALL ASSETS OK` |
-| R11 | Local preview: README rendered through GitHub's markdown API into `preview/index.html` with GitHub's dark styling | Must | `node gen/preview.mjs` then open the file: matches github.com layout |
-| R12 | README layout: section order of the demo, centred, looks right at desktop and mobile width | Must | preview checked at 1280 px and 390 px |
-| R13 | Light-mode variants via `<picture>` + `prefers-color-scheme` | Should | preview in light mode is readable |
-| R14 | Mech appears inside the contribution game as the hunter | Should | contrib SVG shows the mech sprite |
+| R7 | Project showcase: one pixel shop-front/billboard per project, linked: Oculius, ESP32-Synth, 65W fast charger, ChocoBao, NEURA, ai-video-editor, Axiom | Must | 7 SVGs in `assets/projects/`, each wrapped in a link |
+| R8 | Hardware piece: pixel-art workbench close-up (ESP32 board, synth, drone) with blinking LEDs and scope — replaces the dropped 3D loop | Should | `assets/bench.svg` |
+| R9 | Footer: pixel "ENTER PORTFOLIO" sign → iamshreyas.pages.dev + YouTube billboard (https://www.youtube.com/@The-Shreyas-M/). No other socials | Must | both clickable in preview |
+| R10 | GitHub-safe assets: no script, no external URLs, each SVG ≤ 1 MB, reduced-motion respected | Must | `node gen/check.mjs` prints `ALL ASSETS OK` |
+| R11 | Local preview through GitHub's markdown API | Must | `node gen/preview.mjs` (DONE) |
+| R12 | Layout in demo order, readable at 1280 px and 360 px (phone variant via `<picture media>` if needed) | Must | preview checked at both widths |
+| R13 | Owner's pixel character on the hero rooftop (coat, hair moving in the wind) | Should | owner approves likeness |
+| R14 | Mech appears in the contribution game | Should | contrib SVG shows the mech sprite |
 | R15 | Extra socials, blog feed, visitor counter, music/tabla easter egg | Later | — |
 
 ## 4. Non-goals
@@ -46,12 +45,13 @@ A GitHub profile README for the personal account `The-Shreyas-M` that looks insa
 Visitor opens the profile → scrolls top to bottom through: hero (R2) → mech (R3) → stats + skills (R5) → project showcase (R7) → hardware loop (R8) → contribution game (R4) → portfolio button + YouTube (R9). Clicking a project card opens its repo; the button opens the portfolio. Owner flow: edit generators/assets locally → `node gen/preview.mjs` → check → push; the Action keeps live SVGs fresh daily.
 
 ## 6. Architecture and stack
-- **Static animated SVGs** (`assets/`): hand-built or generated once by Node scripts; animation by CSS `@keyframes` inside `<style>` and SMIL. Fonts: system monospace stack or a subset font embedded as a base64 data URI (GitHub serves SVGs through `<img>` via camo, which blocks external loads).
-- **Live SVG generators** (`gen/*.mjs`): Node ≥ 20, plain ESM, **zero npm dependencies** (built-in `fetch`). Read `GITHUB_TOKEN`; GraphQL `contributionsCollection` for R4, REST/GraphQL for R5. Each has `--fixture` mode reading `gen/fixtures/*.json` for offline runs and tests.
-- **Action** (`.github/workflows/update.yml`): cron daily + manual dispatch; runs generators; force-pushes `dist/` to orphan branch `output`. README references `https://raw.githubusercontent.com/The-Shreyas-M/The-Shreyas-M/output/<file>.svg`.
-- **3D loop**: Blender 5.2 (installed) scene in `blender/`, rendered PNG frames → ffmpeg (installed) → animated WebP.
-- **Checks**: `gen/check.mjs` (R10 lint), `gen/preview.mjs` (R11, uses `gh api markdown` or the REST markdown endpoint).
-- Folder layout: `README.md`, `assets/` (static SVG/WebP), `gen/` (generators, checks, fixtures), `dist/` (generated, gitignored on main), `blender/`, `preview/` (gitignored), `.github/workflows/`, `docs/`.
+- **Pixel generators** (`gen/pixel/*.mjs`): Node >= 20, zero npm dependencies. `px.mjs` = toolkit (layers, PNG via `node:zlib`, dithering, glow, 5×7 font). Each scene script writes one SVG into `assets/` (static) or `dist/` (live). Sprites as palette-indexed string grids in `gen/pixel/sprites/`.
+- **SVG format**: logical-resolution `viewBox` (400 wide), embedded PNG data-URI layers, CSS `steps()` animation for parallax and sprite frames. See DESIGN §1.
+- **Live generators** (`gen/stats.mjs`, `gen/contrib.mjs`): fetch with `GITHUB_TOKEN` (GraphQL), `--fixture` mode from `gen/fixtures/*.json`, draw with px.mjs.
+- **Action** (`.github/workflows/update.yml`): daily cron + manual dispatch; runs generators; force-pushes `dist/` to orphan branch `output`. README references `https://raw.githubusercontent.com/The-Shreyas-M/The-Shreyas-M/output/<file>.svg`.
+- **Checks**: `gen/check.mjs` (R10), `gen/preview.mjs` (R11).
+- Folder layout: `README.md`, `assets/`, `gen/` (`pixel/`, `lib/`, `fixtures/`), `dist/` (gitignored), `preview/` (gitignored), `.github/workflows/`, `docs/`.
+- Dropped: hand-written vector SVG illustration (rejected), Blender/3D (owner: no 3D).
 
 ## 7. Data and interfaces
 - Contribution data: GraphQL `user(login:"The-Shreyas-M"){contributionsCollection{contributionCalendar{weeks{contributionDays{date contributionCount contributionLevel}}}}}` → fixture `gen/fixtures/contrib.json` same shape.
@@ -68,16 +68,18 @@ Visitor opens the profile → scrolls top to bottom through: hero (R2) → mech 
 ## 10. Milestones
 | Version | Contains | Owner checks |
 |---|---|---|
-| v0.1 | R1, R2, R3, R10, R11 | hero + mech in local preview |
-| v0.2 | R4, R5, R6 (Action tested on a fork-free dry run) | live numbers + game in preview |
-| v0.3 | R7, R8, R9, R12 | full page in preview, desktop + mobile |
+| v0.1 | R1, R2, R10, R11 (done) | pixel city hero approved 2026-11-23 |
+| v0.2 | R3 mech scene, R13 character | mech + character look |
+| v0.3 | R4, R5, R6 live HUD + contribution city | live numbers + game in preview |
+| v0.4 | R7, R8, R9, R12 | full page, desktop + phone |
 | v1.0 | all Must, repo public | live profile on github.com |
 
 ## 11. Assumptions
-- Project folder `~/Projects/The-Shreyas-M` (old empty `Github Mod` can be deleted by the owner).
-- Bio/tagline text drafted by the orchestrator from the knowledge base (electronics + code + design, builds IoT/hardware, web and AI tools, posts on YouTube), first name only; owner edits at checkpoint 1.
-- Contribution game concept: the mech (or its ship form) flies along the grid firing at commit cells, cells shatter by level; exact look settled in DESIGN.md.
-- Generated live SVGs live on an `output` branch so the main branch history stays clean.
+- Project folder `~/Projects/The-Shreyas-M` (old empty `Github Mod` to be deleted by the owner).
+- Tagline: "HARDWARE HACKER / CODER / DESIGNER" (owner can change).
+- Generated live SVGs live on an `output` branch so main history stays clean.
+- Style references are games the owner named; only the genre and mood are borrowed.
 
 ## 12. Open questions
-- None blocking. At checkpoint 1: tagline wording, which tech-stack items appear in the skills panel.
+- R13 character likeness: hair style/colour, glasses or not, clothing (ask at the v0.2 checkpoint, or the owner sends a photo/description).
+- Which tech-stack items appear on the stats billboard.
