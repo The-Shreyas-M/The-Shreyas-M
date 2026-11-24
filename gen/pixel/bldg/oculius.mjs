@@ -175,7 +175,8 @@ function drawIris(layer, icx, icy) {
   }
 }
 
-const centers = [[36, 26], [28, 26], [44, 26], [36, 21]];
+// 0..10: pupil x 26→46 in 2-px steps (y 26); 11..13: glances up (centre, left, right).
+const centers = [...Array.from({ length: 11 }, (_, i) => [26 + 2 * i, 26]), [36, 21], [29, 22], [43, 22]];
 const frames = centers.map(([cx, cy]) => {
   const L = new Layer(48, 28);
   const icx = cx - 12, icy = cy - 12;
@@ -196,5 +197,10 @@ export default {
   label: 'OCULIUS',
   aria: 'Pixel-art tower crowned by a giant mechanical eye that looks around: Oculius',
   h: 120, base,
-  anim: { frames, x: 12, y: 12, fw: 48, fh: 28, seq: [[0, 1.4], [1, 1.0], [0, 0.8], [2, 1.0], [0, 0.6], [3, 0.8], [0, 0.4]] },
+  anim: { frames, x: 12, y: 12, fw: 48, fh: 28, seq: [
+    [5, 1.46], [6, 0.08], [7, 0.08], [8, 0.08], [9, 0.08], [10, 0.7],                 // centre → sweep right
+    ...[9, 8, 7, 6, 5, 4, 3, 2, 1, 0].map((f) => [f, 0.08]), [0, 0.7],                 // sweep all the way left
+    [1, 0.08], [2, 0.08], [3, 0.08], [4, 0.08], [5, 0.3],                             // back to centre
+    [13, 0.5], [11, 0.4], [12, 0.5],                                                  // glance up right, up, up left
+  ] }, // period 6.0 s
 };
