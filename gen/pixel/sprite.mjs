@@ -36,6 +36,19 @@ export function spriteSvg(sheetUri, fw, fh, frames, x, y, cls, { dur = 0.8, id =
   return `<g transform="translate(${x} ${y})"><clipPath id="${id}-clip"><rect width="${fw}" height="${fh}"/></clipPath><g clip-path="url(#${id}-clip)"><image class="${cls}" href="${sheetUri}" width="${fw * frames}" height="${fh}" style="image-rendering:pixelated"/></g></g>`;
 }
 
+// Uneven frame timeline: seq = [[frameIndex, seconds], ...] played in order and looped.
+// Each frame holds for its seconds (steps(1) between keyframes). Reduced motion rests on frame `rest`.
+// Returns { css, total } — total is the loop length in seconds, for syncing other effects.
+export function spriteTimeline(cls, fw, seq, { rest = seq[0][0] } = {}) {
+  const total = seq.reduce((s, [, t]) => s + t, 0);
+  const pct = (t) => +((t / total) * 100).toFixed(3);
+  let t = 0;
+  const keys = seq.map(([f, d]) => { const k = `${pct(t)}%{transform:translateX(-${f * fw}px)}`; t += d; return k; });
+  keys.push(`100%{transform:translateX(-${seq[seq.length - 1][0] * fw}px)}`);
+  const css = `.${cls}{animation:${cls}-tl ${+total.toFixed(3)}s steps(1,end) infinite}@keyframes ${cls}-tl{${keys.join('')}}@media (prefers-reduced-motion:reduce){.${cls}{animation:none!important;transform:translateX(-${rest * fw}px)}}`;
+  return { css, total };
+}
+
 // Return the CSS steps() animation for a sprite sheet, with reduced-motion fallback.
 export function spriteCss(cls, fw, frames, dur = 0.8) {
   return `.${cls}{animation:${cls}-run ${dur}s steps(${frames}) infinite}@keyframes ${cls}-run{from{transform:translateX(0)}to{transform:translateX(-${fw * frames}px)}}@media (prefers-reduced-motion:reduce){.${cls}{animation:none}}`;
