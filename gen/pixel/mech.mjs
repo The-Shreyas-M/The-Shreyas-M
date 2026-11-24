@@ -9,7 +9,7 @@ import { mechFrames } from './sprites/mech.mjs';
 import { charFrames, shootFrames, boltLayer } from './sprites/hero-char.mjs';
 import { gruntFrames, bossFrames, explosionFrames } from './sprites/villains.mjs';
 
-const CAR_Y = 91, CAR_X = 140, SIDEWALK_Y = 97, ROAD_AV_Y = 118, GRUNT_Y = 121, BOSS_Y = 97, BOSS_X = 300;
+const CAR_Y = 91, CAR_X = 140, SIDEWALK_Y = 97, ROAD_AV_Y = 123, GRUNT_Y = 121, BOSS_Y = 97, BOSS_X = 300;
 
 function scale2(L) {
   const out = new Layer(L.w * 2, L.h * 2);
@@ -101,7 +101,7 @@ const carSeq = [
   ...hold(7, 0.2),
   ...cycle([8, 9], 0.1, 3.0),
   ...hold(7, 0.2), ...hold(6, 0.2),
-  ...hold(6, 1.0),
+  ...hold(6, 0.6), ...hold(5, 0.2), ...hold(0, 0.2), // pods retract before the door opens (door frames are lamps-down)
   ...hold(2, 0.1), ...hold(3, 0.1), ...hold(4, 0.1),
   ...hold(4, 0.1),
   ...hold(10, 0.1), ...hold(11, 0.1), ...hold(12, 0.1), ...hold(13, 0.1), ...hold(14, 0.1), ...hold(15, 0.1),
@@ -213,9 +213,9 @@ const avKeys = [
 ];
 
 const boltKeys = [
-  { t: 0, x: 237, y: 132, o: 0 },
+  { t: 0, x: 237, y: 137, o: 0 },
   { t: 12.45, o: 1 },
-  ...path(12.45, 12.7, 237, 132, 312, 132),
+  ...path(12.45, 12.7, 237, 137, 312, 137),
   { t: 12.7, o: 0 },
 ];
 
@@ -281,7 +281,7 @@ const aBeam = actor('beam', beamFrames, beamSeq, beamKeys, { frame: 0, x: 178, y
 const aTr = actor('tr', [tracerLayer], trSeq, trKeys, { frame: 0, x: 177, y: 133, o: 0 });
 const aMz = actor('mz', muzzleFrames, mzSeq, mzKeys, { frame: 0, x: 169, y: 131, o: 0 });
 const aAv = actor('av', avFrames, avSeq, avKeys, { frame: 0, x: 210, y: SIDEWALK_Y, o: 0 });
-const aBolt = actor('bolt', [boltLayer()], boltSeq, boltKeys, { frame: 0, x: 237, y: 132, o: 0 });
+const aBolt = actor('bolt', [boltLayer()], boltSeq, boltKeys, { frame: 0, x: 237, y: 137, o: 0 });
 const aE3 = actor('e3', explosionFrames().map(scale2), e3Seq, e3Keys, { frame: 0, x: 292, y: 92, o: 0 });
 
 const css = [

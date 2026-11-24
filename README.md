@@ -3,7 +3,7 @@
 </p>
 
 <p align="center">
-  <img src="assets/mech.svg" width="100%" alt="Bench-mech: an electronics dev board that unfolds into a robot with a glowing transformer coil in its chest.">
+  <img src="assets/mech.svg" width="100%" alt="Pixel-art night street chase: a hacker jumps into a wedge supercar whose turret blasts two cyberpsychos; a boss blocks the road, the car transforms into a robot and both fight side by side, then fold up and drive off.">
 </p>
 
 <!-- R5 stats + skills panel (Sprint 2) -->

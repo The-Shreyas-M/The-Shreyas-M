@@ -196,9 +196,9 @@ export function carFrames() {
 
   // transform: the car rises on the robot's feet, splits fore/aft, the halves slide out as the robot's legs and
   // torso unfold between them (robot unfold frames 4,5,6 + idle 7), then tuck behind the shoulders.
-  const R = mechFrames(), armed = frames[8];
-  const car = make((cv) => { body(cv, { lamps: 'up', driver: false }); WHEELS.forEach((w) => wheel(cv, w, 0)); });
-  const T0 = new Layer(FW, FH); blit(T0, R[7], 0, 59, FW, 5, 0, 59); blit(T0, armed, 0, 0, FW, FH, 0, -4);
+  const R = mechFrames();
+  const car = make((cv) => { body(cv, { driver: false }); WHEELS.forEach((w) => wheel(cv, w, 0)); }); // matches the door frames: lamps down, seat empty, no turret
+  const T0 = new Layer(FW, FH); blit(T0, R[7], 0, 59, FW, 5, 0, 59); blit(T0, car, 0, 0, FW, FH, 0, -4);
   frames.push(T0);
   const T1 = new Layer(FW, FH); blit(T1, R[7], 0, 50, FW, 14, 0, 50);
   blit(T1, car, 0, 40, 32, 24, -3, 28); blit(T1, car, 32, 40, 32, 24, 35, 28);

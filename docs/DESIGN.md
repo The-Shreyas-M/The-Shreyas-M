@@ -65,7 +65,7 @@ Rows (logical px): sky 0–60 static · far skyline base y=96 · project buildin
 
 **Flash limit:** a "flash" = any frame with a white/near-white burst larger than 16 px. Counted across the WHOLE scene, never more than 3 in any 1-s window. The plan above peaks at 2/s (a shot and its hit share one frame; explosions are orange fireballs, not flashes). Small arc flicker on the substation (<16 px) is not a flash but still stays ≤3/s.
 
-**New frames this needs:** car sheet (frames 64×64, car drawn on the bottom rows so transform frames share the sheet): drive 2, door 3, lights/turret 4, car→robot 6 (the last = robot idle f0 from `sprites/mech.mjs`; no cockpit). Muzzle 2, beam 2. Grunts ~24×32: idle 2, run 4, hit 1. Boss ~48×56: walk 2, idle 2, hit 1. Explosion 32×32: 5. The avatar needs 2 NEW shoot frames (handheld raised as a blaster, 18×36, in `sprites/hero-char.mjs`); jumps are whole-pixel moves of idle f0.
+**New frames this needs:** car sheet (frames 64×64, car drawn on the bottom rows so transform frames share the sheet): drive 2, door 3, lamps 2, armed 3 (turret half + full ×2 wheel phases), car→robot 6 (the last = robot idle f0 from `sprites/mech.mjs`; no cockpit), empty-seat drive 2 = 18 frames (`FRAMES` in `sprites/car.mjs`). Muzzle 2, beam 2. Grunts ~24×32: idle 2, run 4, hit 1. Boss ~48×56: walk 2, idle 2, hit 1. Explosion 32×32: 5. The avatar needs 2 NEW shoot frames (handheld raised as a blaster, 18×36, in `sprites/hero-char.mjs`); jumps are whole-pixel moves of idle f0.
 
 **Reduced motion** rests at t=5.6 s: car with turrets out and the avatar in the window, grunt 1 on the road ahead, Oculius eye open, no flash on screen.
 

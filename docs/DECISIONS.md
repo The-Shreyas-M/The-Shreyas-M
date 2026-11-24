@@ -2,6 +2,9 @@
 
 One line each, newest first: `date — decision or change — why`. Change requests from the owner go here too.
 
+- 2026-11-24 — Turret rises from the rear deck and fires over the roof; the pop-up lamp pods only light up — a gun inside the lamp pods did not read at 64 px. Owner asked at checkpoint (SPEC R3 says lamps flip into turrets).
+- 2026-11-24 — Scene split: `gen/pixel/track.mjs` (actor = sheet + whole-pixel position keys, seq must sum to 18 s) + `street-bg.mjs` (parallax) + `mech.mjs` (beats) — one interface the workers fill with numbers.
+- 2026-11-24 — Car sheet is 18 frames (adds empty-seat drive so the car arrives without a driver) — beat B0 needs it.
 - 2026-11-23 — Project started from /new-project interview — see SPEC.
 - 2026-11-23 — Own SVG generators instead of third-party stat services.
 - 2026-11-23 — robot is an original animated SVG mech, not a 3D model and not a franchise copy.
