@@ -25,13 +25,13 @@ const RAMP = ['#1b1430', '#2e2350', '#4a3a7a', '#7a6ab0', '#b8aee0']; // metal d
 const P = {
   1: RAMP[0], 2: RAMP[1], 3: RAMP[2], 4: RAMP[3], 5: RAMP[4],
   x: '#05030c', // chip black / visor glass
-  p: '#14224a', q: '#1f3a6e', // PCB substrate dark / light
+  p: '#24468a', q: '#4a7ad0', // PCB substrate dark / light (bright enough to read on the night city)
   y: '#ffd84a', o: '#ff8a3d', // gold traces / copper
   k: '#ff2e88', w: '#ffe6f4', // neon pink / hot core
   c: '#3ff0e6', d: '#1c7f8c', // cyan / dim cyan
   r: '#ff3355', e: '#5a1830', // LED on / LED off
   v: '#1c7f8c', // visor (swapped per frame)
-  g: '#0d3640', // unlit trace glow
+  g: '#3a8a9a', // unlit trace
 };
 const OUTLINE = '#05030c', RIM = '#ff3fa4', RIM2 = '#8ff6ff';
 
