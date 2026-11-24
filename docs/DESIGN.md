@@ -43,7 +43,7 @@ GitHub content column ≈ 830–900 px desktop, ~360 px phone. All assets use lo
 5. `contrib-game.svg` (generated daily) — the contribution calendar as a 53×7 grid of building windows; commit cells are lit windows by level; the mech patrols the rooftop and zaps windows.
 6. Footer — a pixel subway-station sign "ENTER PORTFOLIO" and a YouTube billboard.
 
-### 4a. Street chase beat list (`mech.svg`, R3/R16) — DRAFT, owner to OK
+### 4a. Street chase beat list (`mech.svg`, R3/R16) — owner OK 2026-11-24
 
 **Loop = 18.0 s.** Every animation period in the scene equals 18 s or divides it (0.1, 0.2, 0.6, 1.5, 3, 6, 9, 18 s), or layers drift across loops. Camera is fixed; speed is shown by parallax.
 

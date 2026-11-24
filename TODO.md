@@ -42,7 +42,7 @@ Quality bar: DESIGN.md §5. Compare every frame to `assets/hero.svg` before tick
 
 Reuse: px.mjs, sprite.mjs (spriteTimeline), sprites/hero-char.mjs (avatar), sprites/mech.mjs (robot frames), strip.mjs. Review every sprite composited in its scene (observation: contact sheets lie).
 
-- [ ] T1 [me] (R3) Storyboard the loop as a timed beat list (seconds per beat, which sprite/frames, camera/parallax) in `docs/DESIGN.md` §4; owner OKs it
+- [x] T1 [me] (R3) Storyboard the loop as a timed beat list (seconds per beat, which sprite/frames, camera/parallax) in `docs/DESIGN.md` §4; owner OKs it  ✔ DESIGN §4a/§4b; owner OK 2026-11-24 (beats + 7 themes)
 - [ ] T2 [me] (R3) Supercar sprite `gen/pixel/sprites/car.mjs`: side view ~64×20, drive (wheel 2 frames), scissor door open, headlights up + turret out, transform frames car→robot (reuse robot parts) — check: strip + in-scene review
 - [ ] T3 [me] (R16) Cyberpsycho sprites `gen/pixel/sprites/villains.mjs`: 2 grunts (idle/run/hit/explode) + boss — check: strip review
 - [ ] T4 [oc] (R7) Building generator `gen/pixel/buildings.mjs` → `assets/projects/<name>.svg`: chip tower, Oculius eye tower (pupil looks around), power-grid substation (arcs) first — check: check.mjs OK + review
