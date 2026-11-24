@@ -6,7 +6,7 @@ Keep under 60 lines. Replace old content; git keeps the history.
 
 Built: beat list + building interface (DESIGN §4a/§4b, owner OK) · all 7 project buildings (`gen/pixel/bldg/*.mjs`, `assets/projects/*.svg`) · car drive frames with the driver in the glass (`gen/pixel/sprites/car.mjs`).
 Please look: `preview/street.png` (car in the street) and `preview/buildings-row.png` (rebuild: `node gen/pixel/street-preview.mjs`).
-Owner reply: car look OK. Change: at the transform the avatar jumps out and fights BESIDE the robot (DESIGN §4a B5–B7 updated, TODO T2b added).
+Owner reply: car look OK. Change: at the transform the avatar jumps out and fights BESIDE the robot (DESIGN §4a B5–B7 updated, TODO T2b added). Also: the Oculius eye must visibly look left↔right (TODO T4b).
 
 ## Start line (owner pastes this to run a sprint unattended)
 
