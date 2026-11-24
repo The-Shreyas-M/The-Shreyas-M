@@ -179,7 +179,7 @@ const shifted = (src, dx, dy) => { const L = new Layer(FW, FH); blit(L, src, 0, 
 // Sheet layout. drive = lamps down, wheels turning; door 1..3 = scissor door opening (seat empty);
 // lamps = pods half / fully up; armed = lamps up + turret (half, full) with the wheels still turning;
 // transform 0..5 = car -> robot, the last frame IS robot idle f0 from sprites/mech.mjs (fold = reversed).
-export const FRAMES = { drive: [0, 1], door: [2, 3, 4], lamps: [5, 6], armed: [7, 8, 9], transform: [10, 11, 12, 13, 14, 15] };
+export const FRAMES = { drive: [0, 1], door: [2, 3, 4], lamps: [5, 6], armed: [7, 8, 9], transform: [10, 11, 12, 13, 14, 15], empty: [16, 17] }; // empty = drive with nobody in the seat
 export const ANCHORS = { hinge: HINGE, headlight: [57, topAt(55) - 2], tail: [2, 52], muzzle: [TURRET_X + 18, topAt(TURRET_X + 2) - 5] }; // muzzle = first pixel past the barrel tip
 
 export function carFrames() {
@@ -213,5 +213,6 @@ export function carFrames() {
   blit(T4, car, 1, 45, 12, 4, 4, 18); blit(T4, car, 50, 47, 10, 6, 50, 18); blit(T4, R[6], 0, 0, FW, FH, 0, 0);
   frames.push(T4);
   frames.push(shifted(R[7], 0, 0));
+  for (const phase of [0, P2]) add((cv) => { body(cv, { driver: false }); WHEELS.forEach((w) => wheel(cv, w, phase)); });
   return frames;
 }
