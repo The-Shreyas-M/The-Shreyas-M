@@ -1,5 +1,5 @@
 // Review helper: composite sprites into a rough street frame (DESIGN §4a rows) as an upscaled PNG.
-// Usage: node gen/pixel/street-preview.mjs <out.png> [scale] [carFrame]
+// Usage: node gen/pixel/street-preview.mjs <out.png> [scale] [carFrame | f1,f2,...]
 import { writeFileSync } from 'node:fs';
 import { Layer, encodePNG, bayer } from './px.mjs';
 import { READY, building } from './buildings.mjs';
@@ -31,9 +31,12 @@ L.rect(0, 128, W, 6, '#2e2350'); L.rect(0, 128, W, 1, '#7a6ab0');     // sidewal
 L.rect(0, 134, W, 26, '#120a24');                                         // road
 for (let x = 0; x < W; x += 40) L.rect(x, 147, 20, 1, '#ffd84a', 0.7);    // lane dashes
 L.rect(0, 160, W, 8, '#05030c');                                          // front curb
-const car = carFrames()[+cf];
-L.rect(146, 154 + 1, 54, 1, '#ff2e88', 0.5);                              // underglow
-blit(car, 140, 154 - (CFH - 1));
+const CF = carFrames(), list = cf.split(',').map(Number);            // one frame at x=140, or a list spread along the street
+list.forEach((f, i) => {
+  const x = list.length === 1 ? 140 : 8 + i * Math.floor((W - 72) / (list.length - 1));
+  if (f < 10) L.rect(x + 6, 154 + 1, 54, 1, '#ff2e88', 0.5);                  // underglow (car frames only)
+  blit(CF[f], x, 154 - (CFH - 1));
+});
 
 
 const d = new Uint8ClampedArray(W * S * H * S * 4);

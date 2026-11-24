@@ -4,11 +4,11 @@
 // Frames are 64x64 like the robot sheet (sprites/mech.mjs) so the car->robot transform shares one sheet; the car
 // sits on the bottom rows, ground contact = row FH-1. Shape is drawn from a profile, then the same passes as the
 // mech run over it: right rim light (neon key light), left/top ramp shading, 1-px dark outline.
-// Sheet order (grows as T2 continues): 0..1 = drive (wheel spokes turn).
+// Sheet order: see FRAMES below carFrames' helpers.
 import { Layer, rgb, mix, bayer } from '../px.mjs';
+import { mechFrames } from './mech.mjs';
 
 export const FW = 64, FH = 64;
-export const FRAMES = { drive: [0, 1] };
 const G = FH - 1;              // ground row
 export const WHEELS = [[14, G - 4], [49, G - 4]]; // rear, front wheel centres
 export const SEAT = [30, 47];                      // driver silhouette top-left inside the glass
@@ -114,6 +114,7 @@ function body(cv, { lamps = 'down', driver = true } = {}) {
   cv.set(3, SILL - 1, METAL[3]); cv.set(4, SILL - 1, METAL[3]);
   // pop-up lamp pods on the nose
   if (lamps === 'down') { for (let x = 50; x <= 55; x++) cv.set(x, topAt(x), PAINT[3]); }
+  else if (lamps === 'mid') { for (let x = 50; x <= 55; x++) for (let y = topAt(55) - 1 - Math.round((55 - x) / 3); y < topAt(x); y++) cv.set(x, y, PAINT[2]); cv.set(56, topAt(55) - 1, YEL); }
   else { for (let x = 50; x <= 55; x++) for (let y = topAt(55) - 3; y < topAt(x); y++) cv.set(x, y, PAINT[2]); for (let y = topAt(55) - 2; y < topAt(55); y++) cv.set(56, y, YEL); }
   // front marker + chin splitter
   cv.set(61, 55, '#ff8a3d'); cv.set(62, 56, '#ff8a3d');
@@ -134,9 +135,83 @@ function wheel(cv, [wx, wy], phase) {
   }
 }
 
+// ---------- turret: rises out of the rear deck, barrel runs forward just above the roof ----------
+const TURRET_X = 13; // mount left column (clear of the wing posts at x 4 / 9)
+function turret(cv, stage) {
+  const deck = topAt(TURRET_X + 2), rise = stage === 1 ? 3 : 6, top = deck - rise;
+  for (let x = TURRET_X; x <= TURRET_X + 4; x++) for (let y = top; y < deck + 1; y++) cv.set(x, y, y === top ? METAL[3] : METAL[2]);
+  cv.set(TURRET_X + 1, top + 1, '#ff2e88'); // status LED
+  const len = stage === 1 ? 5 : 13;
+  for (let x = TURRET_X + 5; x < TURRET_X + 5 + len; x++) { cv.set(x, top + 1, METAL[3]); if (stage === 2) cv.set(x, top + 2, x % 3 ? METAL[1] : '#ff2e88'); }
+  if (stage === 2) cv.set(TURRET_X + 5 + len - 1, top + 1, CYAN); // lit muzzle tip
+  return [TURRET_X + 5 + len, top + 1];
+}
+
+// ---------- scissor door: door pixels rotate up about the front hinge ----------
+const HINGE = [42, 53];
+const inDoor = (x, y) => x >= 25 && x <= 41 && y > topAt(x) && y <= 56;
+const INTERIOR = '#120a24', SEAT_COL = METAL[1];
+function doorOpen(cv, deg) {
+  const door = [];
+  for (let y = 0; y < FH; y++) for (let x = 0; x < FW; x++) if (inDoor(x, y) && cv.get(x, y)) door.push([x, y, cv.get(x, y)]);
+  const src = new Map(door.map(([x, y, c]) => [x + ',' + y, c]));
+  for (const [x, y] of door) cv.set(x, y, y >= 52 ? PAINT[0] : INTERIOR); // cabin hole + inner door sill
+  for (let y = 47; y <= 52; y++) { cv.set(28, y, SEAT_COL); cv.set(29, y, SEAT_COL); } // seat back
+  for (let x = 29; x <= 34; x++) cv.set(x, 52, SEAT_COL);                              // seat cushion
+  const t = (deg * Math.PI) / 180, c = Math.cos(t), s = Math.sin(t), [hx, hy] = HINGE;
+  for (let y = 0; y < FH; y++) for (let x = 0; x < FW; x++) {
+    const rx = x - hx, ry = y - hy; // inverse-rotate the destination back onto the closed door
+    const sx = Math.round(hx + rx * c + ry * s), sy = Math.round(hy - rx * s + ry * c);
+    const col = src.get(sx + ',' + sy);
+    if (col) cv.set(x, y, col);
+  }
+}
+
+// ---------- layer-level helpers for the car -> robot transform ----------
+function blit(dst, src, sx, sy, sw, sh, dx, dy) {
+  for (let y = 0; y < sh; y++) for (let x = 0; x < sw; x++) {
+    const p = src.get(sx + x, sy + y);
+    if (p && p[3]) dst.px(dx + x, dy + y, p);
+  }
+}
+const shifted = (src, dx, dy) => { const L = new Layer(FW, FH); blit(L, src, 0, 0, FW, FH, dx, dy); return L; };
+
+// Sheet layout. drive = lamps down, wheels turning; door 1..3 = scissor door opening (seat empty);
+// lamps = pods half / fully up; armed = lamps up + turret (half, full) with the wheels still turning;
+// transform 0..5 = car -> robot, the last frame IS robot idle f0 from sprites/mech.mjs (fold = reversed).
+export const FRAMES = { drive: [0, 1], door: [2, 3, 4], lamps: [5, 6], armed: [7, 8, 9], transform: [10, 11, 12, 13, 14, 15] };
+export const ANCHORS = { hinge: HINGE, headlight: [57, topAt(55) - 2], tail: [2, 52], muzzle: [TURRET_X + 18, topAt(TURRET_X + 2) - 5] }; // muzzle = first pixel past the barrel tip
+
 export function carFrames() {
   const frames = [];
-  const add = (draw) => { const cv = new Canvas(); draw(cv); frames.push(finish(cv)); };
-  for (const phase of [0, Math.PI / 5]) add((cv) => { body(cv); WHEELS.forEach((w) => wheel(cv, w, phase)); });
+  const make = (draw) => { const cv = new Canvas(); draw(cv); return finish(cv); };
+  const add = (draw) => frames.push(make(draw));
+  const P2 = Math.PI / 5;
+  for (const phase of [0, P2]) add((cv) => { body(cv); WHEELS.forEach((w) => wheel(cv, w, phase)); });
+  for (const deg of [28, 58, 84]) add((cv) => { body(cv, { driver: false }); WHEELS.forEach((w) => wheel(cv, w, 0)); doorOpen(cv, deg); });
+  add((cv) => { body(cv, { lamps: 'mid' }); WHEELS.forEach((w) => wheel(cv, w, 0)); });
+  add((cv) => { body(cv, { lamps: 'up' }); WHEELS.forEach((w) => wheel(cv, w, 0)); });
+  add((cv) => { body(cv, { lamps: 'up' }); WHEELS.forEach((w) => wheel(cv, w, P2)); turret(cv, 1); });
+  for (const phase of [0, P2]) add((cv) => { body(cv, { lamps: 'up' }); WHEELS.forEach((w) => wheel(cv, w, phase)); turret(cv, 2); });
+
+  // transform: the car rises on the robot's feet, splits fore/aft, the halves slide out as the robot's legs and
+  // torso unfold between them (robot unfold frames 4,5,6 + idle 7), then tuck behind the shoulders.
+  const R = mechFrames(), armed = frames[8];
+  const car = make((cv) => { body(cv, { lamps: 'up', driver: false }); WHEELS.forEach((w) => wheel(cv, w, 0)); });
+  const T0 = new Layer(FW, FH); blit(T0, R[7], 0, 59, FW, 5, 0, 59); blit(T0, armed, 0, 0, FW, FH, 0, -4);
+  frames.push(T0);
+  const T1 = new Layer(FW, FH); blit(T1, R[7], 0, 50, FW, 14, 0, 50);
+  blit(T1, car, 0, 40, 32, 24, -3, 28); blit(T1, car, 32, 40, 32, 24, 35, 28);
+  frames.push(T1);
+  const T2 = new Layer(FW, FH);
+  blit(T2, car, 0, 42, 30, 20, -8, 20); blit(T2, car, 34, 44, 30, 18, 42, 22); blit(T2, R[4], 0, 0, FW, FH, 0, 0);
+  frames.push(T2);
+  const T3 = new Layer(FW, FH);
+  blit(T3, car, 0, 44, 16, 10, 2, 16); blit(T3, car, 48, 46, 16, 10, 46, 16); blit(T3, R[5], 0, 0, FW, FH, 0, 0);
+  frames.push(T3);
+  const T4 = new Layer(FW, FH);
+  blit(T4, car, 1, 45, 12, 4, 4, 18); blit(T4, car, 50, 47, 10, 6, 50, 18); blit(T4, R[6], 0, 0, FW, FH, 0, 0);
+  frames.push(T4);
+  frames.push(shifted(R[7], 0, 0));
   return frames;
 }
