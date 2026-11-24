@@ -10,7 +10,7 @@ Built:
 - Checks: `node gen/check.mjs` → ALL ASSETS OK; `node gen/pixel/hero.mjs && node gen/pixel/mech.mjs` regenerate both.
 
 Please test:
-1. `node gen/preview.mjs`, then open `preview/index.html` (or run the `preview` launch config, port 8765). Expected: hero with the character bottom-left, mech scene below, both animating.
+1. Open http://localhost:8765/preview/anim.html (the `preview` launch config). The built-in browser pane has reduced motion on, which freezes the real SVGs, so `anim.html` shows copies with that rule removed (`preview/*-anim.svg`, not committed). In your normal browser, `preview/index.html` animates too. Expected: hero with the character bottom-left, mech scene below, both moving.
 2. Watch one 11-second mech loop: the board on the bench lights up, unfolds into the mech, idles, then folds back.
 
 Need from you:
