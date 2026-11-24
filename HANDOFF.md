@@ -25,7 +25,7 @@ Owner reply: car look OK. Change: at the transform the avatar jumps out and figh
 
 ## Next step
 
-New session: finish T2 (door ×3, lamps/turret ×4, car→robot ×6 in `sprites/car.mjs`, reuse `mechFrames()` robot), then T3 villains, T5 scene. Commit before every background opencode run, never edit tracked files while one runs.
+T2, T2b, T4b done 2026-11-24 (car sheet 16 frames: `FRAMES`/`ANCHORS` in `sprites/car.mjs`; avatar `shootFrames()`/`boltLayer()`/`MUZZLE`). Next: T3 villains (`sprites/villains.mjs`), then T5 street-chase scene, then T6 review. In-scene check: `node gen/pixel/street-preview.mjs preview/x.png 2 <f1,f2,...>`. Commit before every background opencode run, never edit tracked files while one runs.
 
 ## Gotchas found so far
 
