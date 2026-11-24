@@ -6,7 +6,7 @@ Keep under 60 lines. Replace old content; git keeps the history.
 
 Built: beat list + building interface (DESIGN §4a/§4b, owner OK) · all 7 project buildings (`gen/pixel/bldg/*.mjs`, `assets/projects/*.svg`) · car drive frames with the driver in the glass (`gen/pixel/sprites/car.mjs`).
 Please look: `preview/street.png` (car in the street) and `preview/buildings-row.png` (rebuild: `node gen/pixel/street-preview.mjs`).
-Need from you: is the car's look right (shape, red paint, size ~60 px long) before the door/turret/transform frames are drawn?
+Owner reply: car look OK. Change: at the transform the avatar jumps out and fights BESIDE the robot (DESIGN §4a B5–B7 updated, TODO T2b added).
 
 ## Start line (owner pastes this to run a sprint unattended)
 
@@ -25,7 +25,7 @@ Need from you: is the car's look right (shape, red paint, size ~60 px long) befo
 
 ## Next step
 
-New session: if the owner OKs the car look, finish T2 (door ×3, lamps/turret ×4, car→robot ×6 in `sprites/car.mjs`, reuse `mechFrames()` robot), then T3 villains, T5 scene. Commit before every background opencode run, never edit tracked files while one runs.
+New session: finish T2 (door ×3, lamps/turret ×4, car→robot ×6 in `sprites/car.mjs`, reuse `mechFrames()` robot), then T3 villains, T5 scene. Commit before every background opencode run, never edit tracked files while one runs.
 
 ## Gotchas found so far
 

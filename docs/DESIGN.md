@@ -56,16 +56,16 @@ Rows (logical px): sky 0–60 static · far skyline base y=96 · project buildin
 | B2 Drive | 2.6–5.0 | Car holds x=140 with a 1-px bob; all parallax layers run; rain slants. | car drive ×2 (0.1 s each) |
 | B3 Ambush | 5.0–9.0 | 5.0–5.4 pop-up lights flip up and turrets slide out. 5.2 two grunts run in from the right along the road. Shots at 5.8, 6.3, 6.8 → grunt 1 hit + explodes 6.8–7.3; shots 7.4, 7.9, 8.4 → grunt 2 hit + explodes 8.4–8.9. 8.6–9.0 turrets retract. | car lights ×2 + turret ×2 · muzzle 6×5 ×2 · grunt run ×4 / hit ×1 · explosion 32×32 ×5 |
 | B4 Boss | 9.0–10.0 | Parallax brakes to a stop by 9.4. Boss stomps in from the right to x=300; car skids (2-px shake 9.4–9.6). | boss walk ×2 |
-| B5 Transform | 10.0–11.0 | Car → robot in 6 frames at x=140; the avatar's head shows in a chest cockpit window. | car→robot ×6 (64×64 frames) |
-| B6 Fight | 11.0–14.4 | Robot idles (existing 4 frames); coil-beam blasts at 11.6, 12.4, 13.2 (0.2 s each), boss hit frame on each; boss explodes 13.4–14.2 with pixel debris, no full-screen flash. | robot idle ×4 + cockpit · beam ×2 · boss idle ×2 / hit ×1 · explosion 2× scale |
-| B7 Fold | 14.4–15.4 | Robot → car (B5 frames reversed). | car→robot reversed |
+| B5 Transform | 10.0–11.0 | The scissor door lifts and the avatar leaps out onto the road at x≈220 (whole-pixel arc); the car → robot in 6 frames at x=140 behind them. | car→robot ×6 (64×64 frames) · avatar jump (idle f0 moved) |
+| B6 Fight | 11.0–14.4 | Robot AND avatar fight side by side: robot coil-beam blasts at 11.6 and 13.2, avatar fires the handheld blaster at 12.4 (0.2 s each); boss hit frame on each; boss explodes 13.4–14.2 with pixel debris, no full-screen flash. | robot idle ×4 · beam ×2 · avatar shoot ×2 (NEW frames, 18×36) + bolt 4×2 · boss idle ×2 / hit ×1 · explosion 2× scale |
+| B7 Fold | 14.4–15.4 | Robot → car (B5 frames reversed); the avatar hops back in through the scissor door. | car→robot reversed · door ×3 |
 | B8 Drive off | 15.4–18.0 | Lights on; parallax runs 15.6–16.8; car accelerates off the right edge 16.4–17.2; 17.2–18.0 empty street, the Oculius eye looks around — then B0 brings the car back in from the left (seamless wrap). | car drive ×2 |
 
 **Parallax** (moves only 2.6–9.4 s and 15.6–16.8 s = 8.0 s of travel per loop; each layer's travel is a whole number of its tile widths so the seam is invisible): far skyline tile 400 px, travel 400 · project buildings tile 560 px (7 buildings × 80), travel 560 (= 70 px/s) · near props (lamps, hydrants, signs) tile 160, travel 1120 · road dashes tile 40, travel 2240. A tile is drawn once and repeated with `<use>`, never stored twice.
 
 **Flash limit:** a "flash" = any frame with a white/near-white burst larger than 16 px. Counted across the WHOLE scene, never more than 3 in any 1-s window. The plan above peaks at 2/s (a shot and its hit share one frame; explosions are orange fireballs, not flashes). Small arc flicker on the substation (<16 px) is not a flash but still stays ≤3/s.
 
-**New frames this needs:** car sheet (frames 64×64, car drawn on the bottom rows so transform frames share the sheet): drive 2, door 3, lights/turret 4, car→robot 6 (the last = robot idle f0 from `sprites/mech.mjs` with a cockpit window and a 7×7 avatar head). Muzzle 2, beam 2. Grunts ~24×32: idle 2, run 4, hit 1. Boss ~48×56: walk 2, idle 2, hit 1. Explosion 32×32: 5. The avatar needs NO new frames (whole-pixel moves of idle f0 + clipping).
+**New frames this needs:** car sheet (frames 64×64, car drawn on the bottom rows so transform frames share the sheet): drive 2, door 3, lights/turret 4, car→robot 6 (the last = robot idle f0 from `sprites/mech.mjs`; no cockpit). Muzzle 2, beam 2. Grunts ~24×32: idle 2, run 4, hit 1. Boss ~48×56: walk 2, idle 2, hit 1. Explosion 32×32: 5. The avatar needs 2 NEW shoot frames (handheld raised as a blaster, 18×36, in `sprites/hero-char.mjs`); jumps are whole-pixel moves of idle f0.
 
 **Reduced motion** rests at t=5.6 s: car with turrets out and the avatar in the window, grunt 1 on the road ahead, Oculius eye open, no flash on screen.
 
