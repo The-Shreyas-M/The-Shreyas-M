@@ -2,11 +2,11 @@
 
 Keep under 60 lines. Replace old content; git keeps the history.
 
-## CHECKPOINT 2026-11-24 — Sprint 2b T1 (waiting for the owner)
+## CHECKPOINT 2026-11-24 — Sprint 2b (T1 + T4 done, T2 started)
 
-Built: the 18 s chase beat list (DESIGN §4a) and the building interface + 7 themes (DESIGN §4b).
-Need from you: (1) OK the beat list; (2) OK the building themes. Proposed: chip tower = ChocoBao, ESP32-Synth = speaker stack, NEURA = liquid-glass HUD tower, ai-video-editor = cinema, Axiom = archive tower with a searchlight.
-In flight: T4's first building (Oculius) via opencode; brief `.oc/s2b-t4-oculius.md`.
+Built: beat list + building interface (DESIGN §4a/§4b, owner OK) · all 7 project buildings (`gen/pixel/bldg/*.mjs`, `assets/projects/*.svg`) · car drive frames with the driver in the glass (`gen/pixel/sprites/car.mjs`).
+Please look: `preview/street.png` (car in the street) and `preview/buildings-row.png` (rebuild: `node gen/pixel/street-preview.mjs`).
+Need from you: is the car's look right (shape, red paint, size ~60 px long) before the door/turret/transform frames are drawn?
 
 ## Start line (owner pastes this to run a sprint unattended)
 
@@ -25,9 +25,11 @@ In flight: T4's first building (Oculius) via opencode; brief `.oc/s2b-t4-oculius
 
 ## Next step
 
-After the owner OKs §4a/§4b: review the Oculius building composited (not alone), then fan out T4 (remaining 6 buildings, one brief each) and start T2 (car). Send the owner ONE car frame in the street before authoring the transform and villain frames.
+New session: if the owner OKs the car look, finish T2 (door ×3, lamps/turret ×4, car→robot ×6 in `sprites/car.mjs`, reuse `mechFrames()` robot), then T3 villains, T5 scene. Commit before every background opencode run, never edit tracked files while one runs.
 
 ## Gotchas found so far
+
+- A worker once ran `git checkout --` on files I had edited (observation 0014): commit first; every brief says "never run git". `gen/pixel/bldg/` = one file per building so workers run in parallel safely.
 
 - opencode/beam-free works again (2026-11-24) and did the T3 scene; opencode/big-pickle is the fallback.
 - The `preview` launch config (`.claude/launch.json`, python http.server 8765) works with preview_start; starting a background server from Bash is refused.
