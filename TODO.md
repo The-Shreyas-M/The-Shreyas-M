@@ -32,11 +32,24 @@ Quality bar: DESIGN.md §5. Compare every frame to `assets/hero.svg` before tick
 - [x] T2 [me] (R3) Author the bench-mech sprites in `gen/pixel/sprites/mech.mjs` (~56 px tall, DESIGN §2 metal ramp, 1-px outline, right rim light, dithered shading): frame list = board (1), unfold (6), robot idle (4), with coil glow and visor colours. Review each frame zoomed in the browser — check: screenshot of the frame strip reviewed against hero quality  ✔ 11 frames (parts grids + rim/outline passes); strip `node gen/pixel/strip.mjs` reviewed, torso/head reworked once
 - [x] T3 [oc] (R3) `gen/pixel/mech.mjs` → `assets/mech.svg` 400×168: rooftop workshop at night reusing hero.mjs sky/far/mid functions (copy, don't import side effects), workbench with tools and a lamp cone, rain, the mech timeline (board 2 s → unfold 1 s → idle 7 s → fold 1 s → board), steam puffs, sparks on power-on — check: `node gen/check.mjs` OK + [tool] frame review  ✔ beam-free x2 + my fixes; 87 KB, ALL ASSETS OK; frames at 1.7/2.4/4.0 s reviewed in browser
 - [x] T4 [me] (R13) Ask owner for character look (hair, glasses, clothes) at the start of the sprint; author a ~32-px character sprite (idle 4 frames, coat/hair wind) in `gen/pixel/sprites/hero-char.mjs` and add it to the hero near rooftop — check: hero frame review  ✔ owner chose "generic hacker"; hoodie/headphones/handheld, 4-frame wind idle on a static ledge, check OK
-- [~] T5 [tool] (R3,R13,R12) Review hero + mech at 1280 px and 375 px; fix list → rerun — check: owner checkpoint  … reviewed at 1280/375 px by me; waiting on owner verdict (HANDOFF checkpoint)
+- [x] T5 [tool] (R3,R13,R12) Review hero + mech at 1280 px and 375 px; fix list → rerun — check: owner checkpoint  ✔ reviewed 1280/375 px; owner reply 2026-11-24 = change request (Sprint 2b)
 
 **Done when:**
 - `node gen/check.mjs` prints `ALL ASSETS OK`; `node gen/pixel/hero.mjs && node gen/pixel/mech.mjs` regenerate both
 - Owner approves the mech scene and the character (checkpoint)
+
+## Sprint 2b — supercar chase + project buildings (change request 2026-11-24)  ← next
+
+Reuse: px.mjs, sprite.mjs (spriteTimeline), sprites/hero-char.mjs (avatar), sprites/mech.mjs (robot frames), strip.mjs. Review every sprite composited in its scene (observation: contact sheets lie).
+
+- [ ] T1 [me] (R3) Storyboard the loop as a timed beat list (seconds per beat, which sprite/frames, camera/parallax) in `docs/DESIGN.md` §4; owner OKs it
+- [ ] T2 [me] (R3) Supercar sprite `gen/pixel/sprites/car.mjs`: side view ~64×20, drive (wheel 2 frames), scissor door open, headlights up + turret out, transform frames car→robot (reuse robot parts) — check: strip + in-scene review
+- [ ] T3 [me] (R16) Cyberpsycho sprites `gen/pixel/sprites/villains.mjs`: 2 grunts (idle/run/hit/explode) + boss — check: strip review
+- [ ] T4 [oc] (R7) Building generator `gen/pixel/buildings.mjs` → `assets/projects/<name>.svg`: chip tower, Oculius eye tower (pupil looks around), power-grid substation (arcs) first — check: check.mjs OK + review
+- [ ] T5 [oc] (R3) Rewrite `gen/pixel/mech.mjs` as the street-chase scene per the T1 beat list (turret muzzle flashes ≤3/s, explosions, transform) — check: check.mjs OK, beats sampled in browser
+- [ ] T6 [tool] (R3,R7,R16) Review at 1280/375 px → owner checkpoint
+
+**Done when:** check.mjs OK; owner approves car, villains, buildings and the chase loop.
 
 ## Sprint 3 — live stats billboard + contribution city game + daily Action
 

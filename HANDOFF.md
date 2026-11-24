@@ -2,22 +2,12 @@
 
 Keep under 60 lines. Replace old content; git keeps the history.
 
-## CHECKPOINT 2026-11-24 — Sprint 2
+## Owner reply 2026-11-24 — change request (recorded in DECISIONS, SPEC R3/R7/R16, TODO Sprint 2b)
 
-Built:
-- Bench-mech: an original pixel mech that unfolds from a dev board (11 frames), in a rainy rooftop workshop (`assets/mech.svg`, 87 KB): board 2 s → unfold → idle 7 s (coil pulse, visor scan) → fold, with sparks and steam.
-- Your character ("generic hacker": hoodie with pink trim, headphones, glowing handheld, wind idle) on a ledge in the hero.
-- Checks: `node gen/check.mjs` → ALL ASSETS OK; `node gen/pixel/hero.mjs && node gen/pixel/mech.mjs` regenerate both.
-
-Please test:
-1. Open http://localhost:8765/preview/anim.html (the `preview` launch config). The built-in browser pane has reduced motion on, which freezes the real SVGs, so `anim.html` shows copies with that rule removed (`preview/*-anim.svg`, not committed). In your normal browser, `preview/index.html` animates too. Expected: hero with the character bottom-left, mech scene below, both moving.
-2. Watch one 11-second mech loop: the board on the bench lights up, unfolds into the mech, idles, then folds back.
-
-Need from you:
-- Does the mech scene pass, or is it "toy"? (Already fixed in my review: board visibility, lamp cone, puddle reflections, lamp arm, spark flash rate, steam timing.) Open point: your character is small on phones (~32 px); I can make it ~40 px tall if you want.
-- Is the character OK as a generic hacker, or do you want your own likeness later?
-
-Next sprint (proposed): Sprint 3 as planned in TODO (stats billboard, contribution city game, daily Action), plus any fixes you ask for.
+- Mech → an original 80s wedge supercar (Countach spirit, no badge/exact copy) that the avatar rides; pop-up headlights → turrets that shoot cyberpsycho villains; car transforms into the robot for a boss.
+- Project buildings get themed art (chip tower, Oculius eye that looks around, fast-charger power grid).
+- Open questions for the owner (ask at Sprint 2b T1): building themes for ESP32-Synth, ChocoBao, NEURA, ai-video-editor, Axiom (one line each on what the project is/should look like); OK with the beat list.
+- Sprint 2 is done and committed (bench-mech scene, character); its art is reused.
 
 ## Start line (owner pastes this to run a sprint unattended)
 
@@ -36,7 +26,7 @@ Next sprint (proposed): Sprint 3 as planned in TODO (stats billboard, contributi
 
 ## Next step
 
-Owner verdict on the Sprint 2 checkpoint, then apply their fix list or plan Sprint 3.
+Start Sprint 2b T1 in a NEW session: write the beat list, ask the owner the open questions above.
 
 ## Gotchas found so far
 
