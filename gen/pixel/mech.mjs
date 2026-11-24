@@ -124,6 +124,7 @@ const workshop = new Layer(W, H);
 // floor (wet rooftop)
 workshop.rect(0, 140, W, 28, '#0c0620');
 for (let x = 0; x < W; x++) if (bayer(x, 140) < 0.75) workshop.px(x, 140, C.rim, 0.55);
+for (let y = 141; y <= 146; y++) for (let x = 0; x < W; x++) if (bayer(x, y) < 0.5) workshop.px(x, y, '#1a1030');
 for (let y = 140; y < 168; y += 7) workshop.rect(0, y, W, 1, '#1a1030');
 for (let band = 0; band < 4; band++) {
   const y0 = 140 + band * 7;
@@ -132,17 +133,68 @@ for (let band = 0; band < 4; band++) {
     for (let y = y0; y < Math.min(y0 + 7, 168); y++) workshop.px(x, y, '#1a1030');
   }
 }
-function puddle(x0, x1, colour) {
-  for (let x = x0; x <= x1; x++) {
-    for (let y = 141; y <= 160; y++) {
-      if ((y - 141) % 3 === 2) continue;
-      if (bayer(x, y) < 0.45) workshop.px(x, y, colour, 0.25 * (1 - (y - 141) / 20));
+const puddles = [];
+for (let p = 0; p < 4; p++) {
+  const pw = ri(18, 34), ph = ri(3, 4);
+  const cx = ri(Math.ceil(pw / 2), W - Math.ceil(pw / 2));
+  const cy = ri(148, 158);
+  puddles.push({ cx, cy, rx: pw / 2, ry: ph / 2 });
+}
+function inPuddle(x, y) {
+  return puddles.some((pu) => {
+    const dx = (x - pu.cx) / pu.rx, dy = (y - pu.cy) / pu.ry;
+    return dx * dx + dy * dy <= 1;
+  });
+}
+function drawStreak(x, colour, length, alphaMul) {
+  let drawCount = 0, nextGap = ri(3, 4);
+  for (let d = 0; d < length; d++) {
+    if (drawCount >= nextGap) {
+      const gap = ri(1, 2);
+      d += gap - 1;
+      drawCount = 0;
+      nextGap = ri(3, 4);
+      continue;
+    }
+    const t = length > 1 ? d / (length - 1) : 0;
+    let alpha = (0.55 + (0.1 - 0.55) * t) * alphaMul;
+    if (!inPuddle(x, 142 + d)) alpha *= 0.5;
+    workshop.px(x, 142 + d, colour, alpha);
+    drawCount++;
+  }
+}
+const lightSources = [
+  { x0: 108, x1: 114, colour: C.cyan },
+  { x0: 190, x1: 250, colour: C.yellow },
+  { x0: 66, x1: 101, colour: C.orange },
+  { x0: 360, x1: 398, colour: C.pink },
+];
+for (const ls of lightSources) {
+  const nCols = ri(3, 6);
+  const cols = new Set();
+  while (cols.size < nCols) cols.add(ri(ls.x0, ls.x1));
+  for (const x of cols) {
+    const length = ri(6, 14);
+    drawStreak(x, ls.colour, length, 1);
+    if (R() < 0.5) {
+      const nx = R() < 0.5 ? x - 1 : x + 1;
+      if (nx >= 0 && nx < W) drawStreak(nx, ls.colour, Math.max(1, Math.floor(length / 2)), 0.5);
     }
   }
 }
-puddle(108, 114, C.cyan);
-puddle(176, 262, C.yellow);
-puddle(300, 399, C.pink);
+for (const p of puddles) {
+  const pts = [];
+  const minX = Math.floor(p.cx - p.rx) - 1, maxX = Math.ceil(p.cx + p.rx) + 1;
+  const minY = Math.floor(p.cy - p.ry) - 1, maxY = Math.ceil(p.cy + p.ry) + 1;
+  for (let y = minY; y <= maxY; y++) for (let x = minX; x <= maxX; x++) {
+    const dx = (x - p.cx) / p.rx, dy = (y - p.cy) / p.ry;
+    const norm = dx * dx + dy * dy;
+    if (norm > 0.75 && norm < 1.25) pts.push([x, y]);
+  }
+  const topY = {};
+  for (const [x, y] of pts) if (topY[x] === undefined || y < topY[x]) topY[x] = y;
+  for (const [x, y] of pts) workshop.px(x, y, y === topY[x] ? '#4a2a86' : '#2b1756');
+}
 for (let n = 0; n < 30; n++) workshop.px(ri(0, W - 1), ri(140, 167), '#a9b6ff', 0.5);
 // wall/shed
 workshop.rect(0, 70, 120, 70, '#120b22');
@@ -282,54 +334,62 @@ bench.rect(271, 116, 4, 3, '#05030c');
 const lamp = new Layer(W, H);
 function thickLine(L, x0, y0, x1, y1, c1, c2) {
   const steps = Math.max(Math.abs(x1 - x0), Math.abs(y1 - y0));
+  const pts = [];
   for (let s = 0; s <= steps; s++) {
     const x = Math.round(x0 + (x1 - x0) * s / steps);
     const y = Math.round(y0 + (y1 - y0) * s / steps);
     L.px(x, y, c1);
     L.px(x + 1, y, c2);
+    pts.push([x, y], [x + 1, y]);
+  }
+  const set = new Set(pts.map(([x, y]) => x + ',' + y));
+  for (const [x, y] of pts) {
+    for (const [dx, dy] of [[-1, 0], [1, 0], [0, -1], [0, 1]]) {
+      const nx = x + dx, ny = y + dy;
+      if (!set.has(nx + ',' + ny)) L.px(nx, ny, '#05030c');
+    }
   }
 }
 // base clamp
 lamp.rect(284, 123, 5, 3, '#2e2350');
 lamp.rect(284, 123, 5, 1, '#7a6ab0');
 // lower arm
-thickLine(lamp, 285, 121, 276, 92, '#4a3a7a', '#2e2350');
+thickLine(lamp, 285, 121, 276, 92, '#7a6ab0', '#2e2350');
 const lSteps = Math.max(Math.abs(276 - 285), Math.abs(92 - 121));
 for (let s = 0; s <= lSteps; s++) {
   const x = Math.round(285 + (276 - 285) * s / lSteps);
   const y = Math.round(121 + (92 - 121) * s / lSteps);
-  const col = s % 2 === 0 ? '#b8aee0' : '#4a3a7a';
-  lamp.px(x - 2, y, col);
+  if (s % 2 === 0) lamp.px(x - 2, y, '#b8aee0');
 }
 // joint
 lamp.rect(275, 91, 3, 3, '#7a6ab0');
 lamp.px(276, 92, '#b8aee0');
 // upper arm
-thickLine(lamp, 276, 92, 246, 70, '#4a3a7a', '#2e2350');
+thickLine(lamp, 276, 92, 226, 70, '#7a6ab0', '#2e2350');
 // shade trapezoid
-for (let y = 66; y <= 73; y++) {
-  const t = (y - 66) / (73 - 66);
+for (let y = 63; y <= 70; y++) {
+  const t = (y - 63) / (70 - 63);
   const w = Math.round(6 + (12 - 6) * t);
-  const left = Math.round(244 - w / 2);
+  const left = Math.round(226 - w / 2);
   for (let x = left; x < left + w; x++) lamp.px(x, y, '#2e2350');
   lamp.px(left + w - 1, y, '#7a6ab0');
 }
 // bulb row
-lamp.px(241, 73, '#ffd84a');
-lamp.px(242, 73, '#ffd84a');
-lamp.rect(243, 73, 5, 1, '#ffe6f4');
-lamp.px(248, 73, '#ffd84a');
-lamp.px(249, 73, '#ffd84a');
+lamp.px(223, 70, '#ffd84a');
+lamp.px(224, 70, '#ffd84a');
+lamp.rect(225, 70, 5, 1, '#ffe6f4');
+lamp.px(230, 70, '#ffd84a');
+lamp.px(231, 70, '#ffd84a');
 
 const cone = new Layer(W, H);
 const bulbMask = [];
 const gw = 13, gh = 7;
 for (let j = 0; j < gh; j++) for (let i = 0; i < gw; i++) bulbMask.push(j === 3 && i >= 3 && i <= 9 ? 1 : 0);
-glow(cone, bulbMask, gw, gh, 237, 70, '#ffd84a', 3, 0.6);
+glow(cone, bulbMask, gw, gh, 219, 70, '#ffd84a', 3, 0.6);
 for (let y = 74; y <= 123; y++) {
   const t = (y - 74) / (123 - 74);
-  const left = Math.round(238 + (176 - 238) * t);
-  const right = Math.round(250 + (262 - 250) * t);
+  const left = Math.round(220 + (176 - 220) * t);
+  const right = Math.round(232 + (262 - 232) * t);
   const width = right - left;
   const coreLeft = left + Math.round(width * 0.3);
   const coreRight = right - Math.round(width * 0.3);

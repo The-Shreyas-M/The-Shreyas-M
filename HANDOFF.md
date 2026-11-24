@@ -14,10 +14,10 @@ Please test:
 2. Watch one 11-second mech loop: the board on the bench lights up, unfolds into the mech, idles, then folds back.
 
 Need from you:
-- Does the mech scene pass, or is it "toy"? My own fix list (recommended next): brighter floor with real puddle reflections; a thicker lamp arm and a lamp head closer to the mech; the character is tiny on phones (could go to ~40 px tall).
+- Does the mech scene pass, or is it "toy"? (Already fixed in my review: board visibility, lamp cone, puddle reflections, lamp arm, spark flash rate, steam timing.) Open point: your character is small on phones (~32 px); I can make it ~40 px tall if you want.
 - Is the character OK as a generic hacker, or do you want your own likeness later?
 
-Next sprint (proposed): Sprint 3 as planned in TODO (stats billboard, contribution city game, daily Action), plus the fix list above if you want it.
+Next sprint (proposed): Sprint 3 as planned in TODO (stats billboard, contribution city game, daily Action), plus any fixes you ask for.
 
 ## Start line (owner pastes this to run a sprint unattended)
 
