@@ -377,21 +377,22 @@ const strip = (L, cls) => `<g class="${cls}">${img(L, 0)}${img(L, TW)}</g>`;
 const pct = (t) => +((t / LOOP) * 100).toFixed(3);
 
 // sparks keyframes
-const sparkKeys = [
+const sparkKeys = [ // one burst (DESIGN §5: never more than 3 flashes a second)
   `0%{opacity:0}`,
+  `${pct(POWER_ON - 0.01)}%{opacity:0}`,
   `${pct(POWER_ON)}%{opacity:1}`,
-  `${pct(POWER_ON + 0.1)}%{opacity:0}`,
-  `${pct(POWER_ON + 0.2)}%{opacity:1}`,
-  `${pct(POWER_ON + 0.3)}%{opacity:0}`,
-  `${pct(POWER_ON + 0.4)}%{opacity:0}`,
+  `${pct(POWER_ON + 0.25)}%{opacity:1}`,
+  `${pct(POWER_ON + 0.35)}%{opacity:0}`,
   `100%{opacity:0}`,
 ];
 
 // steam keyframes
 const steamKeys = [
   `0%{opacity:0;transform:translateY(0px)}`,
+  `${pct(STAND - 0.01)}%{opacity:0;transform:translateY(0px)}`,
   `${pct(STAND)}%{opacity:0.8;transform:translateY(0px)}`,
   `${pct(STAND + 1)}%{opacity:0;transform:translateY(-10px)}`,
+  `${pct(STAND + 3.49)}%{opacity:0;transform:translateY(0px)}`,
   `${pct(STAND + 3.5)}%{opacity:0.8;transform:translateY(0px)}`,
   `${pct(STAND + 4.5)}%{opacity:0;transform:translateY(-10px)}`,
   `100%{opacity:0;transform:translateY(0px)}`,
