@@ -7,9 +7,9 @@ import { Layer, bayer, text, textWidth } from './px.mjs';
 import { sheet, spriteSvg, spriteTimeline } from './sprite.mjs';
 
 export const BUILDINGS = ['oculius', 'charger65w', 'chocobao', 'esp32synth', 'neura', 'aivideo', 'axiom']; // street order
-const MODS = {};
+const MODS = {}, BROKEN = {};
 for (const n of BUILDINGS) {
-  try { MODS[n] = (await import(`./bldg/${n}.mjs`)).default; } catch (e) { if (e.code !== 'ERR_MODULE_NOT_FOUND') throw e; }
+  try { MODS[n] = (await import(`./bldg/${n}.mjs`)).default; } catch (e) { if (e.code !== 'ERR_MODULE_NOT_FOUND') BROKEN[n] = e; }
 }
 export const READY = BUILDINGS.filter((n) => MODS[n]);
 
@@ -17,6 +17,7 @@ const SKY = ['#07041a', '#120836', '#230b4f', '#3d0f5e', '#661466', '#9c1d6c', '
 const FAR = '#2b1756', FAR_RIM = '#4a2a86', PLATE = '#0c0620', PINK = '#ff2e88', CYAN = '#3ff0e6';
 
 export function building(name) {
+  if (BROKEN[name]) throw BROKEN[name];
   const m = MODS[name];
   if (!m) throw new Error(`unknown building ${name}`);
   const anim = m.anim ? { ...m.anim, period: +m.anim.seq.reduce((s, [, t]) => s + t, 0).toFixed(3) } : null;
