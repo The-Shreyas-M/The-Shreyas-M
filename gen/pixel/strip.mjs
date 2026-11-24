@@ -7,7 +7,7 @@ const [out = 'preview/mech-strip.png', s = '4', c = '6', which = 'mech'] = proce
 const mod = await import(`./sprites/${which === 'char' ? 'hero-char' : which}.mjs`);
 const { FW, FH } = mod;
 const S = +s, COLS = +c, GAP = 2, BG = rgb('#120836'), BG2 = rgb('#230b4f');
-const frames = which === 'char' ? mod.charFrames() : which === 'car' ? mod.carFrames() : mod.mechFrames();
+const frames = which === 'char' ? [...mod.charFrames(), ...(mod.shootFrames?.() ?? [])] : which === 'car' ? mod.carFrames() : mod.mechFrames();
 const rows = Math.ceil(frames.length / COLS);
 const W = COLS * (FW + GAP) * S, H = rows * (FH + GAP) * S;
 const d = new Uint8ClampedArray(W * H * 4);

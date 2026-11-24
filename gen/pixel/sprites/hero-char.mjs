@@ -86,6 +86,29 @@ function finish(rows) {
   return L;
 }
 
+// Shoot frames (DESIGN §4a B6): the handheld raised at arm's length as a blaster, aimed right.
+// 0 = aim (device glowing), 1 = fire (arm kicks back 1 px, device hot). Hands leave the chest.
+const SHOOT = [
+  [[13, '....bbBBBbbbbBB...'], [14, '....bbBBbbkbbbbscc'], [15, '...bbbBBbbkbbbBscc']],
+  [[13, '....bbBBBbbbbBB...'], [14, '....bbBBbbkbbbscw.'], [15, '...bbbBBbbkbbBsww.']],
+];
+export const MUZZLE = [17, 14]; // first pixel past the device in shoot frame 1 (fire): the bolt spawns here
+export function shootFrames() {
+  return SHOOT.map((patch) => {
+    const rows = [...BASE];
+    rows[17] = '...bbbBbbbbbBb....'; rows[18] = '...bbbBbbbbbBb....';
+    for (const [r, s] of patch) rows[r] = s;
+    rows.forEach((r, i) => { if (r.length !== FW) throw new Error(`hero-char shoot row ${i} is ${r.length} wide`); });
+    return finish(rows);
+  });
+}
+// Blaster bolt, 4x2, travels right (no outline: it is light).
+export function boltLayer() {
+  const L = new Layer(4, 2);
+  ['ccww', '.ccw'].forEach((r, y) => [...r].forEach((ch, x) => { if (ch !== '.') L.px(x, y, P[ch]); }));
+  return L;
+}
+
 export function charFrames() {
   return PATCH.map((patch, f) => {
     let rows = [...BASE];
