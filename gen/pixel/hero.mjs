@@ -3,6 +3,8 @@
 import { writeFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { Layer, rgb, mix, rng, bayer, glow, FONT, text, textWidth } from './px.mjs';
+import { sheet, spriteSvg, spriteCss } from './sprite.mjs';
+import { FW as CW, FH as CH, charFrames } from './sprites/hero-char.mjs';
 
 const W = 400, H = 168, TW = 800; // view size, tile width for scrolling layers
 const C = {
@@ -160,6 +162,22 @@ for (let x = 0; x < TW;) {
   x += sw;
 }
 
+// ---------- foreground ledge + owner character (static ledge, animated sprite) ----------
+const LEDGE_TOP = 148;
+const ledge = new Layer(W, H);
+{
+  const lw = 62;
+  ledge.rect(0, LEDGE_TOP, lw, H - LEDGE_TOP, C.near);
+  for (let i = 0; i < lw; i++) if (bayer(i, LEDGE_TOP) < 0.8) ledge.px(i, LEDGE_TOP, C.rim, 0.7);
+  ledge.rect(lw - 1, LEDGE_TOP, 1, H - LEDGE_TOP, C.rim, 0.45);
+  for (let y = LEDGE_TOP + 4; y < H; y += 5) for (let i = 2; i < lw - 3; i++) if (bayer(i, y) < 0.4) ledge.px(i, y, '#1a1030');
+  ledge.rect(4, LEDGE_TOP - 9, 1, 9, '#1a1030'); ledge.rect(4, LEDGE_TOP - 9, 14, 1, '#1a1030'); ledge.rect(17, LEDGE_TOP - 9, 1, 9, '#1a1030');
+  ledge.rect(44, LEDGE_TOP - 18, 1, 18, '#1a1030'); ledge.px(44, LEDGE_TOP - 19, C.red);
+  ledge.rect(48, LEDGE_TOP - 6, 9, 6, '#120b22'); ledge.rect(48, LEDGE_TOP - 6, 9, 1, '#3a2560'); ledge.px(55, LEDGE_TOP - 4, C.cyan);
+}
+const charSheet = sheet(charFrames());
+const CHX = 24, CHY = LEDGE_TOP - CH + 1;
+
 // ---------- flying car sprite ----------
 function car(dir) {
   const L = new Layer(26, 6);
@@ -253,6 +271,7 @@ image{image-rendering:pixelated;image-rendering:crisp-edges}
 .tube{animation:flick2 6s infinite}
 @keyframes flick{0%,100%{opacity:.95}12%{opacity:.95}12.5%{opacity:.15}13.5%{opacity:.9}14%{opacity:.2}15%{opacity:.95}61%{opacity:.85}61.6%{opacity:.25}62.4%{opacity:.95}}
 @keyframes flick2{0%,100%{opacity:1}12.5%{opacity:1}13%{opacity:.45}13.5%{opacity:1}14%{opacity:.5}15%{opacity:1}}
+${spriteCss('hchar', CW, 4, 1.4)}
 @media (prefers-reduced-motion: reduce){*{animation:none!important}.carB{transform:translate(260px,95px)}.carA{transform:translate(90px,62px)}}
 </style>
 ${img(sky)}
@@ -263,6 +282,8 @@ ${img(beacon, 346, -1, 'beacon')}
 <g class="carA">${img(carR)}</g>
 <g class="carB">${img(carL)}</g>
 <g class="near"><image x="0" y="0" width="${TW}" height="${H}" href="${nearUri}"/><image x="${TW}" y="0" width="${TW}" height="${H}" href="${nearUri}"/></g>
+${img(ledge)}
+${spriteSvg(charSheet.uri(), CW, CH, 4, CHX, CHY, 'hchar')}
 ${img(halo, signX, signY, 'halo')}
 ${img(tube, signX, signY, 'tube')}
 ${img(hud)}

@@ -1,12 +1,13 @@
 // Review helper: render a sprite module's frames as an upscaled contact sheet PNG.
-// Usage: node gen/pixel/strip.mjs <out.png> [scale] [cols]
+// Usage: node gen/pixel/strip.mjs <out.png> [scale] [cols] [mech|char]
 import { writeFileSync } from 'node:fs';
 import { encodePNG, rgb } from './px.mjs';
-import { FW, FH, mechFrames } from './sprites/mech.mjs';
 
-const [out = 'preview/mech-strip.png', s = '4', c = '6'] = process.argv.slice(2);
+const [out = 'preview/mech-strip.png', s = '4', c = '6', which = 'mech'] = process.argv.slice(2);
+const mod = which === 'char' ? await import('./sprites/hero-char.mjs') : await import('./sprites/mech.mjs');
+const { FW, FH } = mod;
 const S = +s, COLS = +c, GAP = 2, BG = rgb('#120836'), BG2 = rgb('#230b4f');
-const frames = mechFrames();
+const frames = which === 'char' ? mod.charFrames() : mod.mechFrames();
 const rows = Math.ceil(frames.length / COLS);
 const W = COLS * (FW + GAP) * S, H = rows * (FH + GAP) * S;
 const d = new Uint8ClampedArray(W * H * 4);
