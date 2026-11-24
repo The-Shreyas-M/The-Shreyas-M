@@ -1,521 +1,317 @@
-// Pixel-art rooftop workshop at night -> assets/mech.svg
+// Street-chase scene (R3/R16, DESIGN §4a): 18-s loop built from actors (track.mjs) over the parallax street (street-bg.mjs).
 import { writeFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
-import { Layer, rgb, mix, rng, bayer, glow, FONT, text, textWidth } from './px.mjs';
-import { sheet, spriteTimeline } from './sprite.mjs';
-import { FW, FH, REST, TIMELINE, POWER_ON, STAND, FOLD, LOOP, ANCHORS, mechFrames } from './sprites/mech.mjs';
+import { Layer } from './px.mjs';
+import { streetBackground } from './street-bg.mjs';
+import { LOOP, path, hold, cycle, actor } from './track.mjs';
+import { carFrames, ANCHORS as CAR_ANCHORS } from './sprites/car.mjs';
+import { mechFrames } from './sprites/mech.mjs';
+import { charFrames, shootFrames, boltLayer } from './sprites/hero-char.mjs';
+import { gruntFrames, bossFrames, explosionFrames } from './sprites/villains.mjs';
 
-const W = 400, H = 168, TW = 800;
-const C = {
-  sky: ['#07041a', '#120836', '#230b4f', '#3d0f5e', '#661466', '#9c1d6c', '#c8306f'],
-  far: '#2b1756', farRim: '#4a2a86', fog: '#c8306f',
-  mid: '#150b31', midRim: '#36206e', midDark: '#0c0620',
-  near: '#05030c', rim: '#ff3fa4',
-  pink: '#ff2e88', cyan: '#3ff0e6', yellow: '#ffd84a', orange: '#ff8a3d', red: '#ff3355',
-  core: '#ffe6f4', white: '#f4ecff', rain: '#a9b6ff',
-};
-const R = rng(11);
-const pick = (arr) => arr[Math.floor(R() * arr.length)];
-const ri = (a, b) => a + Math.floor(R() * (b - a + 1));
+const CAR_Y = 91, CAR_X = 140, SIDEWALK_Y = 97, ROAD_AV_Y = 118, GRUNT_Y = 121, BOSS_Y = 97, BOSS_X = 300;
 
-// ---------- sky (static) ----------
-const sky = new Layer(W, H);
-for (let y = 0; y < H; y++) {
-  const t = Math.min(1, y / (H * 0.82)) * (C.sky.length - 1);
-  const i = Math.floor(t), f = t - i;
-  for (let x = 0; x < W; x++) {
-    const c = f > bayer(x, y) && i + 1 < C.sky.length ? C.sky[i + 1] : C.sky[i];
-    sky.px(x, y, c);
-  }
-}
-for (let n = 0; n < 90; n++) {
-  const y = Math.floor(Math.pow(R(), 2) * H * 0.5);
-  sky.px(ri(0, W - 1), y, R() < 0.8 ? '#8f86d8' : C.white, R() < 0.7 ? 0.6 : 1);
-}
-for (let n = 0; n < 7; n++) {
-  const y = ri(30, 95), x0 = ri(-40, W), len = ri(40, 140);
-  for (let x = x0; x < x0 + len; x++) {
-    const edge = Math.min(x - x0, x0 + len - x) / 20;
-    if (bayer(x, y) < Math.min(0.55, edge)) sky.px(x, y, '#ff7ab8', 0.25);
-    if (bayer(x, y + 1) < Math.min(0.3, edge)) sky.px(x, y + 1, '#ff7ab8', 0.15);
-  }
-}
-
-// ---------- helpers ----------
-function windows(L, bx, top, bw, base, { lit, cols, w = 1, h = 1, gx = 3, gy = 3, dim = 0.55 }) {
-  const main = pick(cols);
-  let floorLit = false, run = 0;
-  for (let y = top + 3; y < base - 2; y += gy) {
-    if (run-- <= 0) { floorLit = R() < lit * 1.6; run = ri(1, 4); }
-    for (let x = bx + 2; x + w <= bx + bw - 1; x += gx) {
-      if (floorLit && R() < 0.85) L.rect(x, y, w, h, R() < 0.85 ? main : pick(cols), dim + R() * (1 - dim));
-      else if (R() < lit * 0.25) L.rect(x, y, w, h, pick(cols), dim * 0.8);
+function scale2(L) {
+  const out = new Layer(L.w * 2, L.h * 2);
+  for (let y = 0; y < L.h; y++) for (let x = 0; x < L.w; x++) {
+    const p = L.get(x, y);
+    if (p && p[3] > 0) {
+      const a = p[3] / 255;
+      for (let dy = 0; dy < 2; dy++) for (let dx = 0; dx < 2; dx++) out.px(x * 2 + dx, y * 2 + dy, [p[0], p[1], p[2]], a);
     }
   }
-}
-function fog(L, from, amount) {
-  const f = rgb(C.fog);
-  for (let y = from; y < L.h; y++) {
-    const t = ((y - from) / (L.h - from)) * amount;
-    for (let x = 0; x < L.w; x++) {
-      const p = L.get(x, y);
-      if (!p || p[3] === 0) continue;
-      const q = Math.floor(t * 3 + bayer(x, y)) / 3;
-      if (q > 0) L.px(x, y, mix(p.slice(0, 3), f, Math.min(0.7, q)));
-    }
-  }
-}
-function sign(L, sx, sy, sw, sh, col, word) {
-  if (!word) word = pick(['BAR', 'OPEN', 'HOTEL', 'ESP', 'VOLT', 'NOODLE', 'CYBER']);
-  const mask = [];
-  for (let j = -4; j < sh + 4; j++) for (let i = -4; i < sw + 4; i++) mask.push(i >= 0 && j >= 0 && i < sw && j < sh ? 1 : 0);
-  glow(L, mask, sw + 8, sh + 8, sx - 4, sy - 4, col, 2, 0.35);
-  L.rect(sx, sy, sw, sh, '#14061f');
-  L.rect(sx, sy, sw, 1, col); L.rect(sx, sy + sh - 1, sw, 1, col);
-  L.rect(sx, sy, 1, sh, col); L.rect(sx + sw - 1, sy, 1, sh, col);
-  [...word].slice(0, Math.floor((sh - 3) / 8)).forEach((ch, k) => text(L, ch, sx + 1, sy + 2 + k * 8, col));
+  return out;
 }
 
-// ---------- far skyline ----------
-const far = new Layer(TW, H, { wrapX: true });
-for (let x = 0; x < TW;) {
-  const bw = ri(8, 26), bh = ri(48, 108), top = H - bh;
-  far.rect(x, top, bw, bh, C.far);
-  far.rect(x, top, bw, 1, C.farRim);
-  far.rect(x + bw - 1, top, 1, bh, C.farRim, 0.6);
-  if (R() < 0.35) { const sw = Math.max(3, bw - ri(4, 8)); far.rect(x + ((bw - sw) >> 1), top - ri(4, 10), sw, 12, C.far); }
-  if (R() < 0.4) { const ax = x + ri(2, bw - 2), ah = ri(5, 14); far.rect(ax, top - ah - 6, 1, ah + 6, C.farRim); far.px(ax, top - ah - 7, C.red); }
-  windows(far, x, top, bw, H, { lit: 0.1, cols: [C.cyan, C.cyan, C.pink, C.yellow], dim: 0.35 });
-  x += bw + (R() < 0.25 ? ri(1, 3) : 0);
-}
-fog(far, H - 70, 0.9);
-
-// ---------- mid skyline ----------
-const mid = new Layer(TW, H, { wrapX: true });
-for (let x = 0; x < TW;) {
-  const bw = ri(20, 50), bh = ri(48, 108), top = H - bh;
-  mid.rect(x, top, bw, bh, C.mid);
-  mid.rect(x, top, bw, 1, C.midRim);
-  mid.rect(x + bw - 2, top, 2, bh, C.midRim, 0.7);
-  mid.rect(x, top, 1, bh, C.midDark);
-  if (R() < 0.5) {
-    const cw = bw - ri(6, 12), cx = x + ((bw - cw) >> 1);
-    mid.rect(cx, top - 6, cw, 6, C.mid); mid.rect(cx, top - 6, cw, 1, C.midRim);
-    if (R() < 0.6) { mid.rect(cx + 2, top - 10, 5, 4, C.midDark); mid.rect(cx + 2, top - 10, 5, 1, C.midRim); }
-  }
-  if (R() < 0.45) { const ax = x + ri(3, bw - 3); mid.rect(ax, top - 22, 1, 22, C.midRim); mid.px(ax, top - 23, C.red); }
-  windows(mid, x, top, bw, H, { lit: 0.16, cols: [C.cyan, C.yellow, C.pink, C.orange], w: 2, h: 1, gx: 4, gy: 4, dim: 0.5 });
-  if (bw > 34 && R() < 0.28) {
-    const pw = Math.min(30, bw - 8), py = top + ri(8, 20), px0 = x + 4;
-    for (let j = 0; j < 12; j++) for (let i = 0; i < pw; i++) {
-      const t = (i / pw) * 2; const c = t + bayer(i, j) * 0.6 > 1.2 ? C.pink : '#6a1aa0';
-      mid.px(px0 + i, py + j, c);
-    }
-    mid.rect(px0 - 1, py - 1, pw + 2, 1, C.cyan); mid.rect(px0 - 1, py + 12, pw + 2, 1, C.cyan);
-    { const wd = pick(['HOLO', 'NOVA', 'CHIP', 'SYNC', 'ZERO']).slice(0, Math.floor((pw - 2) / 6)); text(mid, wd, px0 + Math.max(1, (pw - wd.length * 6 + 1) >> 1), py + 2, C.white, 1, 0.95); }
-  }
-  if (R() < 0.5) { const n = ri(3, 5); sign(mid, R() < 0.5 ? x - 7 : x + bw, top + ri(6, 24), 7, n * 8 + 3, pick([C.pink, C.cyan, C.yellow, C.orange])); }
-  x += bw + (R() < 0.55 ? ri(4, 16) : 0);
-}
-fog(mid, H - 45, 0.55);
-
-// ---------- workshop roof layer ----------
-const workshop = new Layer(W, H);
-// floor (wet rooftop)
-workshop.rect(0, 140, W, 28, '#0c0620');
-for (let x = 0; x < W; x++) if (bayer(x, 140) < 0.75) workshop.px(x, 140, C.rim, 0.55);
-for (let y = 141; y <= 146; y++) for (let x = 0; x < W; x++) if (bayer(x, y) < 0.5) workshop.px(x, y, '#1a1030');
-for (let y = 140; y < 168; y += 7) workshop.rect(0, y, W, 1, '#1a1030');
-for (let band = 0; band < 4; band++) {
-  const y0 = 140 + band * 7;
-  const off = (band % 2) ? 8 : 0;
-  for (let x = off; x < W; x += 16) {
-    for (let y = y0; y < Math.min(y0 + 7, 168); y++) workshop.px(x, y, '#1a1030');
-  }
-}
-const puddles = [];
-for (let p = 0; p < 4; p++) {
-  const pw = ri(18, 34), ph = ri(3, 4);
-  const cx = ri(Math.ceil(pw / 2), W - Math.ceil(pw / 2));
-  const cy = ri(148, 158);
-  puddles.push({ cx, cy, rx: pw / 2, ry: ph / 2 });
-}
-function inPuddle(x, y) {
-  return puddles.some((pu) => {
-    const dx = (x - pu.cx) / pu.rx, dy = (y - pu.cy) / pu.ry;
-    return dx * dx + dy * dy <= 1;
-  });
-}
-function drawStreak(x, colour, length, alphaMul) {
-  let drawCount = 0, nextGap = ri(3, 4);
-  for (let d = 0; d < length; d++) {
-    if (drawCount >= nextGap) {
-      const gap = ri(1, 2);
-      d += gap - 1;
-      drawCount = 0;
-      nextGap = ri(3, 4);
-      continue;
-    }
-    const t = length > 1 ? d / (length - 1) : 0;
-    let alpha = (0.55 + (0.1 - 0.55) * t) * alphaMul;
-    if (!inPuddle(x, 142 + d)) alpha *= 0.5;
-    workshop.px(x, 142 + d, colour, alpha);
-    drawCount++;
-  }
-}
-const lightSources = [
-  { x0: 108, x1: 114, colour: C.cyan },
-  { x0: 190, x1: 250, colour: C.yellow },
-  { x0: 66, x1: 101, colour: C.orange },
-  { x0: 360, x1: 398, colour: C.pink },
-];
-for (const ls of lightSources) {
-  const nCols = ri(3, 6);
-  const cols = new Set();
-  while (cols.size < nCols) cols.add(ri(ls.x0, ls.x1));
-  for (const x of cols) {
-    const length = ri(6, 14);
-    drawStreak(x, ls.colour, length, 1);
-    if (R() < 0.5) {
-      const nx = R() < 0.5 ? x - 1 : x + 1;
-      if (nx >= 0 && nx < W) drawStreak(nx, ls.colour, Math.max(1, Math.floor(length / 2)), 0.5);
-    }
-  }
-}
-for (const p of puddles) {
-  const pts = [];
-  const minX = Math.floor(p.cx - p.rx) - 1, maxX = Math.ceil(p.cx + p.rx) + 1;
-  const minY = Math.floor(p.cy - p.ry) - 1, maxY = Math.ceil(p.cy + p.ry) + 1;
-  for (let y = minY; y <= maxY; y++) for (let x = minX; x <= maxX; x++) {
-    const dx = (x - p.cx) / p.rx, dy = (y - p.cy) / p.ry;
-    const norm = dx * dx + dy * dy;
-    if (norm > 0.75 && norm < 1.25) pts.push([x, y]);
-  }
-  const topY = {};
-  for (const [x, y] of pts) if (topY[x] === undefined || y < topY[x]) topY[x] = y;
-  for (const [x, y] of pts) workshop.px(x, y, y === topY[x] ? '#4a2a86' : '#2b1756');
-}
-for (let n = 0; n < 30; n++) workshop.px(ri(0, W - 1), ri(140, 167), '#a9b6ff', 0.5);
-// wall/shed
-workshop.rect(0, 70, 120, 70, '#120b22');
-workshop.rect(0, 70, 120, 1, '#3a2560');
-workshop.rect(118, 70, 2, 70, '#ff3fa4', 0.5);
-for (let y = 78; y < 140; y += 8) workshop.rect(0, y, 120, 1, '#1b1430');
-// window grid
-for (let yy = 82; yy <= 106; yy += 12) for (let xx = 10; xx <= 46; xx += 14) {
-  workshop.rect(xx - 1, yy - 1, 8, 6, '#05030c');
-  workshop.rect(xx, yy, 6, 4, C.cyan, 0.7);
-  workshop.rect(xx, yy, 6, 1, C.white, 0.3);
-  workshop.px(xx, yy, C.white, 0.9);
-}
-// pegboard
-for (let yy = 76; yy <= 120; yy += 6) for (let xx = 58; xx <= 108; xx += 6) workshop.px(xx, yy, '#0a0614', 0.8);
-// tool silhouettes
-workshop.rect(62, 88, 1, 8, '#4a3a7a');
-workshop.rect(61, 88, 3, 2, '#4a3a7a');
-workshop.px(62, 86, '#7a6ab0');
-workshop.rect(78, 86, 1, 10, '#4a3a7a');
-workshop.rect(77, 86, 3, 2, '#7a6ab0');
-workshop.rect(92, 90, 1, 7, '#4a3a7a');
-workshop.rect(91, 90, 3, 1, '#7a6ab0');
-// rivets
-for (let y = 74; y < 140; y += 8) for (let x = 4; x < 118; x += 12) workshop.px(x, y, '#2e2350');
-// pipes
-for (const py of [92, 95]) {
-  workshop.rect(0, py, 118, 1, '#2e2350');
-  workshop.rect(0, py - 1, 118, 1, '#4a3a7a');
-}
-// valve wheel
-const vx = 40, vy = 89;
-for (let i = 0; i < 5; i++) { workshop.px(vx + i, vy, '#ff3355'); workshop.px(vx + i, vy + 4, '#ff3355'); workshop.px(vx, vy + i, '#ff3355'); workshop.px(vx + 4, vy + i, '#ff3355'); }
-// poster
-workshop.rect(20, 104, 10, 12, '#14061f');
-workshop.rect(20, 104, 10, 1, C.pink);
-workshop.rect(20, 115, 10, 1, C.pink);
-workshop.rect(20, 104, 1, 12, C.pink);
-workshop.rect(29, 104, 1, 12, C.pink);
-for (let k = 0; k < 3; k++) for (let i = 0; i < 6; i += 2) workshop.px(22 + i, 107 + k * 3, C.cyan);
-// cable
-for (let s = 0; s <= 40; s++) {
-  const t = s / 40;
-  const x = Math.round(118 + (150 - 118) * t);
-  const linearY = 104 + (122 - 104) * t;
-  const y = Math.round(linearY + 6 * Math.sin(Math.PI * t));
-  workshop.px(x, y, '#1b1430');
-}
-// roll-up shutter door
-for (let y = 100; y < 120; y += 2) {
-  const col = ((y - 100) / 2) % 2 === 0 ? '#2e2350' : '#1b1430';
-  workshop.rect(66, y, 36, 1, col);
-}
-for (let y = 120; y < 140; y++) for (let x = 66; x < 102; x++) {
-  const t = (y - 120) / 20;
-  const col = t > 0.6 ? '#ffd84a' : '#ff8a3d';
-  if (bayer(x, y) < 0.4) workshop.px(x, y, col, 0.35);
-}
-for (let y = 124; y < 140; y += 4) workshop.rect(68, y, 32, 1, '#120b22');
-for (let y = 141; y <= 150; y++) for (let x = 66; x < 102; x++) {
-  if (bayer(x, y) < 0.25) workshop.px(x, y, '#ff8a3d', 0.25);
-}
-// neon sign LAB
-sign(workshop, 108, 78, 7, 3 * 8 + 3, C.cyan, 'LAB');
-// right side railing
-workshop.rect(300, 135, 100, 1, '#1a1030');
-for (let i = 0; i < 100; i += 5) workshop.rect(300 + i, 135, 1, 5, '#1a1030');
-// stacked crates
-const labels = ['K1', 'IO', '5V'];
-let li = 0;
-for (let cx = 305; cx < 395; cx += 18) {
-  const ch = 10 + (cx % 3) * 4;
-  const cy = 140 - ch;
-  workshop.rect(cx, cy, 14, ch, '#120b22');
-  workshop.rect(cx, cy, 14, 1, '#05030c');
-  workshop.rect(cx, cy + ch - 1, 14, 1, '#05030c');
-  workshop.rect(cx, cy, 1, ch, '#05030c');
-  workshop.rect(cx + 13, cy, 1, ch, '#05030c');
-  for (let y = cy + 3; y < cy + ch; y += 3) workshop.rect(cx + 1, y, 12, 1, '#1b1430');
-  for (let i = 0; i < Math.min(14, ch); i++) {
-    const x = cx + i;
-    const y = cy + Math.floor(i * (ch - 1) / 13);
-    if (y >= cy && y < cy + ch) workshop.px(x, y, '#2e2350');
-  }
-  workshop.rect(cx + 13, cy, 1, ch, '#ff3fa4', 0.5);
-  if (ch >= 12) text(workshop, labels[li % labels.length], cx + 2, cy + 3, '#4a3a7a');
-  li++;
-}
-// AC unit
-workshop.rect(330, 120, 24, 18, '#120b22');
-workshop.rect(330, 120, 24, 1, '#3a2560');
-workshop.rect(332, 123, 20, 14, '#05030c');
-for (let d = -6; d <= 6; d++) { workshop.px(342 + d, 130, '#3a2560'); workshop.px(342, 130 + d, '#3a2560'); }
-for (let d = -4; d <= 4; d++) { workshop.px(342 + d, 130 + d, '#3a2560'); workshop.px(342 + d, 130 - d, '#3a2560'); }
-// ---------- workbench layer ----------
-const bench = new Layer(W, H);
-bench.rect(120, 124, 170, 1, '#b8aee0');
-bench.rect(120, 125, 170, 1, '#7a6ab0');
-bench.rect(120, 126, 170, 1, '#7a6ab0');
-bench.rect(120, 127, 170, 1, '#4a3a7a');
-bench.rect(120, 128, 170, 1, '#4a3a7a');
-bench.rect(120, 129, 170, 1, '#2e2350');
-bench.rect(120, 130, 170, 4, '#1b1430');
-for (let y = 130; y < 134; y++) for (let x = 120; x < 290; x++) if (bayer(x, y) < 0.2) bench.px(x, y, '#2e2350');
-const dx = 175, dy = 130, dw = 40, dh = 4;
-bench.rect(dx, dy, dw, 1, '#4a3a7a');
-bench.rect(dx, dy + dh - 1, dw, 1, '#4a3a7a');
-bench.rect(dx, dy, 1, dh, '#4a3a7a');
-bench.rect(dx + dw - 1, dy, 1, dh, '#4a3a7a');
-bench.rect(dx + Math.floor((dw - 3) / 2), dy + 1, 3, 1, '#b8aee0');
-for (const lx of [128, 170, 240, 280]) {
-  bench.rect(lx, 134, 3, 7, '#1b1430');
-  bench.rect(lx + 2, 134, 1, 7, '#4a3a7a');
-}
-bench.rect(119, 123, 172, 1, '#05030c');
-bench.rect(119, 134, 172, 1, '#05030c');
-bench.rect(119, 123, 1, 12, '#05030c');
-bench.rect(290, 123, 1, 12, '#05030c');
-// soldering iron
-for (let i = 0; i < 8; i++) bench.px(132 + i, 124 - i, '#b8aee0');
-bench.rect(130, 122, 3, 2, '#4a3a7a');
-// coil of solder
-for (const [cx, cy] of [[150, 121], [151, 121], [152, 121], [150, 122], [152, 122], [150, 123], [151, 123], [152, 123]]) bench.px(cx, cy, '#ffd84a');
-bench.px(151, 122, '#1b1430');
-// oscilloscope
-bench.rect(128, 114, 16, 10, '#1b1430');
-bench.rect(129, 115, 14, 8, '#05030c');
-for (let i = 0; i < 14; i++) bench.px(129 + i, 119 + (i % 3 === 0 ? -1 : 0), C.cyan, 0.9);
-// parts tray
-bench.rect(245, 118, 18, 6, '#4a3a7a');
-bench.rect(246, 119, 16, 4, '#1b1430');
-// multimeter
-bench.rect(270, 115, 6, 9, C.yellow);
-bench.rect(271, 116, 4, 3, '#05030c');
-
-// ---------- lamp + cone ----------
-const lamp = new Layer(W, H);
-function thickLine(L, x0, y0, x1, y1, c1, c2) {
-  const steps = Math.max(Math.abs(x1 - x0), Math.abs(y1 - y0));
-  const pts = [];
-  for (let s = 0; s <= steps; s++) {
-    const x = Math.round(x0 + (x1 - x0) * s / steps);
-    const y = Math.round(y0 + (y1 - y0) * s / steps);
-    L.px(x, y, c1);
-    L.px(x + 1, y, c2);
-    pts.push([x, y], [x + 1, y]);
-  }
-  const set = new Set(pts.map(([x, y]) => x + ',' + y));
-  for (const [x, y] of pts) {
-    for (const [dx, dy] of [[-1, 0], [1, 0], [0, -1], [0, 1]]) {
-      const nx = x + dx, ny = y + dy;
-      if (!set.has(nx + ',' + ny)) L.px(nx, ny, '#05030c');
-    }
-  }
-}
-// base clamp
-lamp.rect(284, 123, 5, 3, '#2e2350');
-lamp.rect(284, 123, 5, 1, '#7a6ab0');
-// lower arm
-thickLine(lamp, 285, 121, 276, 92, '#7a6ab0', '#2e2350');
-const lSteps = Math.max(Math.abs(276 - 285), Math.abs(92 - 121));
-for (let s = 0; s <= lSteps; s++) {
-  const x = Math.round(285 + (276 - 285) * s / lSteps);
-  const y = Math.round(121 + (92 - 121) * s / lSteps);
-  if (s % 2 === 0) lamp.px(x - 2, y, '#b8aee0');
-}
-// joint
-lamp.rect(275, 91, 3, 3, '#7a6ab0');
-lamp.px(276, 92, '#b8aee0');
-// upper arm
-thickLine(lamp, 276, 92, 226, 70, '#7a6ab0', '#2e2350');
-// shade trapezoid
-for (let y = 63; y <= 70; y++) {
-  const t = (y - 63) / (70 - 63);
-  const w = Math.round(6 + (12 - 6) * t);
-  const left = Math.round(226 - w / 2);
-  for (let x = left; x < left + w; x++) lamp.px(x, y, '#2e2350');
-  lamp.px(left + w - 1, y, '#7a6ab0');
-}
-// bulb row
-lamp.px(223, 70, '#ffd84a');
-lamp.px(224, 70, '#ffd84a');
-lamp.rect(225, 70, 5, 1, '#ffe6f4');
-lamp.px(230, 70, '#ffd84a');
-lamp.px(231, 70, '#ffd84a');
-
-const cone = new Layer(W, H);
-const bulbMask = [];
-const gw = 13, gh = 7;
-for (let j = 0; j < gh; j++) for (let i = 0; i < gw; i++) bulbMask.push(j === 3 && i >= 3 && i <= 9 ? 1 : 0);
-glow(cone, bulbMask, gw, gh, 219, 70, '#ffd84a', 3, 0.6);
-for (let y = 74; y <= 123; y++) {
-  const t = (y - 74) / (123 - 74);
-  const left = Math.round(220 + (176 - 220) * t);
-  const right = Math.round(232 + (262 - 232) * t);
-  const width = right - left;
-  const coreLeft = left + Math.round(width * 0.3);
-  const coreRight = right - Math.round(width * 0.3);
-  for (let x = left; x <= right; x++) {
-    if (bayer(x, y) < 0.25) cone.px(x, y, '#ffd84a', 0.16 * (1 - t * 0.4));
-    if (x >= coreLeft && x <= coreRight && bayer(x, y) < 0.5) cone.px(x, y, '#ffd84a', 0.1);
-  }
-}
-for (let y = 124; y <= 125; y++) for (let x = 176; x <= 262; x++) cone.px(x, y, '#ffd84a', 0.35);
-
-// ---------- mech sprite ----------
-const frames = mechFrames();
-const sh = sheet(frames);
-const MX = 172, MY = 124 - FH;
-
-// ---------- effects ----------
-const sparks = new Layer(24, 16);
-const sparkColors = ['#ffd84a', '#ffe6f4', '#ff8a3d'];
-const sparkPts = [[4, 8], [6, 5], [8, 10], [10, 6], [12, 9], [14, 4], [16, 8], [18, 6]];
-sparkPts.forEach(([x, y], i) => sparks.px(x, y, sparkColors[i % 3]));
-
-const puff = new Layer(7, 7);
-for (let y = 0; y < 7; y++) for (let x = 0; x < 7; x++) {
-  const d = (x - 3) ** 2 + (y - 3) ** 2;
-  if (d <= 9 && bayer(x, y) < 0.7) puff.px(x, y, '#f4ecff', 0.35);
+// Small layers (no outline)
+const muzzleFrames = [];
+{
+  const f0 = new Layer(6, 5);
+  for (let x = 2; x <= 3; x++) f0.px(x, 0, '#ffd84a');
+  for (let x = 1; x <= 4; x++) f0.px(x, 1, '#ffd84a');
+  for (let x = 0; x <= 5; x++) f0.px(x, 2, '#ffd84a');
+  for (let x = 1; x <= 4; x++) f0.px(x, 3, '#ffd84a');
+  for (let x = 2; x <= 3; x++) f0.px(x, 4, '#ffd84a');
+  f0.px(2, 2, '#ffe6f4'); f0.px(3, 2, '#ffe6f4');
+  const f1 = new Layer(6, 5);
+  for (let x = 2; x <= 3; x++) f1.px(x, 1, '#ff8a3d');
+  for (let x = 1; x <= 4; x++) f1.px(x, 2, '#ff8a3d');
+  for (let x = 2; x <= 3; x++) f1.px(x, 3, '#ff8a3d');
+  muzzleFrames.push(f0, f1);
 }
 
-const coilGlow = new Layer(13, 13);
-const coilMask = Array(13 * 13).fill(0);
-for (let dy = 5; dy <= 7; dy++) for (let dx = 5; dx <= 7; dx++) coilMask[dy * 13 + dx] = 1;
-glow(coilGlow, coilMask, 13, 13, 0, 0, C.cyan, 3, 0.9);
+const tracerLayer = new Layer(6, 1);
+for (let x = 0; x < 5; x++) tracerLayer.px(x, 0, '#ffd84a');
+tracerLayer.px(5, 0, '#ffe6f4');
 
-// ---------- rain ----------
-const rain = new Layer(W, H, { wrapX: true, wrapY: true });
-for (let n = 0; n < 170; n++) {
-  const x = ri(0, W - 1), y = ri(0, H - 1), len = ri(3, 6), a = 0.25 + R() * 0.35;
-  for (let k = 0; k < len; k++) rain.px(x - (k >> 1), y + k, C.rain, a);
+const beamFrames = [];
+{
+  const f0 = new Layer(126, 3);
+  for (let x = 0; x < 126; x++) { f0.px(x, 0, '#3ff0e6'); f0.px(x, 2, '#3ff0e6'); f0.px(x, 1, '#8ff6ff'); }
+  const f1 = new Layer(126, 3);
+  for (let x = 0; x < 126; x++) { f1.px(x, 1, '#3ff0e6'); if (x % 3 !== 0) { f1.px(x, 0, '#3ff0e6', 0.5); f1.px(x, 2, '#3ff0e6', 0.5); } }
+  beamFrames.push(f0, f1);
 }
 
-// ---------- compose ----------
-const img = (L, x = 0, y = 0, cls = '') =>
-  `<image${cls ? ` class="${cls}"` : ''} x="${x}" y="${y}" width="${L.w}" height="${L.h}" href="${L.uri()}"/>`;
-const strip = (L, cls) => `<g class="${cls}">${img(L, 0)}${img(L, TW)}</g>`;
+const glowLayer = new Layer(70, 14);
+glowLayer.rect(0, 6, 4, 4, '#ff3355', 0.35);
+for (let x = 0; x <= 13; x++) {
+  const rows = Math.floor(x / 5);
+  const alpha = 0.22 * (1 - x / 28);
+  for (let y = 7 - rows; y <= 7 + rows; y++) glowLayer.px(56 + x, y, '#ffd84a', alpha);
+}
 
-const pct = (t) => +((t / LOOP) * 100).toFixed(3);
+// carKeys
+const carKeys = [];
+carKeys.push(...path(0, 1.2, -64, CAR_Y, CAR_X, CAR_Y, { ease: 'out' }));
+const bob1 = [];
+for (let i = 0; ; i++) {
+  const t = 2.6 + i * 0.2;
+  if (t > 8.8 + 1e-9) break;
+  bob1.push({ t: +t.toFixed(3), y: CAR_Y - (i % 2) });
+}
+carKeys.push(...bob1);
+carKeys.push({ t: 9.4, x: 142, y: CAR_Y }, { t: 9.45, x: 139 }, { t: 9.5, x: 141 }, { t: 9.55, x: CAR_X });
+const bob2 = [];
+for (let i = 0; ; i++) {
+  const t = 15.4 + i * 0.2;
+  if (t >= 16.4 - 1e-9) break;
+  bob2.push({ t: +t.toFixed(3), y: CAR_Y - (i % 2) });
+}
+carKeys.push(...bob2);
+carKeys.push(...path(16.4, 17.2, CAR_X, CAR_Y, 420, CAR_Y, { ease: 'in' }));
+carKeys.push({ t: 17.25, x: -64, y: CAR_Y });
 
-// sparks keyframes
-const sparkKeys = [ // one burst (DESIGN §5: never more than 3 flashes a second)
-  `0%{opacity:0}`,
-  `${pct(POWER_ON - 0.01)}%{opacity:0}`,
-  `${pct(POWER_ON)}%{opacity:1}`,
-  `${pct(POWER_ON + 0.25)}%{opacity:1}`,
-  `${pct(POWER_ON + 0.35)}%{opacity:0}`,
-  `100%{opacity:0}`,
+const glowKeysBase = carKeys.map((k) => {
+  const nk = { t: k.t };
+  if (Object.prototype.hasOwnProperty.call(k, 'x')) nk.x = k.x + 2;
+  if (Object.prototype.hasOwnProperty.call(k, 'y')) nk.y = k.y + 45;
+  if (Object.prototype.hasOwnProperty.call(k, 'o')) nk.o = k.o;
+  return nk;
+});
+
+// sequences
+const carSeq = [
+  ...cycle([16, 17], 0.1, 1.2),
+  ...hold(2, 0.1), ...hold(3, 0.1), ...hold(4, 0.1),
+  ...hold(4, 0.5),
+  ...hold(3, 0.15), ...hold(2, 0.15),
+  ...cycle([0, 1], 0.1, 2.7),
+  ...hold(5, 0.2), ...hold(6, 0.2),
+  ...hold(7, 0.2),
+  ...cycle([8, 9], 0.1, 3.0),
+  ...hold(7, 0.2), ...hold(6, 0.2),
+  ...hold(6, 1.0),
+  ...hold(2, 0.1), ...hold(3, 0.1), ...hold(4, 0.1),
+  ...hold(4, 0.1),
+  ...hold(10, 0.1), ...hold(11, 0.1), ...hold(12, 0.1), ...hold(13, 0.1), ...hold(14, 0.1), ...hold(15, 0.1),
+  ...hold(15, 3.4),
+  ...hold(15, 0.1), ...hold(14, 0.1), ...hold(13, 0.1), ...hold(12, 0.1), ...hold(11, 0.1), ...hold(10, 0.1),
+  ...hold(4, 0.2), ...hold(3, 0.1), ...hold(2, 0.1),
+  ...cycle([0, 1], 0.1, 2.6),
 ];
 
-// steam keyframes
-const steamKeys = [
-  `0%{opacity:0;transform:translateY(0px)}`,
-  `${pct(STAND - 0.01)}%{opacity:0;transform:translateY(0px)}`,
-  `${pct(STAND)}%{opacity:0.8;transform:translateY(0px)}`,
-  `${pct(STAND + 1)}%{opacity:0;transform:translateY(-10px)}`,
-  `${pct(STAND + 3.49)}%{opacity:0;transform:translateY(0px)}`,
-  `${pct(STAND + 3.5)}%{opacity:0.8;transform:translateY(0px)}`,
-  `${pct(STAND + 4.5)}%{opacity:0;transform:translateY(-10px)}`,
-  `100%{opacity:0;transform:translateY(0px)}`,
+const robotSeq = [
+  ...hold(7, 11.0),
+  ...cycle([7, 8, 9, 10], 0.3, 3.4),
+  ...hold(7, 3.6),
 ];
 
-// coil keyframes
-const coilKeys = [`0%{opacity:0}`, `${pct(STAND)}%{opacity:0.5}`];
-let coilOp = 0.5;
-for (let i = 1; i * 0.5 + STAND <= FOLD; i++) {
-  const t = STAND + i * 0.5;
-  if (t > FOLD) break;
-  coilOp = (i % 2 === 0) ? 0.5 : 1;
-  coilKeys.push(`${pct(t)}%{opacity:${coilOp}}`);
+const glowSeq = [...hold(0, 18)];
+
+const avFrames = [...charFrames(), ...shootFrames()];
+const avSeq = [
+  ...cycle([0, 1, 2, 3], 0.3, 12.4),
+  ...hold(4, 0.1), ...hold(5, 0.1),
+  ...cycle([0, 1, 2, 3], 0.3, 5.4),
+];
+
+const boltSeq = [...hold(0, 18)];
+
+const g1Seq = [
+  ...hold(0, 5.2),
+  ...cycle([2, 3, 4, 5], 0.1, 1.6),
+  ...hold(6, 0.3),
+  ...hold(0, 10.9),
+];
+const g2Seq = [
+  ...hold(0, 5.2),
+  ...cycle([2, 3, 4, 5], 0.1, 3.2),
+  ...hold(6, 0.2),
+  ...hold(0, 9.4),
+];
+
+const SHOTS = [5.8, 6.3, 6.8, 7.4, 7.9, 8.4];
+const g1x = (t) => 404 - (404 - 250) * (t - 5.2) / 1.6;
+const g2x = (t) => 430 - (430 - 270) * (t - 5.2) / 3.2;
+
+const mzSeq = [];
+{
+  let cursor = 0;
+  for (const s of SHOTS) {
+    if (s - cursor > 1e-9) mzSeq.push(...hold(1, +(s - cursor).toFixed(3)));
+    mzSeq.push(...hold(0, 0.05));
+    mzSeq.push(...hold(1, 0.05));
+    cursor = s + 0.1;
+  }
+  if (18 - cursor > 1e-9) mzSeq.push(...hold(1, +(18 - cursor).toFixed(3)));
 }
-coilKeys.push(`${pct(FOLD)}%{opacity:0}`);
-coilKeys.push(`100%{opacity:0}`);
 
-// cone keyframes
-const conePct60 = LOOP * 0.6;
-const coneKeys = [
-  `0%{opacity:0.9}`,
-  `${pct(LOOP * 0.58)}%{opacity:0.9}`,
-  `${pct(conePct60)}%{opacity:0.5}`,
-  `${pct(LOOP * 0.62)}%{opacity:0.9}`,
-  `100%{opacity:0.9}`,
+const trSeq = [...hold(0, 18)];
+
+const e1Seq = [
+  ...hold(0, 6.8),
+  ...hold(0, 0.1), ...hold(1, 0.1), ...hold(2, 0.1), ...hold(3, 0.1), ...hold(4, 0.1),
+  ...hold(4, 10.7),
+];
+const e2Seq = [
+  ...hold(0, 8.4),
+  ...hold(0, 0.1), ...hold(1, 0.1), ...hold(2, 0.1), ...hold(3, 0.1), ...hold(4, 0.1),
+  ...hold(4, 9.1),
+];
+const e3Seq = [
+  ...hold(0, 13.4),
+  ...hold(0, 0.16), ...hold(1, 0.16), ...hold(2, 0.16), ...hold(3, 0.16), ...hold(4, 0.16),
+  ...hold(4, 3.8),
 ];
 
-const st = spriteTimeline('mech', FW, TIMELINE, { rest: REST });
+const bossSeq = [
+  ...hold(2, 9.0),
+  ...cycle([0, 1], 0.25, 1.0),
+  ...cycle([2, 3], 0.3, 1.6),
+  ...hold(4, 0.2),
+  ...cycle([2, 3], 0.3, 0.9),
+  ...hold(4, 0.2),
+  ...cycle([2, 3], 0.3, 0.3),
+  ...hold(4, 0.2),
+  ...hold(4, 4.6),
+];
 
-const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}" width="1000" height="420" role="img" shape-rendering="crispEdges" aria-label="Pixel-art rooftop workshop at night in the rain: a dev board on a workbench powers up, unfolds into a small mech, idles with a glowing coil, then folds back">
-<style>
-image{image-rendering:pixelated;image-rendering:crisp-edges}
-.far{animation:pan 160s steps(800) infinite}
-.mid{animation:pan 80s steps(800) infinite}
-.rain{animation:rain .45s steps(9) infinite}
-@keyframes pan{to{transform:translateX(-${TW}px)}}
-@keyframes rain{from{transform:translate(0,0)}to{transform:translate(${-H / 2}px,${H}px)}}
-.cone{opacity:0.9;animation:cone-flick ${LOOP}s infinite}
-@keyframes cone-flick{${coneKeys.join('')}}
-.sparks{opacity:0;animation:sparks-tl ${LOOP}s infinite}
-@keyframes sparks-tl{${sparkKeys.join('')}}
-.steam{opacity:0;animation:steam-tl ${LOOP}s steps(10) infinite}
-@keyframes steam-tl{${steamKeys.join('')}}
-.coilglow{opacity:0;animation:coil-tl ${LOOP}s infinite}
-@keyframes coil-tl{${coilKeys.join('')}}
-@media (prefers-reduced-motion: reduce){*{animation:none!important}.sparks{opacity:0}.steam{opacity:0}.coilglow{opacity:1}}
-${st.css}
-</style>
-${img(sky)}
-<g class="far"><image x="0" y="0" width="${TW}" height="${H}" href="${far.uri()}"/><image x="${TW}" y="0" width="${TW}" height="${H}" href="${far.uri()}"/></g>
-<g class="mid"><image x="0" y="0" width="${TW}" height="${H}" href="${mid.uri()}"/><image x="${TW}" y="0" width="${TW}" height="${H}" href="${mid.uri()}"/></g>
-${img(workshop)}
-${img(bench)}
-${img(lamp)}
-${img(cone, 0, 0, 'cone')}
-<g transform="translate(${MX} ${MY})"><clipPath id="mclip"><rect width="${FW}" height="${FH}"/></clipPath><g clip-path="url(#mclip)"><image class="mech" width="${sh.w}" height="${FH}" href="${sh.uri()}"/></g></g>
-${img(sparks, MX + ANCHORS.led[0] - 12, MY + ANCHORS.led[1] - 8, 'sparks')}
-${img(puff, MX + ANCHORS.steamL[0] - 3, MY + ANCHORS.steamL[1] - 3, 'steam')}
-${img(puff, MX + ANCHORS.steamR[0] - 3, MY + ANCHORS.steamR[1] - 3, 'steam')}
-${img(coilGlow, MX + ANCHORS.coil[0] - 6, MY + ANCHORS.coil[1] - 6, 'coilglow')}
-<g class="rain">${[0, W].map((x) => [-H, 0].map((y) => img(rain, x, y)).join('')).join('')}</g>
-</svg>
-`;
+const beamSeq = [
+  ...hold(0, 11.6),
+  ...cycle([0, 1], 0.1, 0.2),
+  ...hold(0, 1.4),
+  ...cycle([0, 1], 0.1, 0.2),
+  ...hold(0, 4.6),
+];
+
+// keys
+const robotKeys = [{ t: 0, x: CAR_X, y: CAR_Y, o: 0 }, { t: 11.0, o: 1 }, { t: 14.4, o: 0 }];
+
+const glowKeys = [...glowKeysBase, { t: 0, o: 0 }, { t: 2.4, o: 1 }, { t: 10.0, o: 0 }, { t: 15.4, o: 1 }, { t: 17.2, o: 0 }];
+
+const avKeys = [
+  { t: 0, x: 210, y: -40, o: 1 },
+  ...path(0.5, 1.0, 210, -40, 210, SIDEWALK_Y, { fps: 12, ease: 'in' }),
+  ...path(1.6, 2.0, 210, SIDEWALK_Y, 170, 95, { fps: 10, arc: 10 }),
+  { t: 2.0, o: 0 },
+  { t: 10.0, x: 168, y: 100, o: 1 },
+  ...path(10.0, 10.4, 168, 100, 220, ROAD_AV_Y, { fps: 10, arc: 14 }),
+  ...path(15.0, 15.3, 220, ROAD_AV_Y, 170, 100, { fps: 10, arc: 10 }),
+  { t: 15.3, o: 0 },
+  { t: 17.9, x: 210, y: -40, o: 0 },
+];
+
+const boltKeys = [
+  { t: 0, x: 237, y: 132, o: 0 },
+  { t: 12.45, o: 1 },
+  ...path(12.45, 12.7, 237, 132, 312, 132),
+  { t: 12.7, o: 0 },
+];
+
+const g1Keys = [
+  { t: 0, x: 404, y: GRUNT_Y, o: 0 },
+  { t: 5.2, o: 1 },
+  ...path(5.2, 6.8, 404, GRUNT_Y, 250, GRUNT_Y),
+  { t: 7.1, o: 0 },
+];
+
+const g2Keys = [
+  { t: 0, x: 430, y: GRUNT_Y, o: 0 },
+  { t: 5.2, o: 1 },
+  ...path(5.2, 8.4, 430, GRUNT_Y, 270, GRUNT_Y),
+  { t: 8.6, o: 0 },
+];
+
+const mzKeys = [{ t: 0, x: 169, y: 131, o: 0 }];
+for (const s of SHOTS) {
+  mzKeys.push({ t: s, o: 1 });
+  mzKeys.push({ t: s + 0.1, o: 0 });
+}
+
+const trKeys = [{ t: 0, x: 177, y: 133, o: 0 }];
+for (const s of SHOTS) {
+  const targetX = (s < 7 ? g1x(s + 0.15) : g2x(s + 0.15)) + 8;
+  trKeys.push({ t: s, x: 177, y: 133, o: 1 });
+  trKeys.push(...path(s, s + 0.15, 177, 133, targetX, 136));
+  trKeys.push({ t: s + 0.15, o: 0 });
+}
+
+const e1Keys = [{ t: 0, x: 246, y: 120, o: 0 }, { t: 6.8, o: 1 }, { t: 7.3, o: 0 }];
+const e2Keys = [{ t: 0, x: 266, y: 120, o: 0 }, { t: 8.4, o: 1 }, { t: 8.9, o: 0 }];
+const e3Keys = [{ t: 0, x: 292, y: 92, o: 0 }, { t: 13.4, o: 1 }, { t: 14.2, o: 0 }];
+
+const bossKeys = [
+  { t: 0, x: 404, y: BOSS_Y, o: 0 },
+  { t: 9.0, o: 1 },
+  ...path(9.0, 10.0, 404, BOSS_Y, BOSS_X, BOSS_Y, { fps: 10 }),
+  { t: 13.6, o: 0 },
+];
+
+const beamKeys = [
+  { t: 0, x: 178, y: 119, o: 0 },
+  { t: 11.6, o: 1 },
+  { t: 11.8, o: 0 },
+  { t: 13.2, o: 1 },
+  { t: 13.4, o: 0 },
+];
+
+// actors
+const bg = streetBackground();
+
+const aGlow = actor('glow', [glowLayer], glowSeq, glowKeys, { frame: 0, x: CAR_X + 2, y: CAR_Y + 45, o: 1 });
+const aBoss = actor('boss', bossFrames(), bossSeq, bossKeys, { frame: 2, x: 404, y: BOSS_Y, o: 0 });
+const aG1 = actor('g1', gruntFrames(0), g1Seq, g1Keys, { frame: 2, x: 330, y: GRUNT_Y, o: 1 });
+const aG2 = actor('g2', gruntFrames(1), g2Seq, g2Keys, { frame: 2, x: 430, y: GRUNT_Y, o: 0 });
+const aE1 = actor('e1', explosionFrames(), e1Seq, e1Keys, { frame: 0, x: 246, y: 120, o: 0 });
+const aE2 = actor('e2', explosionFrames(), e2Seq, e2Keys, { frame: 0, x: 266, y: 120, o: 0 });
+const aCar = actor('car', carFrames(), carSeq, [{ t: 0, o: 1 }, ...carKeys, { t: 11.0, o: 0 }, { t: 14.4, o: 1 }], { frame: 8, x: CAR_X, y: CAR_Y, o: 1 });
+const aRobot = actor('robot', mechFrames(), robotSeq, robotKeys, { frame: 7, x: CAR_X, y: CAR_Y, o: 0 });
+const aBeam = actor('beam', beamFrames, beamSeq, beamKeys, { frame: 0, x: 178, y: 119, o: 0 });
+const aTr = actor('tr', [tracerLayer], trSeq, trKeys, { frame: 0, x: 177, y: 133, o: 0 });
+const aMz = actor('mz', muzzleFrames, mzSeq, mzKeys, { frame: 0, x: 169, y: 131, o: 0 });
+const aAv = actor('av', avFrames, avSeq, avKeys, { frame: 0, x: 210, y: SIDEWALK_Y, o: 0 });
+const aBolt = actor('bolt', [boltLayer()], boltSeq, boltKeys, { frame: 0, x: 237, y: 132, o: 0 });
+const aE3 = actor('e3', explosionFrames().map(scale2), e3Seq, e3Keys, { frame: 0, x: 292, y: 92, o: 0 });
+
+const css = [
+  'image{image-rendering:pixelated;image-rendering:crisp-edges}',
+  bg.css,
+  aGlow.css,
+  aBoss.css,
+  aG1.css,
+  aG2.css,
+  aE1.css,
+  aE2.css,
+  aCar.css,
+  aRobot.css,
+  aBeam.css,
+  aTr.css,
+  aMz.css,
+  aAv.css,
+  aBolt.css,
+  aE3.css,
+  '@media (prefers-reduced-motion:reduce){*{animation:none!important}}',
+].join('');
+
+const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 168" width="1000" height="420" role="img" shape-rendering="crispEdges" aria-label="Pixel-art night street chase: a hacker jumps into a wedge supercar, turrets pop out of its lamps and blast two cyberpsychos, a boss blocks the road, the car transforms into a robot and both fight side by side, then fold up and drive off">` +
+  `<style>${css}</style>` +
+  `<defs>${bg.defs}</defs>` +
+  bg.back +
+  aGlow.svg + aBoss.svg + aG1.svg + aG2.svg + aE1.svg + aE2.svg + aCar.svg + aRobot.svg + aBeam.svg + aTr.svg + aMz.svg + aAv.svg + aBolt.svg + aE3.svg +
+  bg.front +
+  `</svg>`;
+
 const out = fileURLToPath(new URL('../../assets/mech.svg', import.meta.url));
 writeFileSync(out, svg);
 console.log('WROTE assets/mech.svg', Math.round(svg.length / 1024) + ' KB');
