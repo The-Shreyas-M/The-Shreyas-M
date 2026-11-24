@@ -2,11 +2,12 @@
 
 Keep under 60 lines. Replace old content; git keeps the history.
 
-## CHECKPOINT 2026-11-24 — Sprint 2b (T1 + T4 done, T2 started)
+## CHECKPOINT 2026-11-24 — Sprint 2b done (waiting for owner)
 
-Built: beat list + building interface (DESIGN §4a/§4b, owner OK) · all 7 project buildings (`gen/pixel/bldg/*.mjs`, `assets/projects/*.svg`) · car drive frames with the driver in the glass (`gen/pixel/sprites/car.mjs`).
-Please look: `preview/street.png` (car in the street) and `preview/buildings-row.png` (rebuild: `node gen/pixel/street-preview.mjs`).
-Owner reply: car look OK. Change: at the transform the avatar jumps out and fights BESIDE the robot (DESIGN §4a B5–B7 updated, TODO T2b added). Also: the Oculius eye must visibly look left↔right (TODO T4b).
+Built: car sheet (door ×3, pop-up lamps, roof turret, car→robot ×6, empty-seat drive) · avatar aim/fire frames + bolt · 2 cyberpsycho grunts, boss, explosion · the 18-s street-chase loop `assets/mech.svg` (144 KB) over a parallax street with all 7 buildings · Oculius eye now sweeps left↔right.
+Please test: 1) `node gen/preview.mjs`, open `preview/index.html` in Chrome (motion ON) — watch one full 18-s loop of the second banner. 2) Beats to look for: car rolls in → you jump in → lamps flip into a turret → two grunts explode → boss walks in → car becomes the robot, you jump out → beam + blaster → boss explodes → fold, drive off. 3) Phone width: the street sprites are small at 375 px.
+Need from you: a) approve car, villains, buildings, chase loop (or list changes) — recommended: approve, then Sprint 3. b) The boss hit frame tints pale pink for 0.2 s (×3) — OK, or prefer a red tint? Recommended: keep.
+Next sprint (proposed): Sprint 3 as in TODO (live stats billboard, contribution city game, daily Action).
 
 ## Start line (owner pastes this to run a sprint unattended)
 
@@ -25,7 +26,7 @@ Owner reply: car look OK. Change: at the transform the avatar jumps out and figh
 
 ## Next step
 
-T2, T2b, T4b done 2026-11-24 (car sheet 16 frames: `FRAMES`/`ANCHORS` in `sprites/car.mjs`; avatar `shootFrames()`/`boltLayer()`/`MUZZLE`). Next: T3 villains (`sprites/villains.mjs`), then T5 street-chase scene, then T6 review. In-scene check: `node gen/pixel/street-preview.mjs preview/x.png 2 <f1,f2,...>`. Commit before every background opencode run, never edit tracked files while one runs.
+Owner answers the checkpoint. If approved: new session, plan Sprint 3 (TODO). Changes → change request into Sprint 2b. Scene = `gen/pixel/mech.mjs` (actors via `track.mjs`) + `street-bg.mjs`; actor positions can be checked with getComputedStyle after seeking.
 
 ## Gotchas found so far
 
