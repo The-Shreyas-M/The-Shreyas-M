@@ -2,7 +2,7 @@
 // Usage: node gen/pixel/street-preview.mjs <out.png> [scale] [carFrame]
 import { writeFileSync } from 'node:fs';
 import { Layer, encodePNG, bayer } from './px.mjs';
-import { BUILDINGS, building } from './buildings.mjs';
+import { READY, building } from './buildings.mjs';
 import { carFrames, FH as CFH, SEAT } from './sprites/car.mjs';
 
 
@@ -22,7 +22,7 @@ const blit = (src, ox, oy, sx = 0, sy = 0, w = src.w, h = src.h) => {
 // buildings along the street, base on y=128, 80 px pitch
 let bx = 4;
 for (let k = 0; k < 5; k++) {
-  const b = building(BUILDINGS[k % BUILDINGS.length]);
+  const b = building(READY[k % READY.length]);
   blit(b.base, bx, 128 - b.h);
   if (b.anim) blit(b.anim.frames[0], bx + b.anim.x, 128 - b.h + b.anim.y);
   bx += 80;
