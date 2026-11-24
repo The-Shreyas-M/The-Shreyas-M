@@ -36,12 +36,62 @@ Lighting rule: the key light is neon from the RIGHT (pink/cyan rim on right edge
 
 GitHub content column ≈ 830–900 px desktop, ~360 px phone. All assets use logical width 400 (scaled to 100%).
 
-1. `hero.svg` 400×168 — city + neon name sign + tagline (DONE, approved). Later: the owner's pixel character on the near rooftop.
-2. `mech.svg` 400×168 — a rooftop workshop at night: a pixel dev board on a bench powers up and transforms into an original ~56-px-tall mech (unfold frames), idles (coil glow, visor scan, steam), folds back. Name: bench-mech. No franchise likeness.
+1. `hero.svg` 400×168 — city + neon name sign + tagline + the owner's hacker avatar on the near rooftop (DONE, approved).
+2. `mech.svg` 400×168 — the street chase (R3): the avatar rides an original 80s wedge supercar down a neon street lined with the project buildings, turrets shoot cyberpsychos, the car becomes the robot for a boss. Beat list in §4a. No franchise likeness, no badge.
 3. `stats.svg` (generated daily) — in-world HUD: a holographic billboard on a building face with live numbers, language bars as neon tubes.
-4. `projects/*.svg` — each project is a shop-front / billboard in the same street, clickable.
+4. `projects/*.svg` — each project is a themed pixel BUILDING (§4b), its own linked SVG, and the same art is the mid layer of the chase street.
 5. `contrib-game.svg` (generated daily) — the contribution calendar as a 53×7 grid of building windows; commit cells are lit windows by level; the mech patrols the rooftop and zaps windows.
 6. Footer — a pixel subway-station sign "ENTER PORTFOLIO" and a YouTube billboard.
+
+### 4a. Street chase beat list (`mech.svg`, R3/R16) — DRAFT, owner to OK
+
+**Loop = 18.0 s.** Every animation period in the scene equals 18 s or divides it (0.1, 0.2, 0.6, 1.5, 3, 6, 9, 18 s), or layers drift across loops. Camera is fixed; speed is shown by parallax.
+
+Rows (logical px): sky 0–60 static · far skyline base y=96 · project buildings base y=128 · sidewalk 128–134 · road 134–160 (car wheels touch y=154) · front curb + near props 160–168.
+
+| # | Time (s) | What happens | Sprites / frames |
+|---|---|---|---|
+| B0 Arrive | 0.0–1.2 | Car rolls in from x=−64 to x=140 (lights off, wheels spinning), easing in whole-pixel steps. Avatar drops from the top edge (rooftop jump, 6 steps 0.5–1.0) and lands on the sidewalk at x=210. | car drive ×2 · avatar idle f0 moved whole-pixel |
+| B1 Mount | 1.2–2.6 | Scissor door lifts 1.2–1.5; avatar hops into the seat 1.6–2.0 (4-step arc, then clipped so only head + shoulders show in the window); door down 2.0–2.3; headlight glow + red tail lights on at 2.4 (a glow, not a flash). | car door ×3 · avatar idle f0 · clip |
+| B2 Drive | 2.6–5.0 | Car holds x=140 with a 1-px bob; all parallax layers run; rain slants. | car drive ×2 (0.1 s each) |
+| B3 Ambush | 5.0–9.0 | 5.0–5.4 pop-up lights flip up and turrets slide out. 5.2 two grunts run in from the right along the road. Shots at 5.8, 6.3, 6.8 → grunt 1 hit + explodes 6.8–7.3; shots 7.4, 7.9, 8.4 → grunt 2 hit + explodes 8.4–8.9. 8.6–9.0 turrets retract. | car lights ×2 + turret ×2 · muzzle 6×5 ×2 · grunt run ×4 / hit ×1 · explosion 32×32 ×5 |
+| B4 Boss | 9.0–10.0 | Parallax brakes to a stop by 9.4. Boss stomps in from the right to x=300; car skids (2-px shake 9.4–9.6). | boss walk ×2 |
+| B5 Transform | 10.0–11.0 | Car → robot in 6 frames at x=140; the avatar's head shows in a chest cockpit window. | car→robot ×6 (64×64 frames) |
+| B6 Fight | 11.0–14.4 | Robot idles (existing 4 frames); coil-beam blasts at 11.6, 12.4, 13.2 (0.2 s each), boss hit frame on each; boss explodes 13.4–14.2 with pixel debris, no full-screen flash. | robot idle ×4 + cockpit · beam ×2 · boss idle ×2 / hit ×1 · explosion 2× scale |
+| B7 Fold | 14.4–15.4 | Robot → car (B5 frames reversed). | car→robot reversed |
+| B8 Drive off | 15.4–18.0 | Lights on; parallax runs 15.6–16.8; car accelerates off the right edge 16.4–17.2; 17.2–18.0 empty street, the Oculius eye looks around — then B0 brings the car back in from the left (seamless wrap). | car drive ×2 |
+
+**Parallax** (moves only 2.6–9.4 s and 15.6–16.8 s = 8.0 s of travel per loop; each layer's travel is a whole number of its tile widths so the seam is invisible): far skyline tile 400 px, travel 400 · project buildings tile 560 px (7 buildings × 80), travel 560 (= 70 px/s) · near props (lamps, hydrants, signs) tile 160, travel 1120 · road dashes tile 40, travel 2240. A tile is drawn once and repeated with `<use>`, never stored twice.
+
+**Flash limit:** a "flash" = any frame with a white/near-white burst larger than 16 px. Counted across the WHOLE scene, never more than 3 in any 1-s window. The plan above peaks at 2/s (a shot and its hit share one frame; explosions are orange fireballs, not flashes). Small arc flicker on the substation (<16 px) is not a flash but still stays ≤3/s.
+
+**New frames this needs:** car sheet (frames 64×64, car drawn on the bottom rows so transform frames share the sheet): drive 2, door 3, lights/turret 4, car→robot 6 (the last = robot idle f0 from `sprites/mech.mjs` with a cockpit window and a 7×7 avatar head). Muzzle 2, beam 2. Grunts ~24×32: idle 2, run 4, hit 1. Boss ~48×56: walk 2, idle 2, hit 1. Explosion 32×32: 5. The avatar needs NO new frames (whole-pixel moves of idle f0 + clipping).
+
+**Reduced motion** rests at t=5.6 s: car with turrets out and the avatar in the window, grunt 1 on the road ahead, Oculius eye open, no flash on screen.
+
+**Size budget** ≤150 KB: sky+far ~20 KB, building tile 560×~120 ~70 KB, near tile ~15 KB, sprite sheets ~35 KB. Over budget → fewer distinct near props first, never lower art quality.
+
+### 4b. Project buildings (`gen/pixel/buildings.mjs`, R7)
+
+Interface (decided 2026-11-24): every building is exactly **72 px wide**, height per building below, ground contact = row `h-1`. The module exports pure functions only and writes files only under a main guard (`if (import.meta.url === pathToFileURL(process.argv[1]).href)`), so the chase scene can import it with no side effects:
+
+```js
+export const BUILDINGS = ['oculius','charger65w','chocobao','esp32synth','neura','aivideo','axiom']; // street order
+export function building(name) // → { name, label, w: 72, h, base: Layer, anim: { frames: Layer[], x, y, fw, fh, period } | null }
+export function buildingSvg(name) // → standalone SVG string: viewBox 96 × (h+24), dusk sky, the building, a FONT name plate below
+```
+
+`anim.period` divides 18 s. Standalone files: `assets/projects/<name>.svg`, each wrapped in a link to its repo in the README.
+
+| Name | Project | Look | Animated part |
+|---|---|---|---|
+| oculius | Oculius | dark tower crowned by a giant mechanical eye (iris cyan, lid plates) | pupil looks L / centre / R / up, 6 s period |
+| charger65w | 65W fast charger | power-grid substation: transformer block, insulator stacks, pylons, a USB-C plug sign | cyan arcs between insulators, 1.5 s period |
+| chocobao | ChocoBao | microprocessor-chip tower: facade = a chip die, pins as balconies, arcade-screen windows | screen windows cycle tiny game frames, 3 s |
+| esp32synth | ESP32-Synth | speaker-stack tower with a keyboard-key awning | EQ bars on the facade pulse, 3 s |
+| neura | NEURA | liquid-glass tower with a terminal HUD crown | holo frames scrub down the glass, 3 s |
+| aivideo | ai-video-editor | cinema with a marquee and film-reel neon | big screen plays frames, 3 s |
+| axiom | Axiom | archive tower of stacked pages / books | magnifier searchlight scans the pages, 6 s |
 
 ## 5. Quality bar (check every asset against the hero before showing the owner)
 

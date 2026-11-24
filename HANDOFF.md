@@ -2,12 +2,11 @@
 
 Keep under 60 lines. Replace old content; git keeps the history.
 
-## Owner reply 2026-11-24 — change request (recorded in DECISIONS, SPEC R3/R7/R16, TODO Sprint 2b)
+## CHECKPOINT 2026-11-24 — Sprint 2b T1 (waiting for the owner)
 
-- Mech → an original 80s wedge supercar (Countach spirit, no badge/exact copy) that the avatar rides; pop-up headlights → turrets that shoot cyberpsycho villains; car transforms into the robot for a boss.
-- Project buildings get themed art (chip tower, Oculius eye that looks around, fast-charger power grid).
-- Open questions for the owner (ask at Sprint 2b T1): building themes for ESP32-Synth, ChocoBao, NEURA, ai-video-editor, Axiom (one line each on what the project is/should look like); OK with the beat list.
-- Sprint 2 is done and committed (bench-mech scene, character); its art is reused.
+Built: the 18 s chase beat list (DESIGN §4a) and the building interface + 7 themes (DESIGN §4b).
+Need from you: (1) OK the beat list; (2) OK the building themes. Proposed: chip tower = ChocoBao, ESP32-Synth = speaker stack, NEURA = liquid-glass HUD tower, ai-video-editor = cinema, Axiom = archive tower with a searchlight.
+In flight: T4's first building (Oculius) via opencode; brief `.oc/s2b-t4-oculius.md`.
 
 ## Start line (owner pastes this to run a sprint unattended)
 
@@ -26,7 +25,7 @@ Keep under 60 lines. Replace old content; git keeps the history.
 
 ## Next step
 
-Start Sprint 2b T1 in a NEW session: write the beat list, ask the owner the open questions above.
+After the owner OKs §4a/§4b: review the Oculius building composited (not alone), then fan out T4 (remaining 6 buildings, one brief each) and start T2 (car). Send the owner ONE car frame in the street before authoring the transform and villain frames.
 
 ## Gotchas found so far
 

@@ -24,7 +24,7 @@ Only the current and next sprint are detailed; the rest are milestones.
 - [x] T1 [me] (R1,R2) Owner rejected vector look; built `gen/pixel/px.mjs` + `gen/pixel/hero.mjs` → `assets/hero.svg` pixel city  ✔ owner: "Yes, build on it"
 - [x] T2 [me] (R1) DESIGN.md rewritten for pixel art; SPEC R-table restyled  ✔ docs updated
 
-## Sprint 2 — pixel bench-mech scene + owner character  ← current
+## Sprint 2 — pixel bench-mech scene + owner character  ✔ done 2026-11-24
 
 Quality bar: DESIGN.md §5. Compare every frame to `assets/hero.svg` before ticking. Old vector `assets/mech.svg` gets replaced.
 
@@ -38,7 +38,7 @@ Quality bar: DESIGN.md §5. Compare every frame to `assets/hero.svg` before tick
 - `node gen/check.mjs` prints `ALL ASSETS OK`; `node gen/pixel/hero.mjs && node gen/pixel/mech.mjs` regenerate both
 - Owner approves the mech scene and the character (checkpoint)
 
-## Sprint 2b — supercar chase + project buildings (change request 2026-11-24)  ← next
+## Sprint 2b — supercar chase + project buildings (change request 2026-11-24)  ← current
 
 Reuse: px.mjs, sprite.mjs (spriteTimeline), sprites/hero-char.mjs (avatar), sprites/mech.mjs (robot frames), strip.mjs. Review every sprite composited in its scene (observation: contact sheets lie).
 
