@@ -2,9 +2,27 @@
 
 Keep under 60 lines. Replace old content; git keeps the history.
 
-## Sprint 2b APPROVED 2026-11-25 — next: Sprint 3 in a new session
+## CHECKPOINT 2026-11-25 — Sprint 3
 
-Owner approved car, villains, buildings, 18-s chase loop (`assets/mech.svg`); rear-deck turret and pink boss-hit tint kept. Four skill improvements approved and applied in Shreyas-AI-Skills (see docs/SKILL-FEEDBACK.md).
+Built:
+- `dist/stats.svg` — holographic billboard on a night tower: stars, commits, PRs, issues, followers, repos + 5 neon-tube language bars (live data).
+- `dist/contrib-game.svg` — contribution city: 53×7 lit windows from the real calendar; the mech patrols the street and zaps the 6 busiest days.
+- `.github/workflows/update.yml` — daily 03:17 UTC + manual + on gen/ changes → force-pushes `dist/` to orphan branch `output`; README now points at those URLs.
+
+Please test:
+1. `node gen/stats.mjs && node gen/contrib.mjs && node gen/check.mjs` → two WROTE lines, `ALL ASSETS OK`.
+2. `node gen/preview.mjs`, open preview/index.html (or the `preview` launch config) → 4 images: hero, chase, billboard, city.
+3. Numbers: billboard says 554 contributions / 16 followers = your profile today.
+
+Need from you:
+- Do the billboard and city look insane enough? Real data makes the city sparse (many dark windows) — recommend keep it honest; option: brighten level-0 windows slightly.
+- Repos/languages count PUBLIC non-fork repos only (private ones would leak names/languages and the Action's token cannot see them). Recommend keep.
+- The Action cannot run until the public repo exists (v1 go-live) — recommend testing it then.
+
+Next sprint (proposed, v0.4): R7 project shop-fronts in README, R8 pixel workbench, R9 portfolio sign + YouTube billboard, R12 phone pass.
+
+Skill improvements — need your OK:
+1. new-project → template/docs/WORKFLOW.md "The exact brief" → add "Write the file first, then run DONE WHEN; settle edge cases by the brief's rule, do not deliberate" — a free worker spent a whole run reasoning and wrote nothing (S3-T3); the rerun with that line passed.
 
 ## Start line (owner pastes this to run a sprint unattended)
 
@@ -14,7 +32,7 @@ Owner approved car, villains, buildings, 18-s chase loop (`assets/mech.svg`); re
 
 **Open a new session for every sprint, on Sonnet or Opus (not the top model).** If `/goal` is not available: type `/sprint`.
 
-## State (2026-11-24)
+## State (2026-11-25)
 
 - Pixel-art direction (`docs/DESIGN.md` is the style law; `assets/hero.svg` the quality reference).
 - Sprites: `gen/pixel/sprites/mech.mjs` (parts as string grids, mirrored, then rim/shade/outline passes; exports FW/FH/TIMELINE/ANCHORS/mechFrames) and `gen/pixel/sprites/hero-char.mjs`. Uneven frame timing uses `spriteTimeline()` in `gen/pixel/sprite.mjs`.
@@ -23,7 +41,7 @@ Owner approved car, villains, buildings, 18-s chase loop (`assets/mech.svg`); re
 
 ## Next step
 
-New session (Sonnet or Opus): start Sprint 3 from TODO — T1 [me] decide interfaces + capture fixtures with `gh api graphql`, then dispatch T2–T4 [oc] in parallel (different files).
+Wait for the owner's Sprint 3 answer; then plan v0.4 in a new session.
 
 ## Gotchas found so far
 
@@ -35,4 +53,5 @@ New session (Sonnet or Opus): start Sprint 3 from TODO — T1 [me] decide interf
 - Pixel art: whole-pixel motion only (`steps()`); embed PNG layers as data URIs; never hand-write vector illustration again (rejected). Dark navy on the night city disappears: keep sprites bright enough.
 - hero.mjs writes its file when imported: copy its functions, never import it.
 - GitHub strips JavaScript and blocks external resources inside SVGs, so fonts must be system or data URIs; the profile shows only if the repo The-Shreyas-M/The-Shreyas-M is PUBLIC.
+- Pixel font now has all digits + `%` `+`. Data layer = `gen/lib/github.mjs` (`--fixture` = gen/fixtures raw GraphQL). api.github.com sometimes times out from this machine (TLS handshake); Bash needs the sandbox off for gh/fetch.
 - Local git identity is The-Shreyas-M (global identity is the college account): keep it.
