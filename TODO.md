@@ -38,7 +38,7 @@ Quality bar: DESIGN.md §5. Compare every frame to `assets/hero.svg` before tick
 - `node gen/check.mjs` prints `ALL ASSETS OK`; `node gen/pixel/hero.mjs && node gen/pixel/mech.mjs` regenerate both
 - Owner approves the mech scene and the character (checkpoint)
 
-## Sprint 2b — supercar chase + project buildings (change request 2026-11-24)  ← current
+## Sprint 2b — supercar chase + project buildings (change request 2026-11-24)  ✔ done 2026-11-25
 
 Reuse: px.mjs, sprite.mjs (spriteTimeline), sprites/hero-char.mjs (avatar), sprites/mech.mjs (robot frames), strip.mjs. Review every sprite composited in its scene (observation: contact sheets lie).
 
@@ -49,11 +49,11 @@ Reuse: px.mjs, sprite.mjs (spriteTimeline), sprites/hero-char.mjs (avatar), spri
 - [x] T3 [me] (R16) Cyberpsycho sprites `gen/pixel/sprites/villains.mjs`: 2 grunts (idle/run/hit/explode) + boss — check: strip review  ✔ gruntFrames(0|1) idle2/run4/hit1 (24×32), bossFrames() walk2/idle2/hit1 (48×56), explosionFrames() ×5 (32×32, orange, no white); composites preview/villains-a/b/c.png + grunt-zoom reviewed, heads/colours reworked once
 - [x] T4 [oc] (R7) Building generator `gen/pixel/buildings.mjs` → `assets/projects/<name>.svg`: chip tower, Oculius eye tower (pupil looks around), power-grid substation (arcs) first — check: check.mjs OK + review  ✔ all 7 (registry + gen/pixel/bldg/*.mjs, beam-free ×7); ALL ASSETS OK (9 files), 4–5 KB each; row composite reviewed
 - [x] T5 [oc] (R3) Rewrite `gen/pixel/mech.mjs` as the street-chase scene per the T1 beat list (turret muzzle flashes ≤3/s, explosions, transform) — check: check.mjs OK, beats sampled in browser  ✔ track.mjs (me) + street-bg.mjs and mech.mjs (beam-free, 1st try each); 144 KB, ALL ASSETS OK; positions read via getComputedStyle; beats seeked at 1.8/5.85/6.9/9.8/10.65/12.55/13.3/13.8/15.1/16.9 s + reduced-motion rest reviewed
-- [ ] T6 [tool] (R3,R7,R16) Review at 1280/375 px → owner checkpoint  (reviewed by me 2026-11-24 at 1280/375 px; CHECKPOINT written — waiting for owner)
+- [x] T6 [tool] (R3,R7,R16) Review at 1280/375 px → owner checkpoint  ✔ owner approved all 2026-11-25 (car, villains, buildings, chase loop; rear-deck turret + pink hit tint kept)
 
 **Done when:** check.mjs OK; owner approves car, villains, buildings and the chase loop.
 
-## Sprint 3 — live stats billboard + contribution city game + daily Action
+## Sprint 3 — live stats billboard + contribution city game + daily Action  ← current
 
 - [ ] T1 [me] (R4,R5) Decide interfaces; capture `gen/fixtures/contrib.json` and `stats.json` with `gh api graphql` — check: fixtures parse
 - [ ] T2 [oc] (R5) `gen/stats.mjs` (+ `--fixture`): holographic billboard on a building, neon-tube language bars, live numbers, via px.mjs — check: `node gen/stats.mjs --fixture` → `dist/stats.svg`, check OK
