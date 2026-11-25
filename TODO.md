@@ -55,7 +55,7 @@ Reuse: px.mjs, sprite.mjs (spriteTimeline), sprites/hero-char.mjs (avatar), spri
 
 ## Sprint 3 — live stats billboard + contribution city game + daily Action  ← current
 
-- [ ] T1 [me] (R4,R5) Decide interfaces; capture `gen/fixtures/contrib.json` and `stats.json` with `gh api graphql` — check: fixtures parse
+- [x] T1 [me] (R4,R5) Decide interfaces; capture `gen/fixtures/contrib.json` and `stats.json` with `gh api graphql` — check: fixtures parse  ✔ `gen/lib/github.mjs` (loadStats/loadContrib); fixtures parse (1162 contribs, 53 wk, 5 langs) — placeholder data, live API unreachable today → real capture in T5
 - [ ] T2 [oc] (R5) `gen/stats.mjs` (+ `--fixture`): holographic billboard on a building, neon-tube language bars, live numbers, via px.mjs — check: `node gen/stats.mjs --fixture` → `dist/stats.svg`, check OK
 - [ ] T3 [oc] (R4,R14) `gen/contrib.mjs` (+ `--fixture`): 53×7 lit-window city block from the calendar, mech sprite patrols and zaps windows — check: `node gen/contrib.mjs --fixture` → `dist/contrib-game.svg`, check OK
 - [ ] T4 [oc] (R6) `.github/workflows/update.yml` daily cron + dispatch → orphan `output` branch — check: diff read + YAML parse
