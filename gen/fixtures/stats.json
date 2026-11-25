@@ -1,27 +1,341 @@
 {
- "_placeholder": true,
  "user": {
   "login": "The-Shreyas-M",
-  "name": "Shreyas M",
+  "name": "The-Shreyas-M",
   "followers": {
-   "totalCount": 42
+   "totalCount": 16
   },
   "repositories": {
    "totalCount": 23,
    "nodes": [
     {
-     "stargazerCount": 12,
+     "stargazerCount": 2,
      "languages": {
       "edges": [
        {
-        "size": 410000,
+        "size": 19563,
+        "node": {
+         "name": "C",
+         "color": "#555555"
+        }
+       },
+       {
+        "size": 19279,
         "node": {
          "name": "C++",
          "color": "#f34b7d"
         }
        },
        {
-        "size": 90000,
+        "size": 5332,
+        "node": {
+         "name": "HTML",
+         "color": "#e34c26"
+        }
+       }
+      ]
+     }
+    },
+    {
+     "stargazerCount": 0,
+     "languages": {
+      "edges": [
+       {
+        "size": 160375,
+        "node": {
+         "name": "Python",
+         "color": "#3572A5"
+        }
+       },
+       {
+        "size": 5105,
+        "node": {
+         "name": "TypeScript",
+         "color": "#3178c6"
+        }
+       },
+       {
+        "size": 570,
+        "node": {
+         "name": "PowerShell",
+         "color": "#012456"
+        }
+       }
+      ]
+     }
+    },
+    {
+     "stargazerCount": 0,
+     "languages": {
+      "edges": [
+       {
+        "size": 1632287,
+        "node": {
+         "name": "Rust",
+         "color": "#dea584"
+        }
+       },
+       {
+        "size": 131713,
+        "node": {
+         "name": "Python",
+         "color": "#3572A5"
+        }
+       },
+       {
+        "size": 33859,
+        "node": {
+         "name": "C",
+         "color": "#555555"
+        }
+       },
+       {
+        "size": 5768,
+        "node": {
+         "name": "Zig",
+         "color": "#ec915c"
+        }
+       },
+       {
+        "size": 5633,
+        "node": {
+         "name": "PowerShell",
+         "color": "#012456"
+        }
+       },
+       {
+        "size": 1231,
+        "node": {
+         "name": "Batchfile",
+         "color": "#C1F12E"
+        }
+       },
+       {
+        "size": 700,
+        "node": {
+         "name": "Dockerfile",
+         "color": "#384d54"
+        }
+       }
+      ]
+     }
+    },
+    {
+     "stargazerCount": 0,
+     "languages": {
+      "edges": [
+       {
+        "size": 57572,
+        "node": {
+         "name": "Python",
+         "color": "#3572A5"
+        }
+       },
+       {
+        "size": 8833,
+        "node": {
+         "name": "Shell",
+         "color": "#89e051"
+        }
+       },
+       {
+        "size": 757,
+        "node": {
+         "name": "CMake",
+         "color": "#DA3434"
+        }
+       }
+      ]
+     }
+    },
+    {
+     "stargazerCount": 0,
+     "languages": {
+      "edges": [
+       {
+        "size": 26440,
+        "node": {
+         "name": "Python",
+         "color": "#3572A5"
+        }
+       },
+       {
+        "size": 456,
+        "node": {
+         "name": "Batchfile",
+         "color": "#C1F12E"
+        }
+       }
+      ]
+     }
+    },
+    {
+     "stargazerCount": 0,
+     "languages": {
+      "edges": [
+       {
+        "size": 174686,
+        "node": {
+         "name": "Python",
+         "color": "#3572A5"
+        }
+       },
+       {
+        "size": 21333,
+        "node": {
+         "name": "JavaScript",
+         "color": "#f1e05a"
+        }
+       },
+       {
+        "size": 5105,
+        "node": {
+         "name": "TypeScript",
+         "color": "#3178c6"
+        }
+       },
+       {
+        "size": 2594,
+        "node": {
+         "name": "Shell",
+         "color": "#89e051"
+        }
+       },
+       {
+        "size": 570,
+        "node": {
+         "name": "PowerShell",
+         "color": "#012456"
+        }
+       }
+      ]
+     }
+    },
+    {
+     "stargazerCount": 0,
+     "languages": {
+      "edges": [
+       {
+        "size": 49725,
+        "node": {
+         "name": "TypeScript",
+         "color": "#3178c6"
+        }
+       },
+       {
+        "size": 1635,
+        "node": {
+         "name": "CSS",
+         "color": "#663399"
+        }
+       },
+       {
+        "size": 369,
+        "node": {
+         "name": "JavaScript",
+         "color": "#f1e05a"
+        }
+       }
+      ]
+     }
+    },
+    {
+     "stargazerCount": 0,
+     "languages": {
+      "edges": [
+       {
+        "size": 69409,
+        "node": {
+         "name": "HTML",
+         "color": "#e34c26"
+        }
+       },
+       {
+        "size": 58814,
+        "node": {
+         "name": "Python",
+         "color": "#3572A5"
+        }
+       },
+       {
+        "size": 889,
+        "node": {
+         "name": "PowerShell",
+         "color": "#012456"
+        }
+       }
+      ]
+     }
+    },
+    {
+     "stargazerCount": 0,
+     "languages": {
+      "edges": [
+       {
+        "size": 98945,
+        "node": {
+         "name": "Python",
+         "color": "#3572A5"
+        }
+       },
+       {
+        "size": 17478,
+        "node": {
+         "name": "HTML",
+         "color": "#e34c26"
+        }
+       },
+       {
+        "size": 1758,
+        "node": {
+         "name": "Batchfile",
+         "color": "#C1F12E"
+        }
+       },
+       {
+        "size": 745,
+        "node": {
+         "name": "Shell",
+         "color": "#89e051"
+        }
+       }
+      ]
+     }
+    },
+    {
+     "stargazerCount": 0,
+     "languages": {
+      "edges": [
+       {
+        "size": 6657,
+        "node": {
+         "name": "Shell",
+         "color": "#89e051"
+        }
+       }
+      ]
+     }
+    },
+    {
+     "stargazerCount": 0,
+     "languages": {
+      "edges": [
+       {
+        "size": 83502,
+        "node": {
+         "name": "C++",
+         "color": "#f34b7d"
+        }
+       },
+       {
+        "size": 33608,
+        "node": {
+         "name": "Python",
+         "color": "#3572A5"
+        }
+       },
+       {
+        "size": 8169,
         "node": {
          "name": "C",
          "color": "#555555"
@@ -31,46 +345,58 @@
      }
     },
     {
-     "stargazerCount": 7,
+     "stargazerCount": 0,
+     "languages": {
+      "edges": []
+     }
+    },
+    {
+     "stargazerCount": 0,
+     "languages": {
+      "edges": []
+     }
+    },
+    {
+     "stargazerCount": 0,
      "languages": {
       "edges": [
        {
-        "size": 260000,
+        "size": 4610,
         "node": {
          "name": "Python",
          "color": "#3572A5"
-        }
-       },
-       {
-        "size": 80000,
-        "node": {
-         "name": "JavaScript",
-         "color": "#f1e05a"
         }
        }
       ]
      }
     },
     {
-     "stargazerCount": 4,
+     "stargazerCount": 0,
      "languages": {
       "edges": [
        {
-        "size": 150000,
+        "size": 87308,
+        "node": {
+         "name": "TypeScript",
+         "color": "#3178c6"
+        }
+       },
+       {
+        "size": 18950,
+        "node": {
+         "name": "PLpgSQL",
+         "color": "#336790"
+        }
+       },
+       {
+        "size": 3353,
         "node": {
          "name": "JavaScript",
          "color": "#f1e05a"
         }
        },
        {
-        "size": 40000,
-        "node": {
-         "name": "HTML",
-         "color": "#e34c26"
-        }
-       },
-       {
-        "size": 30000,
+        "size": 2850,
         "node": {
          "name": "CSS",
          "color": "#663399"
@@ -80,14 +406,181 @@
      }
     },
     {
-     "stargazerCount": 1,
+     "stargazerCount": 0,
      "languages": {
       "edges": [
        {
-        "size": 70000,
+        "size": 77870,
+        "node": {
+         "name": "JavaScript",
+         "color": "#f1e05a"
+        }
+       },
+       {
+        "size": 3217,
+        "node": {
+         "name": "CSS",
+         "color": "#663399"
+        }
+       },
+       {
+        "size": 442,
+        "node": {
+         "name": "HTML",
+         "color": "#e34c26"
+        }
+       }
+      ]
+     }
+    },
+    {
+     "stargazerCount": 0,
+     "languages": {
+      "edges": [
+       {
+        "size": 34974,
+        "node": {
+         "name": "JavaScript",
+         "color": "#f1e05a"
+        }
+       },
+       {
+        "size": 3217,
+        "node": {
+         "name": "CSS",
+         "color": "#663399"
+        }
+       },
+       {
+        "size": 422,
+        "node": {
+         "name": "HTML",
+         "color": "#e34c26"
+        }
+       }
+      ]
+     }
+    },
+    {
+     "stargazerCount": 0,
+     "languages": {
+      "edges": [
+       {
+        "size": 142,
+        "node": {
+         "name": "HCL",
+         "color": "#844FBA"
+        }
+       }
+      ]
+     }
+    },
+    {
+     "stargazerCount": 0,
+     "languages": {
+      "edges": [
+       {
+        "size": 36535,
         "node": {
          "name": "Python",
          "color": "#3572A5"
+        }
+       },
+       {
+        "size": 223,
+        "node": {
+         "name": "Batchfile",
+         "color": "#C1F12E"
+        }
+       }
+      ]
+     }
+    },
+    {
+     "stargazerCount": 0,
+     "languages": {
+      "edges": [
+       {
+        "size": 4139,
+        "node": {
+         "name": "C++",
+         "color": "#f34b7d"
+        }
+       },
+       {
+        "size": 3291,
+        "node": {
+         "name": "JavaScript",
+         "color": "#f1e05a"
+        }
+       }
+      ]
+     }
+    },
+    {
+     "stargazerCount": 0,
+     "languages": {
+      "edges": [
+       {
+        "size": 1602,
+        "node": {
+         "name": "JavaScript",
+         "color": "#f1e05a"
+        }
+       },
+       {
+        "size": 941,
+        "node": {
+         "name": "CSS",
+         "color": "#663399"
+        }
+       },
+       {
+        "size": 891,
+        "node": {
+         "name": "Python",
+         "color": "#3572A5"
+        }
+       },
+       {
+        "size": 641,
+        "node": {
+         "name": "HTML",
+         "color": "#e34c26"
+        }
+       },
+       {
+        "size": 99,
+        "node": {
+         "name": "Batchfile",
+         "color": "#C1F12E"
+        }
+       }
+      ]
+     }
+    },
+    {
+     "stargazerCount": 0,
+     "languages": {
+      "edges": []
+     }
+    },
+    {
+     "stargazerCount": 0,
+     "languages": {
+      "edges": [
+       {
+        "size": 59710,
+        "node": {
+         "name": "Python",
+         "color": "#3572A5"
+        }
+       },
+       {
+        "size": 22183,
+        "node": {
+         "name": "Jupyter Notebook",
+         "color": "#DA5B0B"
         }
        }
       ]
@@ -96,11 +589,11 @@
    ]
   },
   "contributionsCollection": {
-   "totalCommitContributions": 612,
-   "totalPullRequestContributions": 38,
-   "totalIssueContributions": 17,
+   "totalCommitContributions": 163,
+   "totalPullRequestContributions": 2,
+   "totalIssueContributions": 0,
    "contributionCalendar": {
-    "totalContributions": 1162
+    "totalContributions": 554
    }
   }
  }

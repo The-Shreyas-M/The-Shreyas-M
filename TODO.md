@@ -53,13 +53,13 @@ Reuse: px.mjs, sprite.mjs (spriteTimeline), sprites/hero-char.mjs (avatar), spri
 
 **Done when:** check.mjs OK; owner approves car, villains, buildings and the chase loop.
 
-## Sprint 3 — live stats billboard + contribution city game + daily Action  ← current
+## Sprint 3 — live stats billboard + contribution city game + daily Action  ✔ built 2026-11-25, awaiting owner checkpoint
 
 - [x] T1 [me] (R4,R5) Decide interfaces; capture `gen/fixtures/contrib.json` and `stats.json` with `gh api graphql` — check: fixtures parse  ✔ `gen/lib/github.mjs` (loadStats/loadContrib); fixtures parse (1162 contribs, 53 wk, 5 langs) — placeholder data, live API unreachable today → real capture in T5
 - [x] T2 [oc] (R5) `gen/stats.mjs` (+ `--fixture`): holographic billboard on a building, neon-tube language bars, live numbers, via px.mjs — check: `node gen/stats.mjs --fixture` → `dist/stats.svg`, check OK  ✔ beam-free 1st try; I moved language rows to 14-px pitch (5th row hit the footer); ALL ASSETS OK, billboard reviewed in browser
 - [x] T3 [oc] (R4,R14) `gen/contrib.mjs` (+ `--fixture`): 53×7 lit-window city block from the calendar, mech sprite patrols and zaps windows — check: `node gen/contrib.mjs --fixture` → `dist/contrib-game.svg`, check OK  ✔ beam-free (2nd run, 1st wrote nothing); I widened the patrol to x −20..356 so every column is reachable (2 zaps were clamped to t=0); days=367 zaps=6, zap at 3.45 s seen in browser
 - [x] T4 [oc] (R6) `.github/workflows/update.yml` daily cron + dispatch → orphan `output` branch — check: diff read + YAML parse  ✔ beam-free 1st try; YAML parse prints `17 3 * * * write 4 ${{ secrets.GITHUB_TOKEN }}`; diff read
-- [ ] T5 [tool] (R4,R5) Live run with real data, numbers match github.com — check: screenshots
+- [x] T5 [tool] (R4,R5) Live run with real data, numbers match github.com — check: screenshots  ✔ live API back; real fixtures captured; 554 contributions + 16 followers match github.com; repos limited to PUBLIC non-fork (23 = REST count) so local and Action output agree; README wired to output-branch URLs, preview shows all 4 images
 
 ## Later milestones (not planned yet)
 

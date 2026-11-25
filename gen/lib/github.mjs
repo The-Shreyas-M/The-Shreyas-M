@@ -8,7 +8,7 @@ import { fileURLToPath } from 'node:url';
 export const LOGIN = 'The-Shreyas-M';
 
 export const STATS_QUERY = `query($login:String!){user(login:$login){login name followers{totalCount}
-repositories(ownerAffiliations:OWNER,isFork:false,first:100,orderBy:{field:STARGAZERS,direction:DESC}){totalCount
+repositories(ownerAffiliations:OWNER,isFork:false,privacy:PUBLIC,first:100,orderBy:{field:STARGAZERS,direction:DESC}){totalCount
 nodes{stargazerCount languages(first:10,orderBy:{field:SIZE,direction:DESC}){edges{size node{name color}}}}}
 contributionsCollection{totalCommitContributions totalPullRequestContributions totalIssueContributions
 contributionCalendar{totalContributions}}}}`;
