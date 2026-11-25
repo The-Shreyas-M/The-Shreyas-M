@@ -2,6 +2,7 @@
 
 One line each, newest first: `date — decision or change — why`. Change requests from the owner go here too.
 
+- 2026-11-25 — Process change (owner, /new-project:continue "the new way, with skill improvement"): WORKFLOW.md refreshed from the template (parallel opencode jobs, owner-approved skill-improvement loop); skill improvements proposed at each checkpoint — no SPEC change.
 - 2026-11-24 — Turret rises from the rear deck and fires over the roof; the pop-up lamp pods only light up — a gun inside the lamp pods did not read at 64 px. Owner asked at checkpoint (SPEC R3 says lamps flip into turrets).
 - 2026-11-24 — Scene split: `gen/pixel/track.mjs` (actor = sheet + whole-pixel position keys, seq must sum to 18 s) + `street-bg.mjs` (parallax) + `mech.mjs` (beats) — one interface the workers fill with numbers.
 - 2026-11-24 — Car sheet is 18 frames (adds empty-seat drive so the car arrives without a driver) — beat B0 needs it.

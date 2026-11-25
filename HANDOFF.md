@@ -8,6 +8,11 @@ Built: car sheet (door ×3, pop-up lamps, roof turret, car→robot ×6, empty-se
 Please test: 1) `node gen/preview.mjs`, open `preview/index.html` in Chrome (motion ON) — watch one full 18-s loop of the second banner. 2) Beats to look for: car rolls in → you jump in → pop-up lamps flip up and a turret rises from the rear deck → two grunts explode → boss walks in → car becomes the robot, you jump out → beam + blaster → boss explodes → fold, drive off. 3) Phone width: the street sprites are small at 375 px.
 Need from you: a) approve car, villains, buildings, chase loop (or list changes) — recommended: approve, then Sprint 3. b) SPEC R3 says the headlights flip up INTO turrets; I built pop-up lamps that only light up plus a separate turret on the rear deck (a gun in a 6-px lamp pod did not read). Keep it, or move the guns into the lamp pods? Recommended: keep. c) The boss hit frame tints pale pink for 0.2 s (×3) — OK? Recommended: keep.
 Next sprint (proposed): Sprint 3 as in TODO (live stats billboard, contribution city game, daily Action).
+Skill improvements — need your OK (2026-11-25; lines in docs/SKILL-FEEDBACK.md; applied in Shreyas-AI-Skills, commit + push there):
+1. new-project → template WORKFLOW Running opencode: commit before every dispatch, brief forbids git commands, verify greps the log for git — a worker reverted my edits (obs 0014).
+2. new-project → template WORKFLOW brief/verify: DONE WHEN runs the thing, never a bare count; `tail -3` written files; check the first visual output in its scene before fan-out (obs 0010/0013/0009).
+3. new-project → references/flow.md interview: for "insane/premium" deliverables, pick the medium that can reach a named reference and show one proof frame before sprints (obs 0012).
+4. new-project → WORKFLOW Session start + gitcp: no HEAD → local baseline commit; set repo-local git identity to the pinned account (obs 0006/0011).
 
 ## Start line (owner pastes this to run a sprint unattended)
 
