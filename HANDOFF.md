@@ -2,27 +2,9 @@
 
 Keep under 60 lines. Replace old content; git keeps the history.
 
-## CHECKPOINT 2026-11-25 — Sprint 3
+## Sprint 3 APPROVED 2026-11-25 — next: plan v0.4 in a new session
 
-Built:
-- `dist/stats.svg` — holographic billboard on a night tower: stars, commits, PRs, issues, followers, repos + 5 neon-tube language bars (live data).
-- `dist/contrib-game.svg` — contribution city: 53×7 lit windows from the real calendar; the mech patrols the street and zaps the 6 busiest days.
-- `.github/workflows/update.yml` — daily 03:17 UTC + manual + on gen/ changes → force-pushes `dist/` to orphan branch `output`; README now points at those URLs.
-
-Please test:
-1. `node gen/stats.mjs && node gen/contrib.mjs && node gen/check.mjs` → two WROTE lines, `ALL ASSETS OK`.
-2. `node gen/preview.mjs`, open preview/index.html (or the `preview` launch config) → 4 images: hero, chase, billboard, city.
-3. Numbers: billboard says 554 contributions / 16 followers = your profile today.
-
-Need from you:
-- Do the billboard and city look insane enough? Real data makes the city sparse (many dark windows) — recommend keep it honest; option: brighten level-0 windows slightly.
-- Repos/languages count PUBLIC non-fork repos only (private ones would leak names/languages and the Action's token cannot see them). Recommend keep.
-- The Action cannot run until the public repo exists (v1 go-live) — recommend testing it then.
-
-Next sprint (proposed, v0.4): R7 project shop-fronts in README, R8 pixel workbench, R9 portfolio sign + YouTube billboard, R12 phone pass.
-
-Skill improvements — need your OK:
-1. new-project → template/docs/WORKFLOW.md "The exact brief" → add "Write the file first, then run DONE WHEN; settle edge cases by the brief's rule, do not deliberate" — a free worker spent a whole run reasoning and wrote nothing (S3-T3); the rerun with that line passed.
+Owner approved the stats billboard, contribution city and daily Action (city stays honest/sparse; repo stats PUBLIC non-fork only; Action tested at v1 go-live). Skill improvement "write files first, then DONE WHEN" applied in Shreyas-AI-Skills 087731c.
 
 ## Start line (owner pastes this to run a sprint unattended)
 
@@ -41,7 +23,7 @@ Skill improvements — need your OK:
 
 ## Next step
 
-Wait for the owner's Sprint 3 answer; then plan v0.4 in a new session.
+New session (Sonnet or Opus): plan Sprint 4 = v0.4 from TODO (R7 project shop-fronts in README, R8 workbench, R9 portfolio sign + YouTube billboard, R12 phone pass), then v1.0 go-live sprint.
 
 ## Gotchas found so far
 

@@ -53,7 +53,7 @@ Reuse: px.mjs, sprite.mjs (spriteTimeline), sprites/hero-char.mjs (avatar), spri
 
 **Done when:** check.mjs OK; owner approves car, villains, buildings and the chase loop.
 
-## Sprint 3 — live stats billboard + contribution city game + daily Action  ✔ built 2026-11-25, awaiting owner checkpoint
+## Sprint 3 — live stats billboard + contribution city game + daily Action  ✔ done 2026-11-25 (owner approved)
 
 - [x] T1 [me] (R4,R5) Decide interfaces; capture `gen/fixtures/contrib.json` and `stats.json` with `gh api graphql` — check: fixtures parse  ✔ `gen/lib/github.mjs` (loadStats/loadContrib); fixtures parse (1162 contribs, 53 wk, 5 langs) — placeholder data, live API unreachable today → real capture in T5
 - [x] T2 [oc] (R5) `gen/stats.mjs` (+ `--fixture`): holographic billboard on a building, neon-tube language bars, live numbers, via px.mjs — check: `node gen/stats.mjs --fixture` → `dist/stats.svg`, check OK  ✔ beam-free 1st try; I moved language rows to 14-px pitch (5th row hit the footer); ALL ASSETS OK, billboard reviewed in browser
