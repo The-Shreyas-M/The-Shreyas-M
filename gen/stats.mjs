@@ -81,10 +81,12 @@ const tubes = [];
 for (let i = 0; i < s.languages.length; i++) {
   const lang = s.languages[i];
   const y = 20 + i * 14;
-  const name = lang.name.toUpperCase().slice(0, 8);
+  const pctStr = Math.round(lang.pct) + '%';
+  const pctX = 192 - textWidth(pctStr, 1);
+  let name = lang.name.toUpperCase();
+  while (104 + textWidth(name, 1) > pctX - 4) name = name.slice(0, -1); // full name when it fits
   text(panel, name, 104, y, '#f4ecff', 1);
-  const pctStr = lang.pct.toFixed(1) + '%';
-  text(panel, pctStr, 192 - textWidth(pctStr, 1), y, '#3ff0e6', 1);
+  text(panel, pctStr, pctX, y, '#3ff0e6', 1);
   const tubeW = Math.max(4, Math.round((lang.pct / maxPct) * 88));
   const mixed = mix(rgb(lang.color), rgb('#ffffff'), 0.6);
   const mixedHex = '#' + mixed.map((v) => v.toString(16).padStart(2, '0')).join('');
