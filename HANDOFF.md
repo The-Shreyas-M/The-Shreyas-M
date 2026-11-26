@@ -2,10 +2,10 @@
 
 Keep under 60 lines. Replace old content; git keeps the history.
 
-## CHECKPOINT 2026-11-26 — Sprint 5 (v1.0 go-live)
-Built: pre-flight passed (no secrets, 7/7 project repos public, branch renamed master→main, live SVGs generate, ALL ASSETS OK).
-Need from you: OK to create the PUBLIC repo The-Shreyas-M/The-Shreyas-M and push main (first deploy; the profile becomes visible to everyone). Recommended: yes.
-After yes: push via gitcp → first Action run fills `output` → live check at 1280/360 px → your v1.0 sign-off.
+## CHECKPOINT 2026-11-26 — Sprint 5 (v1.0 LIVE)
+Built: public repo https://github.com/The-Shreyas-M/The-Shreyas-M; first Action run green; profile live at github.com/The-Shreyas-M.
+Please test: open github.com/The-Shreyas-M on desktop and phone; every scene animates; buildings, portfolio and YouTube signs open the right pages.
+Need from you: v1.0 sign-off. Next (proposed): v1.1 bench lamp-head refinement, or stop here.
 
 ## Start line (owner pastes this to run a sprint unattended)
 
@@ -22,13 +22,15 @@ After yes: push via gitcp → first Action run fills `output` → live check at 
 - Pixel-art direction (`docs/DESIGN.md` is the style law; `assets/hero.svg` the quality reference).
 - Sprites: `gen/pixel/sprites/mech.mjs` (parts as string grids, mirrored, then rim/shade/outline passes; exports FW/FH/TIMELINE/ANCHORS/mechFrames) and `gen/pixel/sprites/hero-char.mjs`. Uneven frame timing uses `spriteTimeline()` in `gen/pixel/sprite.mjs`.
 - Review a sprite as an upscaled PNG: `node gen/pixel/strip.mjs preview/x.png 4 6 [mech|char]`, then view the image.
-- Tests: `node gen/check.mjs` → ALL ASSETS OK · Deployed: no (local only, nothing pushed).
+- Tests: `node gen/check.mjs` → ALL ASSETS OK · Deployed: yes, public since 2026-11-26; daily Action 03:17 UTC.
 
 ## Next step
 
-Sprint 5 T2: wait for the owner's go-ahead, then T3 (gitcp create public repo + push main).
+Sprint 5 T6: owner v1.0 sign-off. Push later changes with gitcp (account The-Shreyas-M).
 
 ## Gotchas found so far
+
+- The first push to the new repo did not trigger the workflow; `gh workflow run update.yml` did. If output images break, check `gh run list -R The-Shreyas-M/The-Shreyas-M`.
 
 - A worker once ran `git checkout --` on files I had edited (observation 0014): commit first; every brief says "never run git". `gen/pixel/bldg/` = one file per building so workers run in parallel safely.
 

@@ -74,10 +74,10 @@ Reuse: px.mjs, sprite.mjs (spriteTimeline), sprites/hero-char.mjs (avatar), spri
 ## Sprint 5 — v1.0 go-live: public profile repo, first Action run, live check
 
 - [x] T1 [me] (R6,R10,R12) Pre-flight: secrets scan, linked repos public, branch `main` (workflow triggers on main), live generate dry-run — check: `node gen/check.mjs` OK  ✔ no tokens in tree; 7/7 project repos public; profile repo 404 (not created yet); master→main; live stats.svg 9 KB + contrib-game.svg 24 KB; ALL ASSETS OK (14 files)
-- [ ] T2 [me] Owner checkpoint: OK to create the PUBLIC repo and push (first deploy)
-- [ ] T3 [me] (R6) `gitcp`: create PUBLIC `The-Shreyas-M/The-Shreyas-M`, push `main` — check: `gh api repos/The-Shreyas-M/The-Shreyas-M --jq .visibility` prints `public`
-- [ ] T4 [me] (R6) First Action run succeeds and `output` branch holds stats.svg + contrib-game.svg — check: `gh run list` success, `gh api repos/.../contents?ref=output` lists both
-- [ ] T5 [tool] (R12) Live profile github.com/The-Shreyas-M at 1280 and 360 px: all images animate, 9 links work — check: screenshots
+- [x] T2 [me] Owner checkpoint: OK to create the PUBLIC repo and push (first deploy)  ✔ owner: "Yes, go live" 2026-11-26
+- [ ] T3 [me] (R6) `gitcp`: create PUBLIC `The-Shreyas-M/The-Shreyas-M`, push `main` — check: `gh api repos/The-Shreyas-M/The-Shreyas-M --jq .visibility` prints `public`  ✔ created via gitcp (The-Shreyas-M), main pushed, visibility public
+- [ ] T4 [me] (R6) First Action run succeeds and `output` branch holds stats.svg + contrib-game.svg — check: `gh run list` success, `gh api repos/.../contents?ref=output` lists both  ✔ push did not trigger a run on the new repo; dispatched by hand → run 45818356566 success in 16 s; output = contrib-game.svg, stats.svg
+- [ ] T5 [tool] (R12) Live profile github.com/The-Shreyas-M at 1280 and 360 px: all images animate, 9 links work — check: screenshots  ✔ live profile: 14/14 images load, 9 hrefs correct; 1280 px and 375 px screenshots; scrollWidth 375 = viewport, buildings 4+3
 - [ ] T6 [me] Owner v1.0 sign-off
 
 **Done when:** repo public, Action green, profile renders live at both widths, owner signs off.
