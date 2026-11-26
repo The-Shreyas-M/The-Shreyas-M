@@ -232,7 +232,8 @@ const tag = 'HARDWARE HACKER / CODER / DESIGNER';
 const tx = Math.round((W - textWidth(tag)) / 2), ty = signY + SH + 1;
 hud.rect(tx - 4, ty - 3, textWidth(tag) + 8, 13, '#07041a', 0.75);
 text(hud, tag, tx, ty, C.cyan);
-const fx0 = signX + 2, fy0 = signY + 2, fx1 = signX + SW - 3, fy1 = ty + 10;
+// frame wraps whichever is wider, sign or tagline bar, and sits below the bar (it used to cut into the tagline)
+const fx0 = Math.min(signX + 2, tx - 7), fy0 = signY + 2, fx1 = Math.max(signX + SW - 3, tx + textWidth(tag) + 6), fy1 = ty + 13;
 for (const [x, y, dx, dy] of [[fx0, fy0, 1, 1], [fx1, fy0, -1, 1], [fx0, fy1, 1, -1], [fx1, fy1, -1, -1]]) {
   hud.rect(dx > 0 ? x : x - 7, y, 8, 1, C.cyan, 0.8);
   hud.rect(x, dy > 0 ? y : y - 7, 1, 8, C.cyan, 0.8);
