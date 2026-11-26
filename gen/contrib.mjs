@@ -141,7 +141,7 @@ const css = [
   zapCss,
   '.blink{opacity:0;animation:blink 3.7s steps(1,end) infinite}',
   '@keyframes blink{0%{opacity:0}50%{opacity:1}56%{opacity:0}100%{opacity:0}}',
-  '@media (prefers-reduced-motion:reduce){*{animation:none!important}}',
+  '',
 ].join('\n');
 
 const patrolGroup = `<g class="patrol">${spriteSvg(sh.uri(), FW, FH, 11, 0, 0, 'mechi')}</g>`;

@@ -2,6 +2,7 @@
 
 One line each, newest first: `date — decision or change — why`. Change requests from the owner go here too.
 
+- 2026-11-26 — removed every prefers-reduced-motion freeze; check.mjs now fails if one comes back. Why: owner's laptop has Windows animation effects off, so the live profile looked dead; other profiles (snake SVG) never gate.
 - 2026-11-26 — stats billboard: full language names, whole-number percents (owner: "JAVASCRI? where is the PT"). Long names trim to fit.
 - 2026-11-25 — Sprint 3 data interface = `gen/lib/github.mjs` (STATS/CONTRIB GraphQL on `user(login)`, not `viewer`, so the Action's GITHUB_TOKEN works; `loadStats`/`loadContrib` → normalized objects; fixtures = raw GraphQL `data`). Fixtures are deterministic placeholders (`_placeholder: true`) because api.github.com timed out from this machine; real numbers checked in T5.
 - 2026-11-25 — Process change (owner, /new-project:continue "the new way, with skill improvement"): WORKFLOW.md refreshed from the template (parallel opencode jobs, owner-approved skill-improvement loop); skill improvements proposed at each checkpoint — no SPEC change.

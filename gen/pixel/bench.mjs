@@ -305,7 +305,7 @@ const css = [
 const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 140" width="1000" height="350" role="img" aria-label="Pixel-art hardware workbench at night: an ESP32 board, a synth with a bar meter, a hovering drone and an oscilloscope tracing a sine wave." shape-rendering="crispEdges">
 <style>
 ${css}
-@media (prefers-reduced-motion:reduce){*{animation:none!important}}
+
 </style>
 <image x="0" y="0" width="400" height="140" href="${base.uri()}"/>
 <g class="bob">${spriteSvg(droneSheet.uri(), 64, 20, 2, 150, 16, 'drone')}</g>

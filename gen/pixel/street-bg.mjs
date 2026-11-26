@@ -185,7 +185,7 @@ const farCss = moveCss('far', parallaxKeys(400, 400));
 const bldgCss = moveCss('bldg', parallaxKeys(560, 560));
 const dashCss = moveCss('dash', parallaxKeys(2240, 40));
 const nearCss = moveCss('near', parallaxKeys(1120, 160));
-const rainCss = `.rain{animation:rain .45s steps(9) infinite}@keyframes rain{from{transform:translate(0,0)}to{transform:translate(-84px,168px)}}@media (prefers-reduced-motion:reduce){.rain{animation:none!important}}`;
+const rainCss = `.rain{animation:rain .45s steps(9) infinite}@keyframes rain{from{transform:translate(0,0)}to{transform:translate(-84px,168px)}}`;
 
 const css = [
   'image{image-rendering:pixelated;image-rendering:crisp-edges}',

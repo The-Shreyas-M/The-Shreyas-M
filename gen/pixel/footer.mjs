@@ -102,7 +102,7 @@ const svgPortfolio = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 6
 image{image-rendering:pixelated;image-rendering:crisp-edges}
 .tube{animation:flick 5s steps(1,end) infinite}
 @keyframes flick{0%{opacity:1}82%{opacity:1}83%{opacity:.35}84%{opacity:1}86%{opacity:.35}87%{opacity:1}100%{opacity:1}}
-@media (prefers-reduced-motion:reduce){*{animation:none!important}}
+
 </style>
 <image x="0" y="0" width="200" height="60" href="${baseP.uri()}"/>
 <image x="0" y="0" width="200" height="60" href="${glowP.uri()}"/>
@@ -126,7 +126,7 @@ const svgYoutube = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 60"
 image{image-rendering:pixelated;image-rendering:crisp-edges}
 .air{animation:air 1.2s steps(1,end) infinite}
 @keyframes air{0%{opacity:1}50%{opacity:0}}
-@media (prefers-reduced-motion:reduce){*{animation:none!important}}
+
 </style>
 <image x="0" y="0" width="200" height="60" href="${baseY.uri()}"/>
 <image x="0" y="0" width="200" height="60" href="${glowY.uri()}"/>

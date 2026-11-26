@@ -301,7 +301,7 @@ const css = [
   aAv.css,
   aBolt.css,
   aE3.css,
-  '@media (prefers-reduced-motion:reduce){*{animation:none!important}}',
+  '',
 ].join('');
 
 const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 168" width="1000" height="420" role="img" shape-rendering="crispEdges" aria-label="Pixel-art night street chase: a hacker jumps into a wedge supercar, turrets pop out of its lamps and blast two cyberpsychos, a boss blocks the road, the car transforms into a robot and both fight side by side, then fold up and drive off">` +

@@ -45,11 +45,11 @@ export function spriteTimeline(cls, fw, seq, { rest = seq[0][0] } = {}) {
   let t = 0;
   const keys = seq.map(([f, d]) => { const k = `${pct(t)}%{transform:translateX(-${f * fw}px)}`; t += d; return k; });
   keys.push(`100%{transform:translateX(-${seq[seq.length - 1][0] * fw}px)}`);
-  const css = `.${cls}{animation:${cls}-tl ${+total.toFixed(3)}s steps(1,end) infinite}@keyframes ${cls}-tl{${keys.join('')}}@media (prefers-reduced-motion:reduce){.${cls}{animation:none!important;transform:translateX(-${rest * fw}px)}}`;
+  const css = `.${cls}{animation:${cls}-tl ${+total.toFixed(3)}s steps(1,end) infinite}@keyframes ${cls}-tl{${keys.join('')}}`;
   return { css, total };
 }
 
 // Return the CSS steps() animation for a sprite sheet, with reduced-motion fallback.
 export function spriteCss(cls, fw, frames, dur = 0.8) {
-  return `.${cls}{animation:${cls}-run ${dur}s steps(${frames}) infinite}@keyframes ${cls}-run{from{transform:translateX(0)}to{transform:translateX(-${fw * frames}px)}}@media (prefers-reduced-motion:reduce){.${cls}{animation:none}}`;
+  return `.${cls}{animation:${cls}-run ${dur}s steps(${frames}) infinite}@keyframes ${cls}-run{from{transform:translateX(0)}to{transform:translateX(-${fw * frames}px)}}`;
 }

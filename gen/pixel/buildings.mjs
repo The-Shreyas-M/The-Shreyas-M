@@ -47,7 +47,7 @@ export function buildingSvg(name) {
 <style>
 image{image-rendering:pixelated;image-rendering:crisp-edges}
 ${css}
-@media (prefers-reduced-motion:reduce){*{animation:none!important}}
+
 </style>
 <image x="0" y="0" width="96" height="${Hb}" href="${backdrop.uri()}"/>
 <image x="12" y="4" width="72" height="${h}" href="${b.base.uri()}"/>

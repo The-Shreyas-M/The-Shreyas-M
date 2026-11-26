@@ -27,7 +27,7 @@ A GitHub profile README for the personal account `The-Shreyas-M` that looks insa
 | R7 | Project showcase: one themed pixel BUILDING per project (art shows the project: Oculius = tower with a giant eye that looks around; 65W fast charger = power-grid substation with arcs; a microprocessor-facade chip tower; ESP32-Synth, ChocoBao, NEURA, ai-video-editor, Axiom themes to confirm), each its own linked SVG and reused as the backdrop of the R3 street; projects: Oculius, ESP32-Synth, 65W fast charger, ChocoBao, NEURA, ai-video-editor, Axiom | Must | 7 SVGs in `assets/projects/`, each wrapped in a link |
 | R8 | Hardware piece: pixel-art workbench close-up (ESP32 board, synth, drone) with blinking LEDs and scope — replaces the dropped 3D loop | Should | `assets/bench.svg` |
 | R9 | Footer: pixel "ENTER PORTFOLIO" sign → iamshreyas.pages.dev + YouTube billboard (https://www.youtube.com/@The-Shreyas-M/). No other socials | Must | both clickable in preview |
-| R10 | GitHub-safe assets: no script, no external URLs, each SVG ≤ 1 MB, reduced-motion respected | Must | `node gen/check.mjs` prints `ALL ASSETS OK` |
+| R10 | GitHub-safe assets: no script, no external URLs, each SVG ≤ 1 MB, always animate (no reduced-motion freeze — owner 2026-11-26) | Must | `node gen/check.mjs` prints `ALL ASSETS OK` |
 | R11 | Local preview through GitHub's markdown API | Must | `node gen/preview.mjs` (DONE) |
 | R12 | Layout in demo order, readable at 1280 px and 360 px (phone variant via `<picture media>` if needed) | Must | preview checked at both widths |
 | R13 | Owner's pixel character on the hero rooftop (coat, hair moving in the wind) | Should | owner approves likeness |

@@ -272,7 +272,7 @@ image{image-rendering:pixelated;image-rendering:crisp-edges}
 @keyframes flick{0%,100%{opacity:.95}12%{opacity:.95}12.5%{opacity:.15}13.5%{opacity:.9}14%{opacity:.2}15%{opacity:.95}61%{opacity:.85}61.6%{opacity:.25}62.4%{opacity:.95}}
 @keyframes flick2{0%,100%{opacity:1}12.5%{opacity:1}13%{opacity:.45}13.5%{opacity:1}14%{opacity:.5}15%{opacity:1}}
 ${spriteCss('hchar', CW, 4, 1.4)}
-@media (prefers-reduced-motion: reduce){*{animation:none!important}.carB{transform:translate(260px,95px)}.carA{transform:translate(90px,62px)}}
+
 </style>
 ${img(sky)}
 ${img(mark0)}

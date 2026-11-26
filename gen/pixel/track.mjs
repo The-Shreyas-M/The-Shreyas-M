@@ -26,7 +26,7 @@ export function moveCss(cls, keys, { total = LOOP, rest } = {}) {
   out.push(out[out.length - 1].replace(/^[\d.]+%/, '100%'));
   const r = rest ?? ks[0];
   return `.${cls}{animation:${cls}-mv ${total}s steps(1,end) infinite}@keyframes ${cls}-mv{${out.join('')}}` +
-    `@media (prefers-reduced-motion:reduce){.${cls}{animation:none!important;transform:translate(${Math.round(r.x ?? 0)}px,${Math.round(r.y ?? 0)}px);opacity:${r.o ?? 1}}}`;
+    ``;
 }
 
 // Whole-pixel stepped path from (x0, y0) at t0 to (x1, y1) at t1, sampled `fps` times a second.

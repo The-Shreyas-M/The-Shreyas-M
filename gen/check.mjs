@@ -103,9 +103,9 @@ for (const file of files) {
     const line = `FAIL ${rel}: larger than 1 MB`;
     console.log(line); problems.push(line);
   }
-  const hasAnim = lower.includes('@keyframes') || lower.includes('<animate');
-  if (hasAnim && !lower.includes('prefers-reduced-motion')) {
-    const line = `FAIL ${rel}: missing prefers-reduced-motion`;
+  // Owner 2026-11-26: always animate, like other profile READMEs; a reduced-motion freeze stopped everything on his laptop
+  if (lower.includes('prefers-reduced-motion')) {
+    const line = `FAIL ${rel}: has a prefers-reduced-motion freeze`;
     console.log(line); problems.push(line);
   }
   let trimmed = content.trimStart();

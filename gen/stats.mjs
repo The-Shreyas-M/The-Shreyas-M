@@ -111,7 +111,7 @@ image{image-rendering:pixelated;image-rendering:crisp-edges}
 @keyframes scan{from{transform:translateY(0)}to{transform:translateY(100px)}}
 .tube{clip-path:inset(0 0 0 0);animation:tube 8s steps(22) infinite}
 @keyframes tube{0%{clip-path:inset(0 100% 0 0)}30%{clip-path:inset(0 0 0 0)}100%{clip-path:inset(0 0 0 0)}}
-@media (prefers-reduced-motion:reduce){*{animation:none!important}}
+
 `;
 
 // Compose
