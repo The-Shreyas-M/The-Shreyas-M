@@ -2,6 +2,7 @@
 
 One line each, newest first: `date — decision or change — why`. Change requests from the owner go here too.
 
+- 2026-11-26 — change request: one horizontally scrolling city strip (hero + chase merged), project-name billboards, then buildings and workbench. Drafted as Sprint 6, pending owner after seeing live motion.
 - 2026-11-26 — removed every prefers-reduced-motion freeze; check.mjs now fails if one comes back. Why: owner's laptop has Windows animation effects off, so the live profile looked dead; other profiles (snake SVG) never gate.
 - 2026-11-26 — stats billboard: full language names, whole-number percents (owner: "JAVASCRI? where is the PT"). Long names trim to fit.
 - 2026-11-25 — Sprint 3 data interface = `gen/lib/github.mjs` (STATS/CONTRIB GraphQL on `user(login)`, not `viewer`, so the Action's GITHUB_TOKEN works; `loadStats`/`loadContrib` → normalized objects; fixtures = raw GraphQL `data`). Fixtures are deterministic placeholders (`_placeholder: true`) because api.github.com timed out from this machine; real numbers checked in T5.

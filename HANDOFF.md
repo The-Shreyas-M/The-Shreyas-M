@@ -2,10 +2,10 @@
 
 Keep under 60 lines. Replace old content; git keeps the history.
 
-## CHECKPOINT 2026-11-26 — Sprint 5 (v1.0 LIVE)
-Built: public repo https://github.com/The-Shreyas-M/The-Shreyas-M; first Action run green; profile live at github.com/The-Shreyas-M.
-Please test: open github.com/The-Shreyas-M on desktop and phone; every scene animates; buildings, portfolio and YouTube signs open the right pages.
-Need from you: v1.0 sign-off. Next (proposed): v1.1 bench lamp-head refinement, or stop here.
+## CHECKPOINT 2026-11-26 — v1.0 live, fixes pushed
+Live: github.com/The-Shreyas-M. Fixed today: (1) everything was frozen on the owner's laptop (Windows animation effects off → prefers-reduced-motion) — all freezes removed, check.mjs now forbids them; (2) stats show full language names; (3) hero corner frame no longer cuts the tagline.
+Need from you: reload the profile (Ctrl+F5) and watch the street chase move — it already does the car → turrets → transform → fight story. Then: still merge everything into ONE scrolling strip (Sprint 6 draft in TODO)? Do the stats billboard and contribution city stay?
+Note: GitHub page colours (white) come from each visitor's GitHub theme; a README cannot restyle the page.
 
 ## Start line (owner pastes this to run a sprint unattended)
 
@@ -26,7 +26,7 @@ Need from you: v1.0 sign-off. Next (proposed): v1.1 bench lamp-head refinement, 
 
 ## Next step
 
-Sprint 5 T6: owner v1.0 sign-off. Push later changes with gitcp (account The-Shreyas-M).
+Owner watches the live motion, then confirms/edits the Sprint 6 draft. Run Sprint 6 in a NEW session (Sonnet/Opus). Push with gitcp (The-Shreyas-M).
 
 ## Gotchas found so far
 
