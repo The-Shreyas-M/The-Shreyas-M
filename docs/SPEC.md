@@ -7,7 +7,7 @@ A GitHub profile README for the personal account `The-Shreyas-M` that looks insa
 
 ## 2. The 2-minute demo
 1. Open github.com/The-Shreyas-M.
-2. Hero: a rainy pixel city scrolls in parallax; a neon "SHREYAS" sign flickers over the skyline with the tagline; flying cars pass; Shreyas's pixel character stands on a rooftop.
+2. ONE horizontally scrolling city strip (Sprint 6): a rainy pixel city scrolls in parallax; a neon "SHREYAS" sign flickers over the skyline with the tagline; flying cars pass; Shreyas's pixel character stands on a rooftop.
 3. A rooftop workshop: a dev board powers up and transforms into the bench-mech, idles, folds back.
 4. A holographic billboard shows live stats and languages.
 5. Project shop-fronts / billboards, each clickable to its repo.
@@ -21,9 +21,9 @@ A GitHub profile README for the personal account `The-Shreyas-M` that looks insa
 | R1 | Pixel-art design system + toolkit (`docs/DESIGN.md`, `gen/pixel/px.mjs`) used by every asset | Must | all assets built with px.mjs and the DESIGN palette |
 | R2 | Hero: pixel cyberpunk city, parallax, rain, flying cars, neon name sign + tagline | Must | `node gen/pixel/hero.mjs` → `assets/hero.svg` (DONE, approved 2026-11-23) |
 | R3 | Street-chase scene: the owner's avatar jumps into an original 80s wedge supercar (scissor doors, pop-up headlights), drives a neon street; headlights flip up into turrets that shoot cyberpsychos (R16); a boss blocks the road, the car transforms into the robot and the avatar jumps out, and both fight side by side (avatar on foot with the handheld as a blaster), win, folds back, drives off; one loop ≈ 16–20 s, frame-by-frame | Must | `node gen/pixel/mech.mjs` → `assets/mech.svg`; owner approves look |
-| R4 | Contribution game: real contribution calendar as a lit-window city block, mech patrols and zaps windows | Must | `node gen/contrib.mjs` writes `dist/contrib-game.svg` from live data; `--fixture` works offline |
-| R5 | Live stats + languages as an in-world holographic billboard | Must | `node gen/stats.mjs` writes `dist/stats.svg` with real numbers |
-| R6 | Daily GitHub Action regenerates R4 + R5 and pushes them to the `output` branch | Must | workflow run succeeds; README images update next day |
+| R4 | Contribution game: real contribution calendar as a lit-window city block, mech patrols and zaps windows | Dropped 2026-11-26 (owner: one strip) | `node gen/contrib.mjs` writes `dist/contrib-game.svg` from live data; `--fixture` works offline |
+| R5 | Live stats + languages as an in-world holographic billboard | Dropped 2026-11-26 (owner: one strip) | `node gen/stats.mjs` writes `dist/stats.svg` with real numbers |
+| R6 | Daily GitHub Action regenerates R4 + R5 and pushes them to the `output` branch | Dropped 2026-11-26 (owner: one strip) | workflow run succeeds; README images update next day |
 | R7 | Project showcase: one themed pixel BUILDING per project (art shows the project: Oculius = tower with a giant eye that looks around; 65W fast charger = power-grid substation with arcs; a microprocessor-facade chip tower; ESP32-Synth, ChocoBao, NEURA, ai-video-editor, Axiom themes to confirm), each its own linked SVG and reused as the backdrop of the R3 street; projects: Oculius, ESP32-Synth, 65W fast charger, ChocoBao, NEURA, ai-video-editor, Axiom | Must | 7 SVGs in `assets/projects/`, each wrapped in a link |
 | R8 | Hardware piece: pixel-art workbench close-up (ESP32 board, synth, drone) with blinking LEDs and scope — replaces the dropped 3D loop | Should | `assets/bench.svg` |
 | R9 | Footer: pixel "ENTER PORTFOLIO" sign → iamshreyas.pages.dev + YouTube billboard (https://www.youtube.com/@The-Shreyas-M/). No other socials | Must | both clickable in preview |
@@ -31,7 +31,7 @@ A GitHub profile README for the personal account `The-Shreyas-M` that looks insa
 | R11 | Local preview through GitHub's markdown API | Must | `node gen/preview.mjs` (DONE) |
 | R12 | Layout in demo order, readable at 1280 px and 360 px (phone variant via `<picture media>` if needed) | Must | preview checked at both widths |
 | R13 | Owner's pixel character on the hero rooftop (coat, hair moving in the wind) | Should | owner approves likeness |
-| R14 | Mech appears in the contribution game | Should | contrib SVG shows the mech sprite |
+| R14 | Mech appears in the contribution game | Dropped 2026-11-26 (owner: one strip) | contrib SVG shows the mech sprite |
 | R16 | Enemies: original cyberpsycho villains (2–3 street grunts + 1 boss), pixel sprites with hit/explode frames, used in R3 (and R4 later) | Must | owner approves the villains |
 | R15 | Extra socials, blog feed, visitor counter, music/tabla easter egg | Later | — |
 

@@ -2,6 +2,7 @@
 
 One line each, newest first: `date — decision or change — why`. Change requests from the owner go here too.
 
+- 2026-11-26 — owner confirmed Sprint 6 one strip; dropped R4 contribution city, R5 stats billboard, R6 daily Action, R14. Why: owner wants only strip → buildings → workbench → footer.
 - 2026-11-26 — change request: one horizontally scrolling city strip (hero + chase merged), project-name billboards, then buildings and workbench. Drafted as Sprint 6, pending owner after seeing live motion.
 - 2026-11-26 — removed every prefers-reduced-motion freeze; check.mjs now fails if one comes back. Why: owner's laptop has Windows animation effects off, so the live profile looked dead; other profiles (snake SVG) never gate.
 - 2026-11-26 — stats billboard: full language names, whole-number percents (owner: "JAVASCRI? where is the PT"). Long names trim to fit.

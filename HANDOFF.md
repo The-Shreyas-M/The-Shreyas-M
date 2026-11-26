@@ -4,7 +4,7 @@ Keep under 60 lines. Replace old content; git keeps the history.
 
 ## CHECKPOINT 2026-11-26 — v1.0 live, fixes pushed
 Live: github.com/The-Shreyas-M. Fixed today: (1) everything was frozen on the owner's laptop (Windows animation effects off → prefers-reduced-motion) — all freezes removed, check.mjs now forbids them; (2) stats show full language names; (3) hero corner frame no longer cuts the tagline.
-Need from you: reload the profile (Ctrl+F5) and watch the street chase move — it already does the car → turrets → transform → fight story. Then: still merge everything into ONE scrolling strip (Sprint 6 draft in TODO)? Do the stats billboard and contribution city stay?
+Owner answered: YES, one strip; drop the stats billboard and contribution city (and the daily Action). Sprint 6 in TODO is confirmed.
 Note: GitHub page colours (white) come from each visitor's GitHub theme; a README cannot restyle the page.
 
 ## Start line (owner pastes this to run a sprint unattended)
@@ -26,7 +26,7 @@ Note: GitHub page colours (white) come from each visitor's GitHub theme; a READM
 
 ## Next step
 
-Owner watches the live motion, then confirms/edits the Sprint 6 draft. Run Sprint 6 in a NEW session (Sonnet/Opus). Push with gitcp (The-Shreyas-M).
+Run Sprint 6 (one scrolling city strip) in a NEW session (Sonnet/Opus). Push with gitcp (The-Shreyas-M).
 
 ## Gotchas found so far
 

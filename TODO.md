@@ -82,14 +82,14 @@ Reuse: px.mjs, sprite.mjs (spriteTimeline), sprites/hero-char.mjs (avatar), spri
 
 **Done when:** repo public, Action green, profile renders live at both widths, owner signs off.
 
-## Sprint 6 — ONE scrolling city strip (owner change request 2026-11-26) — DRAFT, confirm after owner sees the live motion
+## Sprint 6 — ONE scrolling city strip (owner change request 2026-11-26) — CONFIRMED by owner 2026-11-26 ("Yes, one strip"; drop stats + contribution city)
 
 Owner: "only one strip as the city, not 4-5 … horizontally scroll like a platformer … I get in car, ride while shooting with the car's turrets, enemies appear, I get out, car transforms into mech, we fight them off"; then only the final buildings, then the workbench. Billboards show project names.
 
 - [ ] T1 [me] (R2,R3) Storyboard the merged strip in DESIGN §4: SHREYAS sign + skyline (hero) as the strip's backdrop, camera scrolls right through the R3 beats; project names on billboards; owner OKs
 - [ ] T2 [oc] (R2) Hero billboards show project names instead of HOLO/NOVA/CHIP/SYNC/ZERO (wider panels)
 - [ ] T3 [oc] (R3) Merge hero + chase into one SVG strip per T1 (reuse street-bg/track/mech timeline)
-- [ ] T4 [me] (R12) README: strip → 7 buildings → workbench → footer; decide with owner whether stats billboard + contribution city stay
+- [ ] T4 [me] (R12) README: strip → 7 buildings → workbench → footer; remove stats billboard, contribution city, `.github/workflows/update.yml` and the `output` branch images (owner dropped R4/R5/R6/R14)
 - [ ] T5 [tool] Review live at 1280/360 px → owner checkpoint
 
 ## Later milestones (not planned yet)
