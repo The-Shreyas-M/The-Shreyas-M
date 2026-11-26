@@ -63,10 +63,10 @@ Reuse: px.mjs, sprite.mjs (spriteTimeline), sprites/hero-char.mjs (avatar), spri
 
 ## Sprint 4 — v0.4 full page: project buildings, workbench, footer signs, phone pass
 
-- [ ] T1 [oc] (R8) `gen/pixel/bench.mjs` → `assets/bench.svg` 400×140: pixel workbench close-up (ESP32 board, synth, hovering drone, oscilloscope) with blinking LEDs, scope trace, prop spin — check: script prints its layout boxes, `node gen/check.mjs` OK + [tool] frame review
-- [ ] T2 [oc] (R9) `gen/pixel/footer.mjs` → `assets/portfolio.svg` (ENTER PORTFOLIO neon sign, flicker) + `assets/youtube.svg` (billboard, play button) — check: script prints boxes, check OK + [tool] review
-- [ ] T3 [me] (R7,R9,R12) README in demo order: 7 buildings each `<a>` to its repo (rows 4+3), bench, contrib, footer signs linked to iamshreyas.pages.dev and the YouTube channel — check: `node gen/preview.mjs`, every link resolves in preview
-- [ ] T4 [tool] (R12) Review full page at 1280 px and 360 px; fix list → fixes — check: screenshots at both widths
+- [x] T1 [oc] (R8) `gen/pixel/bench.mjs` → `assets/bench.svg` 400×140: pixel workbench close-up (ESP32 board, synth, hovering drone, oscilloscope) with blinking LEDs, scope trace, prop spin — check: script prints its layout boxes, `node gen/check.mjs` OK + [tool] frame review  ✔ beam-free ×2 (v1 sparse → detail pass: rack, lamp cone, solder smoke, scope glow, LAB poster); 8 BOX lines, ALL ASSETS OK; reviewed in preview
+- [x] T2 [oc] (R9) `gen/pixel/footer.mjs` → `assets/portfolio.svg` (ENTER PORTFOLIO neon sign, flicker) + `assets/youtube.svg` (billboard, play button) — check: script prints boxes, check OK + [tool] review  ✔ beam-free 1st try; I fixed the play button (white core hid the triangle); TEXT ENTER x=71 PORTFOLIO x=47
+- [x] T3 [me] (R7,R9,R12) README in demo order: 7 buildings each `<a>` to its repo (rows 4+3), bench, contrib, footer signs linked to iamshreyas.pages.dev and the YouTube channel — check: `node gen/preview.mjs`, every link resolves in preview  ✔ 7 repos + portfolio + YouTube hrefs read from the preview DOM; 65W label regenerated (old SVG predated digits)
+- [x] T4 [tool] (R12) Review full page at 1280 px and 360 px; fix list → fixes — check: screenshots at both widths  ✔ 360 px: buildings wrapped 3+1 → width 23% gives 4+3 at 360 and 1024; no horizontal scroll at either
 - [ ] T5 [me] Owner checkpoint
 
 **Done when:** check.mjs OK; preview shows the full page in demo order with all 9 links working at 1280 and 360 px; owner approves.
