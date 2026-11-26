@@ -2,12 +2,9 @@
 
 Keep under 60 lines. Replace old content; git keeps the history.
 
-## CHECKPOINT 2026-11-26 — Sprint 4 (v0.4 full page)
-Built: workbench scene `assets/bench.svg` (R8) · ENTER PORTFOLIO + YouTube neon signs (R9) · README in demo order with 7 linked buildings in 4+3 rows (R7, R12)
-Please test: 1. `node gen/preview.mjs`, start the `preview` launch config, open /preview/index.html → hero, chase, stats, 7 buildings, bench, city, two signs. 2. Click a building → its repo; the signs → iamshreyas.pages.dev and YouTube. 3. Narrow the window to phone width → buildings stay 4+3, no sideways scroll.
-Need from you: (a) Bench: approve, or say what to change (rec: approve; the lamp head can be reshaped later). (b) On a phone the building labels and the hero tagline are tiny (images ~67 px wide). OK as is, since the alt text names each project, or do you want a phone-only layout? (rec: OK for v1)
-Next sprint (proposed): v1.0 go-live. Create PUBLIC repo The-Shreyas-M/The-Shreyas-M via gitcp, push main, first Action run, live check on github.com at desktop and phone widths.
-Skill improvements — need your OK: none new.
+## Sprint 4 APPROVED 2026-11-26 — next: v1.0 go-live in a new session
+
+Owner approved the bench and the phone layout as is (tiny labels on phone OK; alt text names each project).
 
 ## Start line (owner pastes this to run a sprint unattended)
 
@@ -19,7 +16,7 @@ Skill improvements — need your OK: none new.
 
 ## State (2026-11-26)
 
-- Sprint 4 done, waiting on owner. New generators: `gen/pixel/bench.mjs`, `gen/pixel/footer.mjs` (both run directly, print BOX/TEXT lines).
+- Sprint 4 done and approved. New generators: `gen/pixel/bench.mjs`, `gen/pixel/footer.mjs` (both run directly, print BOX/TEXT lines).
 
 - Pixel-art direction (`docs/DESIGN.md` is the style law; `assets/hero.svg` the quality reference).
 - Sprites: `gen/pixel/sprites/mech.mjs` (parts as string grids, mirrored, then rim/shade/outline passes; exports FW/FH/TIMELINE/ANCHORS/mechFrames) and `gen/pixel/sprites/hero-char.mjs`. Uneven frame timing uses `spriteTimeline()` in `gen/pixel/sprite.mjs`.
@@ -28,7 +25,7 @@ Skill improvements — need your OK: none new.
 
 ## Next step
 
-Owner answers the Sprint 4 checkpoint → new session (Sonnet or Opus) plans the v1.0 go-live sprint (pushing and making the repo public is itself an owner checkpoint).
+New session (Sonnet or Opus) plans the v1.0 go-live sprint (pushing and making the repo public is itself an owner checkpoint).
 
 ## Gotchas found so far
 
