@@ -113,7 +113,7 @@ image{image-rendering:pixelated;image-rendering:crisp-edges}
 const baseY = makeBase();
 const glowY = new Layer(W, H);
 const tubeY = new Layer(W, H);
-neonTube(glowY, tubeY, '#ff3355', '#f4ecff', (L, c) => drawPlayButton(L, c));
+neonTube(glowY, tubeY, '#ff3355', '#ff3355', (L, c) => drawPlayButton(L, c)); // filled shape: no white core, or the triangle vanishes
 drawTriangle(tubeY, '#f4ecff');
 neonTube(glowY, tubeY, '#ff2e88', '#ffe6f4', (L, c) => text(L, 'YOUTUBE', 66, 16, c, 2));
 neonTube(glowY, tubeY, '#3ff0e6', '#f4ecff', (L, c) => text(L, 'THE-SHREYAS-M', 66, 36, c, 1));
