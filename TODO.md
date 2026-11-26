@@ -61,9 +61,18 @@ Reuse: px.mjs, sprite.mjs (spriteTimeline), sprites/hero-char.mjs (avatar), spri
 - [x] T4 [oc] (R6) `.github/workflows/update.yml` daily cron + dispatch → orphan `output` branch — check: diff read + YAML parse  ✔ beam-free 1st try; YAML parse prints `17 3 * * * write 4 ${{ secrets.GITHUB_TOKEN }}`; diff read
 - [x] T5 [tool] (R4,R5) Live run with real data, numbers match github.com — check: screenshots  ✔ live API back; real fixtures captured; 554 contributions + 16 followers match github.com; repos limited to PUBLIC non-fork (23 = REST count) so local and Action output agree; README wired to output-branch URLs, preview shows all 4 images
 
+## Sprint 4 — v0.4 full page: project buildings, workbench, footer signs, phone pass
+
+- [ ] T1 [oc] (R8) `gen/pixel/bench.mjs` → `assets/bench.svg` 400×140: pixel workbench close-up (ESP32 board, synth, hovering drone, oscilloscope) with blinking LEDs, scope trace, prop spin — check: script prints its layout boxes, `node gen/check.mjs` OK + [tool] frame review
+- [ ] T2 [oc] (R9) `gen/pixel/footer.mjs` → `assets/portfolio.svg` (ENTER PORTFOLIO neon sign, flicker) + `assets/youtube.svg` (billboard, play button) — check: script prints boxes, check OK + [tool] review
+- [ ] T3 [me] (R7,R9,R12) README in demo order: 7 buildings each `<a>` to its repo (rows 4+3), bench, contrib, footer signs linked to iamshreyas.pages.dev and the YouTube channel — check: `node gen/preview.mjs`, every link resolves in preview
+- [ ] T4 [tool] (R12) Review full page at 1280 px and 360 px; fix list → fixes — check: screenshots at both widths
+- [ ] T5 [me] Owner checkpoint
+
+**Done when:** check.mjs OK; preview shows the full page in demo order with all 9 links working at 1280 and 360 px; owner approves.
+
 ## Later milestones (not planned yet)
 
-- v0.4 — R7 project shop-fronts (7), R8 pixel workbench, R9 portfolio station sign + YouTube billboard, R12 phone pass
 - v1.0 — create PUBLIC repo `The-Shreyas-M/The-Shreyas-M` via `gitcp` after owner approval, first Action run, live check
 
 ## Parking lot (ideas with no R-id — not built unless the owner adds them to SPEC)
