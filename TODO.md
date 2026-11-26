@@ -71,9 +71,20 @@ Reuse: px.mjs, sprite.mjs (spriteTimeline), sprites/hero-char.mjs (avatar), spri
 
 **Done when:** check.mjs OK; preview shows the full page in demo order with all 9 links working at 1280 and 360 px; owner approves.
 
+## Sprint 5 — v1.0 go-live: public profile repo, first Action run, live check
+
+- [x] T1 [me] (R6,R10,R12) Pre-flight: secrets scan, linked repos public, branch `main` (workflow triggers on main), live generate dry-run — check: `node gen/check.mjs` OK  ✔ no tokens in tree; 7/7 project repos public; profile repo 404 (not created yet); master→main; live stats.svg 9 KB + contrib-game.svg 24 KB; ALL ASSETS OK (14 files)
+- [ ] T2 [me] Owner checkpoint: OK to create the PUBLIC repo and push (first deploy)
+- [ ] T3 [me] (R6) `gitcp`: create PUBLIC `The-Shreyas-M/The-Shreyas-M`, push `main` — check: `gh api repos/The-Shreyas-M/The-Shreyas-M --jq .visibility` prints `public`
+- [ ] T4 [me] (R6) First Action run succeeds and `output` branch holds stats.svg + contrib-game.svg — check: `gh run list` success, `gh api repos/.../contents?ref=output` lists both
+- [ ] T5 [tool] (R12) Live profile github.com/The-Shreyas-M at 1280 and 360 px: all images animate, 9 links work — check: screenshots
+- [ ] T6 [me] Owner v1.0 sign-off
+
+**Done when:** repo public, Action green, profile renders live at both widths, owner signs off.
+
 ## Later milestones (not planned yet)
 
-- v1.0 — create PUBLIC repo `The-Shreyas-M/The-Shreyas-M` via `gitcp` after owner approval, first Action run, live check
+- v1.1 — lamp head refinement on the bench (deferred at Sprint 4)
 
 ## Parking lot (ideas with no R-id — not built unless the owner adds them to SPEC)
 

@@ -2,9 +2,10 @@
 
 Keep under 60 lines. Replace old content; git keeps the history.
 
-## Sprint 4 APPROVED 2026-11-26 — next: v1.0 go-live in a new session
-
-Owner approved the bench and the phone layout as is (tiny labels on phone OK; alt text names each project).
+## CHECKPOINT 2026-11-26 — Sprint 5 (v1.0 go-live)
+Built: pre-flight passed (no secrets, 7/7 project repos public, branch renamed master→main, live SVGs generate, ALL ASSETS OK).
+Need from you: OK to create the PUBLIC repo The-Shreyas-M/The-Shreyas-M and push main (first deploy; the profile becomes visible to everyone). Recommended: yes.
+After yes: push via gitcp → first Action run fills `output` → live check at 1280/360 px → your v1.0 sign-off.
 
 ## Start line (owner pastes this to run a sprint unattended)
 
@@ -25,7 +26,7 @@ Owner approved the bench and the phone layout as is (tiny labels on phone OK; al
 
 ## Next step
 
-New session (Sonnet or Opus) plans the v1.0 go-live sprint (pushing and making the repo public is itself an owner checkpoint).
+Sprint 5 T2: wait for the owner's go-ahead, then T3 (gitcp create public repo + push main).
 
 ## Gotchas found so far
 
