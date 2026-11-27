@@ -42,4 +42,4 @@ Run Sprint 6 (one scrolling city strip) in a NEW session (Sonnet/Opus). Push wit
 - GitHub strips JavaScript and blocks external resources inside SVGs, so fonts must be system or data URIs; the profile shows only if the repo The-Shreyas-M/The-Shreyas-M is PUBLIC.
 - Pixel font now has all digits + `%` `+`. Data layer = `gen/lib/github.mjs` (`--fixture` = gen/fixtures raw GraphQL). api.github.com sometimes times out from this machine (TLS handshake); Bash needs the sandbox off for gh/fetch.
 - Neon helper in footer.mjs paints a white core on interior pixels: pass core = tube colour for FILLED shapes. The browser caches SVGs in preview: add `?v=` to img src after regenerating.
-- Local git identity is The-Shreyas-M (global identity is the college account): keep it.
+- Use the repo-local git identity (set by gitcp); never rely on the global one.
